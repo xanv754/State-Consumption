@@ -1,9 +1,10 @@
 from pydantic import BaseModel
 
 class Central(BaseModel):
-    _id: str
     central: str
+    ip: str
 
 class Node(BaseModel):
+    _id: str
     state: str
-    plants: list[Central]
+    central: list[Central]

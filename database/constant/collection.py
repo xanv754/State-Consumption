@@ -1,0 +1,2 @@
+class Collection:
+    node = "Nodos"
