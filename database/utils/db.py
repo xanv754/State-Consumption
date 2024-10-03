@@ -8,15 +8,16 @@ load_dotenv()
 MONGO_URI = getenv("URI")
 DB_NAME = getenv("DB")
 
-mongo_client = MongoClient(MONGO_URI)
 
 def open_connection() -> Database:
     """Open connection to mongo database
     """
+    mongo_client = MongoClient(MONGO_URI)
     db = mongo_client.get_database(DB_NAME)
     return db
 
 def close_connection() -> None:
     """Close connection to mongo database
     """
+    mongo_client = MongoClient(MONGO_URI)
     mongo_client.close()
