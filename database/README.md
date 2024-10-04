@@ -37,10 +37,15 @@ Se necesita proporcionar un archivo `.env` con las siguientes variables de entor
 - `FILE_CONTENT_TXT`: Contenido del archivo `.txt` de prueba
 
 ## Uso
-Al tener un nuevo archivo `MASTERNODO` para actualizar la base de datos, se debe ejecutar el `__init__.py` del módulo.
+Al tener un nuevo archivo `MASTERNODO` para actualizar la base de datos, solo basta con añadir el módulo de `database` al PYTHONPATH para poderlo ejecutar.
 
 ```bash
-python database/__init__.py
+python -m database
+```
+
+De otra forma, se puede ejecutar directamente el archivo:
+```bash
+python database/__main__.py
 ```
 
 ## Pruebas Unitarias
