@@ -1,4 +1,5 @@
 import pandas as pd
+from tqdm import tqdm
 
 class File:
     @staticmethod
@@ -18,7 +19,9 @@ class File:
     @staticmethod
     def read_excel(path: str) -> pd.DataFrame:
         try:
-            return pd.read_excel(path, index_col=None)
+            tqdm.write("Leyendo archivo...")
+            df = pd.read_excel(path, index_col=None)
+            return df
         except Exception as error:
             return pd.DataFrame()
     
