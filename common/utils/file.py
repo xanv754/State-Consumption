@@ -14,7 +14,7 @@ class File:
             return pd.DataFrame()
     
     @staticmethod
-    def read_excel(path: str, sheetname: (str | None)) -> pd.DataFrame:
+    def read_excel(path: str, sheetname: (str | None)=None) -> pd.DataFrame:
         try:
             tqdm.write("Loading file...")
             if not sheetname: return pd.read_excel(path, index_col=None)
