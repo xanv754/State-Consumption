@@ -30,11 +30,11 @@ def find_node_by_ip(ip: str) -> Node:
         close_connection()
         return res
 
-def find_node_by_central(central: str) -> Node:
+def find_node_by_central(central: str, account_code: str) -> Node:
     try:
         db = open_connection()
         collection = db.get_collection(Collection.NODE)
-        node = collection.find_one({ "central": central })
+        node = collection.find_one({ "central": central, "account_code": account_code })
         if node: res = Node(**node)
         else: res = None
     except Exception as error:
