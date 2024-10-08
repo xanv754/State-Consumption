@@ -34,7 +34,7 @@ def find_node_by_central(central: str) -> Node:
     try:
         db = open_connection()
         collection = db.get_collection(Collection.NODE)
-        node = collection.find_one({"central": central})
+        node = collection.find_one({ "central": central })
         if node: res = Node(**node)
         else: res = None
     except Exception as error:

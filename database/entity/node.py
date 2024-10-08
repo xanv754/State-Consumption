@@ -4,3 +4,4 @@ class Node(BaseModel):
     state: str
     central: str
     ip: str
+    account_code: str
