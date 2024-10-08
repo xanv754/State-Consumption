@@ -1,9 +1,10 @@
 import traceback
-from os import getenv
 import pandas as pd
+from os import getenv
 from tqdm import tqdm
 from dotenv import load_dotenv
 from common.utils.file import File
+from common.utils.fix import fix_column_word
 from entity.node import Node
 from query.insert import insert_new_nodes
 from query.find import find_node
@@ -17,6 +18,13 @@ class DatabaseController:
     state_col_name: (str | None) = None
     ip_col_name: (str | None) = None
     account_code_col_name: (str | None) = None
+
+    def fix_data(self, df: pd.DataFrame) -> pd.DataFrame:
+        try:
+            df = fix_column_word(df, self.central_col_name)
+            return df
+        except Exception as error:  
+            raise error
 
     def get_columns_name_by_data(self, df: pd.DataFrame) -> bool:
         try:
