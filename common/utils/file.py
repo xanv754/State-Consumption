@@ -10,7 +10,7 @@ class File:
         try:
             tqdm.write("Loading file...")
             return pd.read_csv(path, delimiter=delimiter, encoding="latin-1", low_memory=False)
-        except Exception as error:
+        except:
             return pd.DataFrame()
     
     @staticmethod
@@ -19,7 +19,7 @@ class File:
             tqdm.write("Loading file...")
             if not sheetname: return pd.read_excel(path, index_col=None)
             else: return pd.read_excel(path, index_col=None, sheet_name=sheetname)
-        except Exception as error:
+        except:
             return pd.DataFrame()
     
     @staticmethod
