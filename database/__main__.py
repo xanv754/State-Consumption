@@ -1,13 +1,14 @@
 import traceback
 import pandas as pd
+
 from os import getenv
 from tqdm import tqdm
 from dotenv import load_dotenv
 from common.utils.file import File
 from common.utils.fix import fix_column_word
 from entity.node import Node
-from query.insert import insert_new_nodes
 from query.find import find_node
+from query.insert import insert_new_nodes
 
 load_dotenv(override=True)
 
@@ -92,6 +93,7 @@ if __name__ == "__main__":
             if df.empty == False:
                 if UploadDatabase.get_columns_name_by_data(df):
                     df = UploadDatabase.get_data_by_columns_name(df)
+                    df = UploadDatabase.fix_data(df)
                     nodes = UploadDatabase.create_new_nodos(df)
                     updated_db = UploadDatabase.save_new_nodes(nodes)
                     if updated_db > 0: tqdm.write(f"The database was updated with {updated_db} nodes")
