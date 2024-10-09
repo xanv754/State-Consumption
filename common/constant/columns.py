@@ -3,3 +3,4 @@ class ColumnsReport:
     ACCOUNT_CODE = "Coid"
     ACRONYM_BRAS = "Location"
     BRAS = "Nrpname"
+    CLIENTS = "Cantidad"
