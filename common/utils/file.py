@@ -23,10 +23,10 @@ class File:
             return pd.DataFrame()
     
     @staticmethod
-    def write_excel(df: pd.DataFrame) -> None:
+    def write_excel(df: pd.DataFrame, filename=".xlsx") -> None:
         try:
             pwd = getcwd()
-            path = f"{pwd}/reporte_boss_save.xlsx"
+            path = f"{pwd}/{filename}"
             if not df.empty:
                 tqdm.write("Save data a file .xlsx ...")
                 if len(df) < 900000:
