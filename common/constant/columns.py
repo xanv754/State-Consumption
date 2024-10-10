@@ -1,4 +1,4 @@
-class ColumnsReport:
+class ReportColumns:
     CENTRAL = "Name Coid"
     ACCOUNT_CODE = "Coid"
     ACRONYM_BRAS = "Location"
