@@ -15,11 +15,11 @@ class UpdateController:
     missing_nodes: list[dict] = []
     nodes: list[Node] = []
 
-    def _add_missing_nodes(self, index: any, central: str) -> None:
-        node = self._add_missing_nodes({
-            "Indice": index, 
+    def _add_missing_nodes(self, index: int, central: str) -> None:
+        node = {
+            "Indice": index + 2, 
             "Central": central
-        })
+        }
         self.missing_nodes.append(node)
        
     def fix_data(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -114,12 +114,14 @@ class UpdateController:
                     else: 
                         self._add_missing_nodes(index, row[self.central_col_name])
                         node_accepted = False
+                    if node_accepted and self.account_code_col_name is not None:
+                            current_account_code = str(row[self.account_code_col_name])
+                    else: 
+                        self._add_missing_nodes(index, row[self.central_col_name])
+                        node_accepted = False
+
                     if node_accepted and self.ip_col_name is not None:
                         current_ip = str(row[self.ip_col_name])
-                    else: 
-                        current_ip = None
-                    if node_accepted and self.account_code_col_name is not None:
-                        current_account_code = str(row[self.account_code_col_name])
                     else: 
                         current_ip = None
                     if node_accepted and self.region_col_name is not None:
@@ -153,6 +155,6 @@ class UpdateController:
     def export_missing_nodes(self) -> None:
         try:
             if len(self.missing_nodes) > 0:
-                export_missing_nodes(self.missing_nodes)
+                export_missing_nodes(self.missing_nodes, "missing_nodes_db.xlsx")
         except Exception as error:
             raise error
