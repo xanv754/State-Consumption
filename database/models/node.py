@@ -5,5 +5,6 @@ class Node(BaseModel):
     _id: ObjectId
     state: str
     central: str
-    ip: str
-    account_code: str
+    ip: (str | None)
+    account_code: (str | None)
+    region: (str | None)
