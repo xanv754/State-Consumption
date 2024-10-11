@@ -25,9 +25,10 @@ if __name__ == "__main__":
             df = UpdateDatabase.get_data(df)
             df = UpdateDatabase.fix_data(df)
             nodes = UpdateDatabase.create_new_nodos(df)
-            updated_db = UpdateDatabase.save_new_nodes(nodes)
-            if updated_db > 0: tqdm.write(f"The database was updated with {updated_db} nodes")
-            else: tqdm.write("There are no new nodes")
+            if not nodes: tqdm.write("There are no new nodes")
+            else:
+                updated_db = UpdateDatabase.save_new_nodes(nodes)
+                tqdm.write(f"The database was updated with {updated_db} nodes")
             UpdateDatabase.export_missing_nodes()
     except Exception as error:
         traceback.print_exc()

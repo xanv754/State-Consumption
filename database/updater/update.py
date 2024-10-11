@@ -1,10 +1,10 @@
 import pandas as pd
 from tqdm import tqdm
-from common.utils.fix import fix_column_word, fix_format_word
+from common.utils.fix import fix_column_word, fix_format_word, fix_ip
 from common.utils.export import export_missing_nodes
 from entity.node import Node
 from query.find import find_node
-from query.insert import insert_new_nodes, insert_new_node
+from query.insert import insert_new_node
 
 class UpdateController:
     central_col_name: (str | None) = None
@@ -49,7 +49,9 @@ class UpdateController:
                         or 'CODIGO CONT' in name 
                         or 'COD / CONT' in name
                         or 'cod / cont' in name
-                        or 'Cod / Cont' in name) 
+                        or 'Cod / Cont' in name
+                        or 'cc' in name
+                        or 'CC' in name) 
                         and self.account_code_col_name is None): 
                     self.account_code_col_name = name
                 elif (('Codigo Cont' in name 
@@ -57,7 +59,9 @@ class UpdateController:
                         or 'CODIGO CONT' in name 
                         or 'COD / CONT' in name
                         or 'cod / cont' in name
-                        or 'Cod / Cont' in name) 
+                        or 'Cod / Cont' in name
+                        or 'cc' in name
+                        or 'CC' in name) 
                         and (not self.account_code_col_name is None)): 
                     raise Exception(f"There are two columns related to the «Codigo Contable» in its name")
                 
@@ -121,7 +125,10 @@ class UpdateController:
                         node_accepted = False
 
                     if node_accepted and self.ip_col_name is not None:
-                        current_ip = str(row[self.ip_col_name])
+                        if type(row[self.ip_col_name]) == int:
+                            current_ip = fix_ip(current_ip)
+                        else:
+                            current_ip = str(row[self.ip_col_name])
                     else: 
                         current_ip = None
                     if node_accepted and self.region_col_name is not None:
@@ -139,16 +146,14 @@ class UpdateController:
 
     def save_new_nodes(self, nodes: list[Node]) -> int:
         try:
-            if (nodes):
-                tqdm.write(f"Saving nodes in the database...")
-                total_saved = 0
-                for node in tqdm(nodes):
-                    node_saved = find_node(node.state, node.central, node.account_code)
-                    if not node_saved:
-                        res = insert_new_node(node)
-                        if res and res.acknowledged: total_saved += 1
-                return total_saved
-            return 0
+            tqdm.write(f"Saving nodes in the database...")
+            total_saved = 0
+            for node in tqdm(nodes):
+                node_saved = find_node(node.state, node.central, node.account_code)
+                if not node_saved:
+                    res = insert_new_node(node)
+                    if res and res.acknowledged: total_saved += 1
+            return total_saved
         except Exception as error:
             raise error
     

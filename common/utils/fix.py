@@ -32,7 +32,26 @@ def fix_format_word(word: str) -> str:
         word = word.upper()
         if "-" in word: word = word.replace("-", " ")
         if "_" in word: word = word.replace("_", " ")
+        if "Á" in word: word = word.replace("Á", "A")
+        if "É" in word: word = word.replace("É", "E")
+        if "Í" in word: word = word.replace("Í", "I")
+        if "Ó" in word: word = word.replace("Ó", "O")
+        if "Ú" in word: word = word.replace("Ú", "U")
         word = word.strip()
         return word
     except Exception as error:
         raise error
+    
+def fix_ip(ip: int) -> str:
+    ip_string = str(ip)
+    ip_string_reversed = "".join(reversed(ip_string))
+    i = 0
+    fix_ip = ''
+    for character in ip_string_reversed:
+        if i == 3: 
+            fix_ip = fix_ip + '.' + character
+            i = 0
+        else: fix_ip = fix_ip + character
+        i += 1
+    fix_ip = "".join(reversed(fix_ip))
+    return fix_ip
