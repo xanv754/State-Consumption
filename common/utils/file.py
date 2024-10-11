@@ -48,6 +48,6 @@ class File:
                             number_sheet += 1
                 tqdm.write(f"Saved data in {path}")
             else:
-                tqdm.write(f"WARNING: Empty dataframe")
+                tqdm.write(f"WARNING: Empty dataframe. Saving of {filename} has been canceled.")
         except:
             traceback.print_exc()

@@ -26,3 +26,13 @@ def fix_column_word(df: pd.DataFrame, column_name: str):
         return df
     except Exception as error:
         raise error
+    
+def fix_format_word(word: str) -> str:
+    try:
+        word = word.upper()
+        if "-" in word: word = word.replace("-", " ")
+        if "_" in word: word = word.replace("_", " ")
+        word = word.strip()
+        return word
+    except Exception as error:
+        raise error
