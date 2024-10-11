@@ -163,3 +163,20 @@ class UpdateController:
                 export_missing_nodes(self.missing_nodes, "missing_nodes_db.xlsx")
         except Exception as error:
             raise error
+        
+    def create_new_node(self, central: str, state: str, account_code: str, ip: str, region: str) -> Node:
+        try:
+            new_node = Node(state=state, central=central, ip=ip, account_code=account_code, region=region)
+            return new_node
+        except Exception as error:
+            raise error
+    
+    def save_new_node(self, node: Node) -> bool:
+        try:
+            node_saved = find_node(node.state, node.central, node.account_code)
+            if not node_saved:
+                res = insert_new_node(node)
+                if res: return res.acknowledged
+            return False
+        except Exception as error:
+            raise error
