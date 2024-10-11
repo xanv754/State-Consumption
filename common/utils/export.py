@@ -2,9 +2,9 @@ from tqdm import tqdm
 from pandas import DataFrame
 from common.utils.file import File
 
-def export_missing_nodes(nodes: list[dict]) -> None:
+def export_missing_nodes(nodes: list[dict], filename: str="missing_nodes.xlsx") -> None:
     try:
-        tqdm.write(f"Some nodes were lost. Exporting...")
+        tqdm.write(f"{len(nodes)} nodes were lost. Exporting...")
         missing_nodes = dict()
         keys = nodes[0].keys()
         for key_name in keys:
@@ -13,7 +13,7 @@ def export_missing_nodes(nodes: list[dict]) -> None:
                 missing_nodes[key_name].append(node[key_name])
         if missing_nodes:
             df = DataFrame(missing_nodes)
-            File.write_excel(df, "missing_nodes.xlsx")
+            File.write_excel(df, filename)
     except Exception as error:
         pass
         raise error
