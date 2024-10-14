@@ -23,16 +23,25 @@ class TableController:
             return new_df
         except Exception as error:
             raise error
-        
+
     def create_usage_porcentage(df: pd.DataFrame) -> pd.DataFrame:
         try:
             tqdm.write("Create usage porcentage...")
-            df_porcentage = pd.DataFrame()
-            df_porcentage["Estado"] = list(df["Estado"].unique())
-            list_bras = list(df["Estado"].unique())
-            for bras_name in tqdm(list_bras):
-                df[bras_name] = df[ReportColumns.CLIENTS] / df[ReportColumns.TOTAL_BY_BRAS] * 100
-            return df
+            states = df["Estado"]
+            states.drop([len(df) - 1], axis=0, inplace=True)
+            df_porcentage = pd.DataFrame(states)
+            bras = df.columns.to_list()
+            bras.pop(0)
+            bras.pop(-1)
+            for bras_name in tqdm(bras):
+                values = []
+                total = df.iloc[len(df) - 1, df.columns.get_loc(bras_name)]
+                for i in range(0, len(df) - 1):
+                    clients = (df.iloc[i, df.columns.get_loc(bras_name)])
+                    porcentage = clients / total
+                    values.append(porcentage)
+                df_porcentage[bras_name] = values
+            return df_porcentage
         except Exception as error:
             raise error
 
@@ -43,12 +52,12 @@ class TableController:
             index_col = len(df)
             list_columns = df.columns.to_list()[1:]
             df.loc[index_col, df.columns[0]] = ReportColumns.TOTAL_BY_BRAS
-            for column_name in tqdm(list_columns): 
+            for column_name in tqdm(list_columns):
                 df.loc[index_col, column_name] = df[column_name].sum()
             return df
         except Exception as error:
             raise error
-        
+
     @staticmethod
     def add_total_sum_by_state(df: pd.DataFrame) -> pd.DataFrame:
         try:
