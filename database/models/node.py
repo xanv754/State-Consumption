@@ -1,8 +1,8 @@
 from bson import ObjectId
 from pydantic import BaseModel
 
-class Node(BaseModel):
-    _id: ObjectId
+class NodeModel(BaseModel):
+    id: str
     state: str
     central: str
     ip: (str | None)

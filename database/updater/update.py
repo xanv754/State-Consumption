@@ -3,8 +3,10 @@ from tqdm import tqdm
 from common.utils.fix import fix_column_word, fix_format_word, fix_ip
 from common.utils.export import export_missing_nodes
 from entity.node import Node
+from models.node import NodeModel
 from query.find import find_node
 from query.insert import insert_new_node
+from query.update import update_nodo
 
 class UpdateController:
     central_col_name: (str | None) = None
@@ -94,6 +96,30 @@ class UpdateController:
         except Exception as error:
             raise error
         
+    def search_nodo(self, account_code: str, central: str, state: str) -> NodeModel:
+        try:
+            res = find_node(state, central, account_code)
+            return res
+        except Exception as error:
+            raise error
+        
+    def create_new_node(self, central: str, state: str, account_code: str, ip: str, region: str) -> Node:
+        try:
+            new_node = Node(state=state, central=central, ip=ip, account_code=account_code, region=region)
+            return new_node
+        except Exception as error:
+            raise error
+    
+    def save_new_node(self, node: Node) -> bool:
+        try:
+            node_saved = find_node(node.state, node.central, node.account_code)
+            if not node_saved:
+                res = insert_new_node(node)
+                if res: return res.acknowledged
+            return False
+        except Exception as error:
+            raise error
+           
     def create_new_nodos(self, df: pd.DataFrame) -> list[Node]:
         if not df.empty:
             try:
@@ -156,27 +182,18 @@ class UpdateController:
             return total_saved
         except Exception as error:
             raise error
+
+    def update_nodo(self, id: str, node: Node) -> bool:
+        try:
+            res = update_nodo(id, node)
+            if res: return res.acknowledged
+            return False
+        except Exception as error:
+            raise error
     
     def export_missing_nodes(self) -> None:
         try:
             if len(self.missing_nodes) > 0:
                 export_missing_nodes(self.missing_nodes, "missing_nodes_db.xlsx")
-        except Exception as error:
-            raise error
-        
-    def create_new_node(self, central: str, state: str, account_code: str, ip: str, region: str) -> Node:
-        try:
-            new_node = Node(state=state, central=central, ip=ip, account_code=account_code, region=region)
-            return new_node
-        except Exception as error:
-            raise error
-    
-    def save_new_node(self, node: Node) -> bool:
-        try:
-            node_saved = find_node(node.state, node.central, node.account_code)
-            if not node_saved:
-                res = insert_new_node(node)
-                if res: return res.acknowledged
-            return False
         except Exception as error:
             raise error
