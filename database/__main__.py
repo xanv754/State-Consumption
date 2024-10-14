@@ -72,9 +72,12 @@ def update_nodo() -> None:
             print("Account code: ", account_code)
             print("IP: ", ip)
             print("Region: ", region)
-            status = UpdateController.update_nodo(id, new_node)
-            if status: print("Node updated")
-            else: print("Node not updated")
+            updated = str(input("Update node [y/N]: ")).upper()
+            if updated == "y" or updated == "Y":
+                status = UpdateDatabase.update_nodo(id, new_node)
+                if status: print("Node updated")
+                else: print("Node not updated")
+            else: print("Update canceled")
         else: print("Node not found")
     except Exception as error:
         raise error

@@ -39,8 +39,12 @@ class ReportBossController:
                     states = []
                     for node in res:
                         if node.state not in states: states.append(node.state)
-                    if "DISTRITO CAPITAL" in states and "MIRANDA" in states: return "MIRANDA"
-                    return None
+                    return states[0]
+                    # if len(states) == 2:
+                    #     if "DISTRITO CAPITAL" in states:
+                    #         for state in states:
+                    #             if state != "DISTRITO CAPITAL": return state
+                    # return None
         except Exception as error:
             raise error
 

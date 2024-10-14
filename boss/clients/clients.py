@@ -14,12 +14,25 @@ class TableController:
             df = df.sort_values(by=ReportColumns.STATE, ascending=True)
             new_df = pd.DataFrame({ReportColumns.STATE: list(df[ReportColumns.STATE].unique())})
             list_bras = list(df.sort_values(by="bras", ascending=True)["bras"].unique())
+            print(list_bras)
             for bras_name in tqdm(list_bras):
                 clients = df[df["bras"] == bras_name].groupby(ReportColumns.STATE)[ReportColumns.CLIENTS].sum()
                 df_merge = new_df.merge(clients, how="outer", on=[ReportColumns.STATE], indicator=False)
                 df_bras[bras_name] = df_merge[ReportColumns.CLIENTS]
                 new_df[bras_name] = df_bras[bras_name]
             return new_df
+        except Exception as error:
+            raise error
+        
+    def create_usage_porcentage(df: pd.DataFrame) -> pd.DataFrame:
+        try:
+            tqdm.write("Create usage porcentage...")
+            df_porcentage = pd.DataFrame()
+            df_porcentage["Estado"] = list(df["Estado"].unique())
+            list_bras = list(df["Estado"].unique())
+            for bras_name in tqdm(list_bras):
+                df[bras_name] = df[ReportColumns.CLIENTS] / df[ReportColumns.TOTAL_BY_BRAS] * 100
+            return df
         except Exception as error:
             raise error
 
