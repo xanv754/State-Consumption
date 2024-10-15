@@ -149,13 +149,6 @@ class DatabaseController:
         except Exception as error:
             raise error
         
-    def get_node(self, account_code: str, central: str, state: str) -> NodeModel:
-        try:
-            res = find_node(state, central, account_code)
-            return res
-        except Exception as error:
-            raise error
-        
     def get_data(self, df: pd.DataFrame) -> pd.DataFrame:
         try:
             columns_name = df.columns.tolist()
@@ -187,6 +180,14 @@ class DatabaseController:
         try:
             if len(self.missing_nodes) > 0:
                 export_missing_nodes(self.missing_nodes, "missing_nodes_db.xlsx")
+        except Exception as error:
+            raise error
+    
+    @staticmethod
+    def get_node(account_code: str, central: str, state: str) -> NodeModel:
+        try:
+            res = find_node(state, central, account_code)
+            return res
         except Exception as error:
             raise error
 

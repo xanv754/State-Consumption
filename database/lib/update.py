@@ -1,5 +1,6 @@
 from database.lib.database import DatabaseController
 from database.lib.upload import upload_file
+from database.models.node import NodeModel
 
 class UpdateController:
 
@@ -22,10 +23,10 @@ class UpdateController:
             raise error
         
     @staticmethod
-    def search_node(account_code: str, central: str, state: str) -> (dict | None):
+    def search_node(account_code: str, central: str, state: str) -> (NodeModel | None):
         try:
             node = DatabaseController.get_node(account_code, central, state)
-            if node: return node.model_dump()
+            if node: return node
             return None
         except Exception as error:
             raise error

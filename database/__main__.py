@@ -8,8 +8,8 @@ def cli():
     This module is used to update the database with nodes.
 
     \b
-    update -f normal   Update the database with the masternode file. 
-    update -f input    Update the database with input data.
+    update -e normal   Update the database with the masternode file. 
+    update -e input    Update the database with input data.
     """
     pass
 
@@ -26,28 +26,28 @@ def update_by_file():
 def update_by_input():
     try:
         click.clear()
-        click.echo("Enter the information to search node...")
-        central = str(input("CENTRAL: "))
-        state = str(input("STATE: "))
-        account_code = str(input("ACCOUNT CODE: "))
+        click.echo("Search node...")
+        central = str(input("CENTRAL: ")).upper()
+        state = str(input("STATE: ")).upper()
+        account_code = str(input("ACCOUNT CODE: ")).upper()
         node = UpdateController.search_node(account_code, central, state)
         if node:
             click.clear()
             id = node.id
             click.echo("Enter the information of the node to be updated to the database")
-            click.echo("CURRENT CENTRAL: ", node.central)
+            print("CURRENT CENTRAL: ", node.central)
             central = str(input("NEW CENTRAL [current]: ")).upper()
             if not central: central = node.central
-            click.echo("CURRENT STATE [current]: ", node.state)
+            print("CURRENT STATE [current]: ", node.state)
             state = str(input("NEW STATE: ")).upper()
             if not state: state = node.state
-            click.echo("CURRENT ACCOUNT CODE [current]: ", node.account_code)
-            account_code = str(input("NEW ACCOUNT NODE: "))
+            print("CURRENT ACCOUNT CODE [current]: ", node.account_code)
+            account_code = str(input("NEW ACCOUNT NODE: ")).upper()
             if not account_code: account_code = node.account_code
-            click.echo("CURRENT IP [current]: ", node.ip)
+            print("CURRENT IP [current]: ", node.ip)
             ip = str(input("NEW IP: "))
             if not ip: ip = node.ip
-            click.echo("CURRENT REGION [current]: ", node.region)
+            print("CURRENT REGION [current]: ", node.region)
             region = str(input("NEW REGION: ")).upper()
 
             click.clear()
