@@ -1,4 +1,3 @@
-import traceback
 import click
 from lib.update import UpdateController
 

@@ -1,5 +1,5 @@
-from lib.database import DatabaseController
-from lib.upload import upload_file
+from database.lib.database import DatabaseController
+from database.lib.upload import upload_file
 
 class UpdateController:
 
