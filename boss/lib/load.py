@@ -8,6 +8,7 @@ load_dotenv(override=True)
 REPORT_BOSS = getenv("REPORTBOSS_PATH")
 DATA_CLIENTS = "cruce_clientes_por_bras.xlsx"
 NEW_REPORT_BOSS = "reporte_boss_save.xlsx"
+DATA_PORCENTAJE = "cruce_porcentaje.xlsx"
 
 def load_report_boss() -> DataFrame:
     try:
@@ -29,4 +30,10 @@ def save_new_report_boss(data: DataFrame) -> None:
     try:
         File.write_excel(data, filename=NEW_REPORT_BOSS)
     except Exception as error:
+        raise error
+    
+def save_data_porcentage(data: DataFrame) -> None:
+    try:
+        File.write_excel(data, filename=DATA_PORCENTAJE)
+    except Exception as error:  
         raise error

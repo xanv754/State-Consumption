@@ -1,7 +1,7 @@
 import click
 from clients.clients import TableController
 from boss.lib.report import ReportBossController
-from boss.lib.load import save_data_clients
+from boss.lib.load import save_data_clients, save_data_porcentage
 
 @click.group()
 def cli():
@@ -18,10 +18,13 @@ def clients():
         if ReportBoss.validate:
             df_clients = TableController.create_usage_for_bras_by_state(ReportBoss.report)
             if not df_clients.empty: 
-                #df_porcentage = TableController.create_usage_porcentage(df_clients)
                 df_clients = TableController.add_total_sum_by_bras(df_clients)
                 df_clients = TableController.add_total_sum_by_state(df_clients)
                 save_data_clients(df_clients)
+                df_porcentage = TableController.create_usage_porcentage(df_clients)
+                df_porcentage = TableController.add_total_sum_by_bras(df_porcentage)
+                df_porcentage = TableController.add_total_sum_by_state(df_porcentage)
+                save_data_porcentage(df_porcentage)
             else: raise Exception("Nodes without state exist")
     except Exception as error:  
         raise error
