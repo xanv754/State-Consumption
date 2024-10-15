@@ -19,6 +19,7 @@ def update_by_file():
         nodes_updated = UpdateController.update_by_file()
         if nodes_updated > 0:
             click.echo(f"The database was updated with {nodes_updated} nodes")
+            click.echo("Reminder: Repeated nodes (same state, central and accounting code) are not saved")
         else: click.echo(f"There are no new nodes to update database")
     except Exception as error:
         raise error
