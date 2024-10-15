@@ -14,7 +14,6 @@ class TableController:
             df = df.sort_values(by=ReportColumns.STATE, ascending=True)
             new_df = pd.DataFrame({ReportColumns.STATE: list(df[ReportColumns.STATE].unique())})
             list_bras = list(df.sort_values(by="bras", ascending=True)["bras"].unique())
-            print(list_bras)
             for bras_name in tqdm(list_bras):
                 clients = df[df["bras"] == bras_name].groupby(ReportColumns.STATE)[ReportColumns.CLIENTS].sum()
                 df_merge = new_df.merge(clients, how="outer", on=[ReportColumns.STATE], indicator=False)
