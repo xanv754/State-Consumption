@@ -1,117 +1,127 @@
-import argparse
 import traceback
-from os import getenv
-from tqdm import tqdm
-from pandas import DataFrame
-from dotenv import load_dotenv
-from common.utils.file import File
-from updater.update import UpdateController
+import click
+from lib.update import UpdateController
 
-load_dotenv(override=True)
+@click.group()
+def cli():
+    """MODULE DATABASE
 
-MASTERNODO = getenv("MASTERNODO_PATH")
-UpdateDatabase = UpdateController()
+    This module is used to update the database with nodes.
 
-def read_update_file() -> DataFrame:
-    if MASTERNODO:
-        df = File.read_excel(MASTERNODO)
-        if df.empty: raise Exception("Data not found")
-        return df
-    else: raise Exception("There is no file to update")
+    \b
+    update -f normal   Update the database with the masternode file. 
+    update -f input    Update the database with input data.
+    """
+    pass
 
-def update_db() -> None:
+def update_by_file():
     try:
-        df = read_update_file()
-        if UpdateDatabase.get_columns_name_by_data(df):
-            df = UpdateDatabase.get_data(df)
-            df = UpdateDatabase.fix_data(df)
-            nodes = UpdateDatabase.create_new_nodos(df)
-            if not nodes: print("There are no new nodes")
-            else:
-                updated_db = UpdateDatabase.save_new_nodes(nodes)
-                print(f"The database was updated with {updated_db} nodes")
-            UpdateDatabase.export_missing_nodes()
+        nodes_updated = UpdateController.update_by_file()
+        if nodes_updated > 0:
+            click.echo(f"The database was updated with {nodes_updated} nodes")
+        else: click.echo(f"There are no new nodes to update database")
     except Exception as error:
         raise error
-    
-def update_nodo() -> None:
+
+def update_by_input():
     try:
-        print("Enter the information to search node...")
-        central = str(input("Central node: "))
-        state = str(input("State node: "))
-        account_code = str(input("Account code node: "))
-        node = UpdateDatabase.search_nodo(account_code, central, state)
+        click.clear()
+        click.echo("Enter the information to search node...")
+        central = str(input("CENTRAL: "))
+        state = str(input("STATE: "))
+        account_code = str(input("ACCOUNT CODE: "))
+        node = UpdateController.search_node(account_code, central, state)
         if node:
+            click.clear()
             id = node.id
-            print("Enter the information of the node to be updated to the database")
-            print("Current central node: ", node.central)
-            central = str(input("New central node [current]: ")).upper()
+            click.echo("Enter the information of the node to be updated to the database")
+            click.echo("CURRENT CENTRAL: ", node.central)
+            central = str(input("NEW CENTRAL [current]: ")).upper()
             if not central: central = node.central
-            print("Current state node [current]: ", node.state)
-            state = str(input("New state node: ")).upper()
+            click.echo("CURRENT STATE [current]: ", node.state)
+            state = str(input("NEW STATE: ")).upper()
             if not state: state = node.state
-            print("Current account code node [current]: ", node.account_code)
-            account_code = str(input("New account code node: "))
+            click.echo("CURRENT ACCOUNT CODE [current]: ", node.account_code)
+            account_code = str(input("NEW ACCOUNT NODE: "))
             if not account_code: account_code = node.account_code
-            print("Current IP node [current]: ", node.ip)
-            ip = str(input("New IP node: "))
+            click.echo("CURRENT IP [current]: ", node.ip)
+            ip = str(input("NEW IP: "))
             if not ip: ip = node.ip
-            print("Current region node [current]: ", node.region)
-            region = str(input("New region node: ")).upper()
+            click.echo("CURRENT REGION [current]: ", node.region)
+            region = str(input("NEW REGION: ")).upper()
+
+            click.clear()
             if not region: region = node.region
-            new_node = UpdateDatabase.create_new_node(
-                central, 
-                state, 
-                account_code, 
-                ip, 
-                region
-            )
-            print("Data of node to be updated:")
-            print("Central: ", central)
-            print("State: ", state)
-            print("Account code: ", account_code)
-            print("IP: ", ip)
-            print("Region: ", region)
-            updated = str(input("Update node [y/N]: ")).upper()
-            if updated == "y" or updated == "Y":
-                status = UpdateDatabase.update_nodo(id, new_node)
-                if status: print("Node updated")
-                else: print("Node not updated")
-            else: print("Update canceled")
-        else: print("Node not found")
+            click.echo("VERIFICATION OF DATA TO BE UPDATED:")
+            click.echo("CENTRAL: ", central)
+            click.echo("STATE: ", state)
+            click.echo("ACCOUNT CODE: ", account_code)
+            click.echo("IP: ", ip)
+            click.echo("REGION: ", region)
+            updated = click.confirm("Confirm you want to update the node?")
+            if updated:
+                if UpdateController.update_node(id, central, account_code, state, ip, region):
+                    click.echo("Node updated!")
+                else: click.echo("Oh no... Node not updated")
+            else: click.echo("Update canceled")
+        else: click.echo("Node not found")
     except Exception as error:
         raise error
+
+@cli.command(help="Update the database.")
+@click.option('-f', '--from', help="Specifies where the database is to be updated from.")
+def update(option):
+    if option == "normal":
+        update_by_file()
+    elif option == "input":
+        update_by_input()
     
-def create_new_node() -> None:
+@cli.command(help="Create the new node with input data to the database")
+def create():
     try:
-        print("Enter the information of the node to be added to the database")
-        central = str(input("Central node: "))
-        state = str(input("State node: "))
-        account_code = str(input("Account code node: "))
-        ip = str(input("IP node: "))
-        region = str(input("Region node: "))
-        node = UpdateDatabase.create_new_node(central, state, account_code, ip, region)
-        if UpdateDatabase.save_new_node(node): print(f"The node {central} was updated")
-        else: print(f"The node {central} existed")
+        click.clear()
+        click.echo("Enter the information of the node to be added to the database")
+        central = str(input("CENTRAL: "))
+        if not central: 
+            click.echo("Central is required")
+            click.echo("Creation cancelled")
+            raise Exception(SystemExit)
+        state = str(input("STATE: "))
+        if not state:
+            click.echo("State is required")
+            click.echo("Creation cancelled")
+            raise Exception(SystemExit)
+        account_code = str(input("ACCOUNT CODE: "))
+        if not account_code:
+            click.echo("State is required")
+            click.echo("Creation cancelled")
+            raise Exception(SystemExit)
+        ip = str(input("IP [pass]: "))
+        region = str(input("REGION [pass]: "))
+
+        click.clear()
+        click.echo("VERIFICATION OF DATA TO BE CREATED:")
+        click.echo("CENTRAL: ", central)
+        click.echo("STATE: ", state)
+        click.echo("ACCOUNT CODE: ", account_code)
+        click.echo("IP: ", ip)
+        click.echo("REGION: ", region)
+        updated = click.confirm("Confirm you want to create the node?")
+        if updated and UpdateController.create_new_node(central, account_code, state, ip, region):
+            click.echo("New node saved!")
+        elif updated: 
+            click.echo("Oh no... new node not saved")
+        else:
+            click.echo("Creation cancelled")
+    except SystemExit:
+        pass
     except Exception as error:
         raise error
 
 if __name__ == "__main__":
     try:
-        parser = argparse.ArgumentParser(description="Update the database with the masternode file")
-        parser.add_argument("-d", "--database", help="Update database with file", action="store_true")
-        parser.add_argument("-n", "--node", help="Create new node to the database", action="store_true")
-        parser.add_argument("-u", "--update", help="Update a node to the database", action="store_true")
-
-        args = parser.parse_args()
-
-        if args.database: update_db()
-        elif args.node: create_new_node()
-        elif args.update: update_nodo()
-        else: 
-            print("No arguments provided")
-            parser.print_help()
-    except SystemExit:
-        parser.print_help()
+        cli()
+    except SystemExit as error:
+        if error == 1: pass
     except:
         traceback.print_exc()
