@@ -23,6 +23,7 @@ class TableController:
         except Exception as error:
             raise error
 
+    @staticmethod
     def create_usage_porcentage(df: pd.DataFrame) -> pd.DataFrame:
         try:
             tqdm.write("Create usage porcentage...")
