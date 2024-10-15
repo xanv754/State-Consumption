@@ -86,19 +86,24 @@ def create():
             click.echo("Central is required")
             click.echo("Creation cancelled")
             raise Exception(SystemExit)
+        else: central = central.upper()
         state = str(input("STATE: "))
         if not state:
             click.echo("State is required")
             click.echo("Creation cancelled")
             raise Exception(SystemExit)
+        else: state = state.upper()
         account_code = str(input("ACCOUNT CODE: "))
         if not account_code:
             click.echo("State is required")
             click.echo("Creation cancelled")
             raise Exception(SystemExit)
+        else: account_code = account_code.upper()
         ip = str(input("IP [pass]: "))
-        region = str(input("REGION [pass]: "))
 
+        region = str(input("REGION [pass]: "))
+        if region:
+            region = region.upper()
         click.clear()
         click.echo("VERIFICATION OF DATA TO BE CREATED:")
         print("CENTRAL: ", central)
