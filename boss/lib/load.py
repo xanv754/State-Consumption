@@ -11,7 +11,10 @@ NEW_REPORT_BOSS = "reporte_boss_save.xlsx"
 
 def load_report_boss() -> DataFrame:
     try:
-        if ".xlsx" in REPORT_BOSS: return File.read_excel(REPORT_BOSS)
+        if ".xlsx" in REPORT_BOSS: 
+            df = File.read_excel(REPORT_BOSS)
+            if df.empty: raise Exception("Report boss data not found")
+            return df
         else: raise Exception("Report boss file not found")
     except Exception as error:
         raise error

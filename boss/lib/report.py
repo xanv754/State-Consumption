@@ -42,7 +42,7 @@ class ReportBossController:
     def __validate_state_column(self) -> bool:
         try:
             columns = self.report.columns.tolist()
-            if "Estado" in columns or "ESTADO" in columns or "estado" in columns: return True
+            if "Estado" in columns or "ESTADO" in columns or "estado" in columns or "edo" in columns: return True
             else: return False
         except Exception as error:
             raise error
