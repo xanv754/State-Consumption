@@ -69,11 +69,11 @@ def update_by_input():
         raise error
 
 @cli.command(help="Update the database.")
-@click.option('-f', '--from', help="Specifies where the database is to be updated from.")
-def update(option):
-    if option == "normal":
+@click.option('-e', '--extracted', help="Specifies where the database is to be updated from.")
+def update(extracted):
+    if extracted == "normal":
         update_by_file()
-    elif option == "input":
+    elif extracted == "input":
         update_by_input()
     
 @cli.command(help="Create the new node with input data to the database")
@@ -113,8 +113,6 @@ def create():
             click.echo("Oh no... new node not saved")
         else:
             click.echo("Creation cancelled")
-    except SystemExit:
-        pass
     except Exception as error:
         raise error
 
@@ -123,5 +121,5 @@ if __name__ == "__main__":
         cli()
     except SystemExit as error:
         if error == 1: pass
-    except:
-        traceback.print_exc()
+    except Exception as error:
+        click.echo(error)

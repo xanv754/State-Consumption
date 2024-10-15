@@ -177,7 +177,7 @@ class DatabaseController:
             if self.validate:
                 self._create_new_nodes()
                 if len(self.data_nodes) > 0:
-                    total_updated = self._save_new_nodes(self.data_nodes)
+                    total_updated = self._save_new_nodes()
                     return total_updated
                 else: return 0
         except Exception as error:
