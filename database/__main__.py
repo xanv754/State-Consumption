@@ -53,11 +53,11 @@ def update_by_input():
             click.clear()
             if not region: region = node.region
             click.echo("VERIFICATION OF DATA TO BE UPDATED:")
-            click.echo("CENTRAL: ", central)
-            click.echo("STATE: ", state)
-            click.echo("ACCOUNT CODE: ", account_code)
-            click.echo("IP: ", ip)
-            click.echo("REGION: ", region)
+            print("CENTRAL: ", central)
+            print("STATE: ", state)
+            print("ACCOUNT CODE: ", account_code)
+            print("IP: ", ip)
+            print("REGION: ", region)
             updated = click.confirm("Confirm you want to update the node?")
             if updated:
                 if UpdateController.update_node(id, central, account_code, state, ip, region):
@@ -101,11 +101,11 @@ def create():
 
         click.clear()
         click.echo("VERIFICATION OF DATA TO BE CREATED:")
-        click.echo("CENTRAL: ", central)
-        click.echo("STATE: ", state)
-        click.echo("ACCOUNT CODE: ", account_code)
-        click.echo("IP: ", ip)
-        click.echo("REGION: ", region)
+        print("CENTRAL: ", central)
+        print("STATE: ", state)
+        print("ACCOUNT CODE: ", account_code)
+        print("IP: ", ip)
+        print("REGION: ", region)
         updated = click.confirm("Confirm you want to create the node?")
         if updated and UpdateController.create_new_node(central, account_code, state, ip, region):
             click.echo("New node saved!")
