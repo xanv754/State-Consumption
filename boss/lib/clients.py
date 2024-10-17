@@ -2,7 +2,7 @@ import pandas as pd
 from tqdm import tqdm
 from common.constant.columns import ReportColumns
 
-class TableController:
+class ClientController:
 
     @staticmethod
     def create_usage_for_bras_by_state(df: pd.DataFrame) -> pd.DataFrame:
