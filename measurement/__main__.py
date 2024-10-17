@@ -8,7 +8,7 @@ def measurement_by_taccess():
     try:
         click.echo("Getting measurements...")
         Measurement = MeasurementTaccess()
-        if Measurement.bras:
+        if not Measurement.err:
             click.echo("Measurements found!")
             df = pd.DataFrame(Measurement.bras)
             File.write_excel(df, filename="consumo_por_bras.xlsx")
