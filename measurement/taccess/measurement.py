@@ -3,16 +3,12 @@ from typing import List
 from tqdm import tqdm
 from dotenv import load_dotenv
 from requests import post, exceptions
-from urllib3.util import request
-from urllib3.util.timeout import Timeout
 from common.utils.date import getFirstDayOfMonth, getLastDayAvailableOfMonth
 from common.utils.export import export_logs
 from common.utils.validate import validate_name_bras
 from common.utils.transform import bits_a_gbps
 from measurement.constant import groups
 from measurement.model.interface import InterfaceModel
-from common.utils.file import File
-
 
 load_dotenv(override=True)
 
