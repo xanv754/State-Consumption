@@ -1,4 +1,4 @@
-from query.find import find_node, find_node_by_ip
+from database.query.find import find_node, find_node_by_ip
 
 STATE = "Distrito Capital"
 CENTRAL = "Carapita"

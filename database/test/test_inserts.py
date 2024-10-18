@@ -1,4 +1,4 @@
-from entity.node import Node
+from database.entity.node import Node
 from database.query.insert import insert_new_node, insert_new_nodes
 
 # DOCS: The command to run the test is: py -m pytest test/test_inserts.py::[test function name]
