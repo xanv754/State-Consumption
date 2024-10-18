@@ -28,10 +28,6 @@ class MeasurementTaccess:
     def __init__(self):
         self.__get_data()
         if len(self.logs) <= 0:
-            # with open("/home/angyee/medi-clients/taccess_consumo", "w") as file:
-            #     file.write("interface,time,in,out,bandwidth\n")
-            #     for interface_ in self.interfaces:
-            #         file.write(f"{interface_.name},{interface_.time},{interface_.in_},{interface_.out},{interface_.bandwidth}\n")
             self.__generate_usage_data()
         else:
             export_logs(self.logs, filename="taccess.log")
