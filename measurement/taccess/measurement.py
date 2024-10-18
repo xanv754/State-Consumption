@@ -59,10 +59,8 @@ class MeasurementTaccess:
                     groups.POD,
                     groups.SCR
                 ],
-                # "firstday": getFirstDayOfMonth(),
-                "firstday": "20241017",
-                # "lastday": getLastDayAvailableOfMonth()
-                "lastday": "20241017"
+                "firstday": getFirstDayOfMonth(),
+                "lastday": getLastDayAvailableOfMonth()
             }
             res = post(f"{TACCESS}/trends", json=payload, timeout=20)
             if res.status_code == 200:
