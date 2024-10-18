@@ -1,7 +1,8 @@
 def validate_name_bras(name: str) -> bool:
+    """Validates the name of a BRAS node."""
     name = name.upper()
     if len(name) < 11: return False
-    if not name.count("-") == 2: return False
+    if not name.count("-") >= 2: return False
     if not name.count("_") >= 1: return False
     if not name.split("-")[1] == "BRAS": return False
     if not ((name.split("-")[0] == "ANZ") 

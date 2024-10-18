@@ -7,6 +7,15 @@ class File:
 
     @staticmethod
     def read_csv(path: str, delimiter: str = ",") -> pd.DataFrame:
+        """Reads a .csv file and returns the data from the file as a dataframe.
+
+        Parameters
+        ----------
+        path: 
+            Path of the file to be read.
+        delimiter: 
+            Delimiter of the file to be read.
+        """
         try:
             tqdm.write("Loading file...")
             return pd.read_csv(path, delimiter=delimiter, encoding="latin-1", low_memory=False)
@@ -15,6 +24,15 @@ class File:
     
     @staticmethod
     def read_excel(path: str, sheetname: (str | None)=None) -> pd.DataFrame:
+        """Reads a .xlsx file and returns the data from the file as a dataframe.
+
+        Parameters
+        ----------
+        path: 
+            Path of the file to be read.
+        sheetname: 
+            Name of the sheet to be read.
+        """
         try:
             tqdm.write("Loading file...")
             if not sheetname: return pd.read_excel(path, index_col=None)
@@ -24,6 +42,15 @@ class File:
     
     @staticmethod
     def write_excel(df: pd.DataFrame, filename=".xlsx") -> None:
+        """Writes a dataframe to a .xlsx file.
+
+        Parameters
+        ----------
+        df: 
+            Dataframe to be written.
+        filename: 
+            Name of the file to be written.
+        """
         try:
             pwd = getcwd()
             path = f"{pwd}/{filename}"

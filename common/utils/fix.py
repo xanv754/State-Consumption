@@ -1,6 +1,15 @@
 import pandas as pd
 
-def fix_column_word(df: pd.DataFrame, column_name: str):
+def fix_column_word(df: pd.DataFrame, column_name: str) -> pd.DataFrame:
+    """Fixes a character corruption error in a dataframe column.
+
+    Parameters
+    ----------
+    df: 
+        Data to be fixed.
+    column_name: 
+        Name of the column to be fixed.
+    """
     try:
         # ß -> á
         df[column_name] = df[column_name].str.replace('ß', 'a')
@@ -28,6 +37,7 @@ def fix_column_word(df: pd.DataFrame, column_name: str):
         raise error
     
 def fix_format_word(word: str) -> str:
+    """Fixes the formatting of a word to make it standardised."""
     try:
         word = word.upper()
         if "-" in word: word = word.replace("-", " ")
@@ -43,15 +53,18 @@ def fix_format_word(word: str) -> str:
         raise error
     
 def fix_ip(ip: int) -> str:
-    ip_string = str(ip)
-    ip_string_reversed = "".join(reversed(ip_string))
-    i = 0
-    fix_ip = ''
-    for character in ip_string_reversed:
-        if i == 3: 
-            fix_ip = fix_ip + '.' + character
-            i = 0
-        else: fix_ip = fix_ip + character
-        i += 1
-    fix_ip = "".join(reversed(fix_ip))
-    return fix_ip
+    """Fixes the deleted points of an IP."""
+    if type(ip) == int:
+        ip_string = str(ip)
+        ip_string_reversed = "".join(reversed(ip_string))
+        i = 0
+        fix_ip = ''
+        for character in ip_string_reversed:
+            if i == 3: 
+                fix_ip = fix_ip + '.' + character
+                i = 0
+            else: fix_ip = fix_ip + character
+            i += 1
+        fix_ip = "".join(reversed(fix_ip))
+        return fix_ip
+    else: return ip
