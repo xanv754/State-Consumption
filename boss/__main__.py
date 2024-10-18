@@ -8,6 +8,9 @@ def cli():
     """MODULE BOSS
 
     This module is in charge of generating new reports from the boss report.
+
+    \b
+    measurement -f [FILEPATH]   Specifies the measurements file to be used.
     """
     pass
 
@@ -27,6 +30,17 @@ def clients():
                 save_data_porcentage(df_porcentage)
             else: raise Exception("Nodes without state exist")
     except Exception as error:  
+        raise error
+    
+@cli.command(help="Create the total measurements report by state and bras")
+@click.option('-f', '--file', help="Specifies the measurements file to be used")
+def measurement(file):
+    try:
+        if file:
+            click.echo("Getting measurements BRAS x Clients...")
+        else:
+            click.echo("Filepath is required")
+    except Exception as error:
         raise error
 
 if __name__ == "__main__":

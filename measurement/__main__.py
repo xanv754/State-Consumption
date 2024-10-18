@@ -36,7 +36,7 @@ def external(file):
             click.echo("Filepath is required")
     except Exception as error:  
         raise error
-
+    
 if __name__ == "__main__":
     try:
         cli()
