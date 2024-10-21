@@ -2,7 +2,7 @@ import click
 import pandas as pd
 from taccess.measurement import MeasurementTaccess
 from common.utils.file import File
-
+from common.constant import file as FILE
 
 @click.group()
 def cli():
@@ -24,7 +24,7 @@ def taccess():
         if not Measurement.err:
             click.echo("Measurements found")
             df = pd.DataFrame(Measurement.bras)
-            File.write_excel(df, filename="consumo_por_bras.xlsx")
+            File.write_excel(df, filename=FILE.MEASUREMENT)
     except Exception as error:
         raise error
 

@@ -21,6 +21,7 @@ def validate_name_bras(name: str) -> bool:
         or (name.split("-")[0] == bras.LMS)
         or (name.split("-")[0] == bras.MAD)
         or (name.split("-")[0] == bras.MAY)
+        or (name.split("-")[0] == bras.MBO)
         or (name.split("-")[0] == bras.BTO)
         or (name.split("-")[0] == bras.MIL)
         or (name.split("-")[0] == bras.POD)
