@@ -7,13 +7,15 @@
 
 Este modúlo se encarga de manejar la base de datos de los Nodos de la red. Su función es poder proporcionar un archivo de tipo `.xlsx`, `.csv` (delimitado por `;`) o `.txt` (delimitado por `,`) con los siguientes datos:
 
-- IP: IP del Nodo
-- Estado: Estado del Nodo
-- Nodo: Nombre del Nodo (también llamado: Central)
+- Nodo: Nombre del Nodo o nombre de la central. (Obligatorio)
+- Estado: Estado de ubicación del Nodo. (Obligatorio)
+- Código Contable: El código contable asociado al nodo. (Obligatorio)
+- IP: IP de servicio del Nodo. (Opcional)
+- Region: Región del estado de ubicación del Nodo. (Opcional)
 
 El archivo debe tener una única columna para cada uno de los datos anteriores, de manera que el archivo se pueda leer con un solo comando.
 
-**Importante:** Las columnas no deben contener palabras clave como **IP**, **Estado** o **Nodo** en el nombre a menos que sea la columna precisa con dicha información, ya que estas palabras se usarán para identificar las columnas específicas.
+**Importante:** Las columnas no deben contener palabras clave (ej: **Código**, **Estado** o **Nodo**) en el nombre a menos que sea la columna precisa con dicha información, ya que estas palabras se usarán para identificar las columnas específicas.
 
     ✅ Numero, Estado, Nombre del Nodo, IP, Otra columna sin palabra clave
     ❌ Numero del Nodo, Estado del Nodo, Nombre del Nodo del Estado, IP del Nodo, Otra columna con palabra clave
@@ -51,13 +53,13 @@ python database/__main__.py
 ## Pruebas Unitarias
 Si se desea ejecutar las pruebas unitarias, se debe ejecutar el archivo de testing:
 ```bash
-python -m pytest database/test_files.py
-python -m pytest database/test_finds.py
-python -m pytest database/test_inserts.py
+python -m pytest database/test/test_files.py
+python -m pytest database/test/test_finds.py
+python -m pytest database/test/test_inserts.py
 ```
 También se puede ejecutar una función de prueba individual:
 ```bash
-py -m pytest database/test_files.py::test_read_excel
+py -m pytest database/test/test_files.py::test_read_excel
 ```
 
 ## Modelos

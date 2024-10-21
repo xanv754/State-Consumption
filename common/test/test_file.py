@@ -4,22 +4,23 @@ from common.utils.file import File
 
 DATA = [
     {
-        "id": 1, 
-        "central": "central", 
-        "account_code": "account_code", 
-        "state": "state", 
-        "ip": "ip", 
-        "region": "region"
+        "id": 1,
+        "central": "central",
+        "account_code": "account_code",
+        "state": "state",
+        "ip": "ip",
+        "region": "region",
     },
     {
-        "id": 2, 
-        "central": "central", 
-        "account_code": "account_code", 
-        "state": "state", 
-        "ip": "ip", 
-        "region": "region"
-    }
+        "id": 2,
+        "central": "central",
+        "account_code": "account_code",
+        "state": "state",
+        "ip": "ip",
+        "region": "region",
+    },
 ]
+
 
 def test_read_csv():
     filepath = f"{getcwd()}/test.csv"
@@ -33,16 +34,18 @@ def test_read_csv():
     result_test = df.equals(pd.DataFrame(DATA))
     remove(filepath)
     assert result_test
-    
+
+
 def test_read_excel():
     df_original = pd.DataFrame(DATA)
     filepath = f"{getcwd()}/test.xlsx"
-    with pd.ExcelWriter(filepath, engine='openpyxl') as writer:
+    with pd.ExcelWriter(filepath, engine="openpyxl") as writer:
         df_original.to_excel(writer, index=False)
     df = File.read_excel(filepath)
     result_test = df.equals(df_original)
     remove(filepath)
     assert result_test
+
 
 def test_write_excel():
     df_original = pd.DataFrame(DATA)
@@ -51,4 +54,5 @@ def test_write_excel():
     if "test.xlsx" in listdir(getcwd()):
         df = pd.read_excel(filepath)
         assert df.equals(df_original)
-    else: assert False
+    else:
+        assert False

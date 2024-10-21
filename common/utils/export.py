@@ -3,12 +3,15 @@ from tqdm import tqdm
 from pandas import DataFrame
 from common.utils.file import File
 
-def export_missing_nodes(nodes: list[dict], filename: str="missing_nodes.xlsx") -> None:
+
+def export_missing_nodes(
+    nodes: list[dict], filename: str = "missing_nodes.xlsx"
+) -> None:
     """Creates an .xlsx file containing the list of unprocessed nodes.
-    
+
     Parameters
     ----------
-    nodes: 
+    nodes:
         List of nodes to be exported.
     filename:
         Name of the file to be exported.
@@ -27,13 +30,14 @@ def export_missing_nodes(nodes: list[dict], filename: str="missing_nodes.xlsx") 
     except Exception as error:
         pass
         raise error
-    
-def export_logs(data: list[any], filename: str="logs.log") -> None:
+
+
+def export_logs(data: list[any], filename: str = "logs.log") -> None:
     """Creates a .log file from a list of information.
 
     Parameters
     ----------
-    data: 
+    data:
         List of data to be exported.
     filename:
         Name of the file to be exported.
