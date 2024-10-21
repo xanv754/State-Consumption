@@ -3,6 +3,7 @@ from database.query.insert import insert_new_node, insert_new_nodes
 
 # DOCS: The command to run the test is: py -m pytest test/test_inserts.py::[test function name]
 
+
 def test_insert_new_nodo():
     CENTRAL = "Carapita"
     STATE = "Distrito Capital"
@@ -11,6 +12,7 @@ def test_insert_new_nodo():
 
     res = insert_new_node(new_node)
     assert res.acknowledged == True
+
 
 def test_insert_new_nodes():
     CENTRAL_1 = "Carapita"

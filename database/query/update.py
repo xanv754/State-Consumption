@@ -1,22 +1,26 @@
-from database.utils.db import open_connection, close_connection
-from common.constant.collection import Collection
-from database.entity.node import Node
-from pymongo.results import UpdateResult
 from bson import ObjectId
+from pymongo.results import UpdateResult
+from database.utils.db import open_connection, close_connection
+from database.constant import collection as COLLECTION
+from database.entity.node import Node
+from database.constant import node as NODE
+
 
 def update_nodo(id: str, nodo: Node) -> UpdateResult:
     try:
         db = open_connection()
-        collection = db.get_collection(Collection.NODE)
+        collection = db.get_collection(COLLECTION.NODE)
         res = collection.update_one(
-            {"_id": ObjectId(id)}, 
-            {"$set": {
-                "state": nodo.state,
-                "central": nodo.central,
-                "ip": nodo.ip,
-                "account_code": nodo.account_code,
-                "region": nodo.region
-            }}
+            {NODE.ID: ObjectId(id)},
+            {
+                "$set": {
+                    NODE.STATE: nodo.state,
+                    NODE.CENTRAL: nodo.central,
+                    NODE.IP: nodo.ip,
+                    NODE.ACCOUNT_CODE: nodo.account_code,
+                    NODE.REGION: nodo.region,
+                }
+            },
         )
     except Exception as error:
         raise error

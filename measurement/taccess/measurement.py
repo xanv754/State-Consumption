@@ -7,13 +7,17 @@ from common.utils.date import getFirstDayOfMonth, getLastDayAvailableOfMonth
 from common.utils.export import export_logs
 from common.utils.validate import validate_name_bras
 from common.utils.transform import bits_a_gbps
-from measurement.constant import groups
+from common.constant import group, file
+from common.constant import bras as BRAS
 from measurement.model.interface import InterfaceModel
+from measurement.constant import payload as PAYLOAD
+from measurement.constant import interface as INTERFACE
 
 load_dotenv(override=True)
 
 TACCESS = getenv("TACCESS_URL")
-EHEALTH = getenv("EHEALTH")
+CURRENT_EHEALTH = getenv("EHEALTH")
+
 
 class MeasurementTaccess:
     interfaces: List[InterfaceModel] = []
@@ -26,57 +30,61 @@ class MeasurementTaccess:
         if len(self.logs) <= 0:
             self.__generate_usage_data()
         else:
-            export_logs(self.logs, filename="taccess.log")
+            export_logs(self.logs, filename=file.TACCESS_LOG)
 
     def __get_data(self) -> None:
-        """Performs an HTTP post request to the Taccess server to obtain 
+        """Performs an HTTP post request to the Taccess server to obtain
         the hourly consumption of all BRAS interfaces.
 
         If the query fails, it will export a .log with the errors.
         """
         try:
             payload = {
-                "ehealth": EHEALTH,
-                "groups": [
-                    groups.ANZ,
-                    groups.BOL,
-                    groups.BTO,
-                    groups.CHC,
-                    groups.CNT,
-                    groups.LMS,
-                    groups.MAD,
-                    groups.MAY,
-                    groups.MBO,
-                    groups.MIL,
-                    groups.POD,
-                    groups.SCR
+                PAYLOAD.EHEALTH: CURRENT_EHEALTH,
+                PAYLOAD.GROUPS: [
+                    group.ANZ,
+                    group.BOL,
+                    group.BTO,
+                    group.CHC,
+                    group.CNT,
+                    group.LMS,
+                    group.MAD,
+                    group.MAY,
+                    group.MBO,
+                    group.MIL,
+                    group.POD,
+                    group.SCR,
                 ],
-                "firstday": getFirstDayOfMonth(),
-                "lastday": getLastDayAvailableOfMonth()
+                PAYLOAD.INIT_DAY: getFirstDayOfMonth(),
+                PAYLOAD.LAST_DAY: getLastDayAvailableOfMonth(),
             }
             res = post(f"{TACCESS}/trends", json=payload, timeout=20)
             if res.status_code == 200:
                 data = res.json()
                 for interface_ in tqdm(data):
-                    total = len(interface_["times"])
+                    total = len(interface_[INTERFACE.TIMES])
                     for i in range(0, total - 1):
-                        if validate_name_bras(interface_["interface"]):
+                        if validate_name_bras(interface_[INTERFACE.NAME]):
                             current_interface = InterfaceModel(
-                                name=interface_["interface"],
-                                time=interface_["times"][i].split("T")[0].replace("-", ""),
-                                in_=bits_a_gbps(interface_["in"][i]),
-                                out=bits_a_gbps(interface_["out"][i]),
-                                bandwidth=interface_["bandwidth"][i]
+                                name=interface_[INTERFACE.NAME],
+                                time=interface_[INTERFACE.TIMES][i]
+                                .split("T")[0]
+                                .replace("-", ""),
+                                in_=bits_a_gbps(interface_[INTERFACE.IN][i]),
+                                out=bits_a_gbps(interface_[INTERFACE.OUT][i]),
+                                bandwidth=interface_[INTERFACE.BANDWIDTH][i],
                             )
                             self.interfaces.append(current_interface)
                         else:
                             self.err = True
-                            log = f"Invalid bras name: {interface_["interface"]}"
-                            if not log in self.logs: self.logs.append(log)
+                            log = f"Invalid bras name: {interface_[INTERFACE.NAME]}"
+                            if not log in self.logs:
+                                self.logs.append(log)
             else:
                 self.err = True
                 log = f"HTTP Error {res.status_code}: {res.text}"
-                if not log in self.logs: self.logs.append(log)
+                if not log in self.logs:
+                    self.logs.append(log)
         except exceptions.Timeout:
             self.err = True
             log = "HTTP Error: Connect timeout"
@@ -99,12 +107,14 @@ class MeasurementTaccess:
                 bras_interfaces = self.filter_by_bras_name(bras_name)
                 interfaces_names = self.get_name_interfaces(bras_interfaces)
                 for interface_name in interfaces_names:
-                    interfaces = self.filter_by_interface_name(interface_name, interfaces=bras_interfaces)
+                    interfaces = self.filter_by_interface_name(
+                        interface_name, interfaces=bras_interfaces
+                    )
                     in_max = self.get_in_max(interfaces)
                     values_max.append(in_max)
                 bras.append(bras_name)
                 total_in_max.append(sum(values_max))
-            self.bras = {"BRAS": bras, "IN": total_in_max}
+            self.bras = {BRAS.NAME: bras, INTERFACE.IN: total_in_max}
         except Exception as error:
             raise error
 
@@ -118,12 +128,13 @@ class MeasurementTaccess:
         """
         try:
             in_max = 0
-            current_interface: (InterfaceModel | None) = None
+            current_interface: InterfaceModel | None = None
             for interface_ in interfaces:
                 if not current_interface:
                     current_interface = interface_
                 if current_interface and current_interface.time == interface_.time:
-                    if interface_.in_ > in_max: in_max = interface_.in_
+                    if interface_.in_ > in_max:
+                        in_max = interface_.in_
             return in_max
         except Exception as error:
             raise error
@@ -133,17 +144,21 @@ class MeasurementTaccess:
         names: List[str] = []
         for interface_ in self.interfaces:
             current_name = interface_.name.split("_")[0].upper()
-            if current_name not in names: names.append(current_name)
+            if current_name not in names:
+                names.append(current_name)
         return names
-    
+
     def get_name_interfaces(self, interfaces: List[InterfaceModel]) -> List[str]:
         """Returns a list of all interfaces names unique."""
         names: List[str] = []
         for interface_ in interfaces:
-            if interface_.name not in names: names.append(interface_.name)
+            if interface_.name not in names:
+                names.append(interface_.name)
         return names
-    
-    def filter_by_interface_name(self, name: str, interfaces: (List[InterfaceModel] | None) = None) -> List[InterfaceModel]:
+
+    def filter_by_interface_name(
+        self, name: str, interfaces: List[InterfaceModel] | None = None
+    ) -> List[InterfaceModel]:
         """Returns a list of interface filters for a given interface name.
 
         Parameters
@@ -151,7 +166,7 @@ class MeasurementTaccess:
         name:
             Name of the BRAS.
         interfaces: default None
-            List of interfaces to be filtered. 
+            List of interfaces to be filtered.
         """
         filtered_interfaces = []
         if not interfaces:
@@ -163,8 +178,10 @@ class MeasurementTaccess:
                 if current_interface.name == name:
                     filtered_interfaces.append(current_interface)
         return filtered_interfaces
-    
-    def filter_by_bras_name(self, name: str, interfaces: (List[InterfaceModel] | None) = None) -> List[InterfaceModel]:
+
+    def filter_by_bras_name(
+        self, name: str, interfaces: List[InterfaceModel] | None = None
+    ) -> List[InterfaceModel]:
         """Returns a list of interface filters given the name of a BRAS.
 
         Parameters

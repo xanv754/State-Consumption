@@ -3,6 +3,7 @@ import pandas as pd
 from taccess.measurement import MeasurementTaccess
 from common.utils.file import File
 
+
 @click.group()
 def cli():
     """MODULE DATABASE
@@ -13,6 +14,7 @@ def cli():
     external -f [FILEPATH]   Get measurements from a external filepath.
     """
     pass
+
 
 @cli.command(help="Get measurements from Taccess API.")
 def taccess():
@@ -25,22 +27,25 @@ def taccess():
             File.write_excel(df, filename="consumo_por_bras.xlsx")
     except Exception as error:
         raise error
-        
+
+
 @cli.command(help="Get measurements from a external file.")
-@click.option('-f', '--file', help="Specifies the file to be used.")
+@click.option("-f", "--file", help="Specifies the file to be used.")
 def external(file):
     try:
         if file:
             click.echo("Getting measurements...")
         else:
             click.echo("Filepath is required")
-    except Exception as error:  
+    except Exception as error:
         raise error
-    
+
+
 if __name__ == "__main__":
     try:
         cli()
     except SystemExit as error:
-        if error == 1: pass
+        if error == 1:
+            pass
     except Exception as error:
         click.echo(error)

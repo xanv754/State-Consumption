@@ -2,6 +2,7 @@ from database.lib.database import DatabaseController
 from database.lib.upload import upload_file
 from database.models.node import NodeModel
 
+
 class UpdateController:
 
     @staticmethod
@@ -16,24 +17,42 @@ class UpdateController:
             raise error
 
     @staticmethod
-    def create_new_node(central: str, account_node: str, state: str, ip: (str | None)=None, region: (str | None)=None) -> bool:
+    def create_new_node(
+        central: str,
+        account_node: str,
+        state: str,
+        ip: str | None = None,
+        region: str | None = None,
+    ) -> bool:
         try:
-            return DatabaseController.save_new_node(central, account_node, state, ip, region)
+            return DatabaseController.save_new_node(
+                central, account_node, state, ip, region
+            )
         except Exception as error:
             raise error
-        
+
     @staticmethod
-    def search_node(account_code: str, central: str, state: str) -> (NodeModel | None):
+    def search_node(account_code: str, central: str, state: str) -> NodeModel | None:
         try:
             node = DatabaseController.get_node(account_code, central, state)
-            if node: return node
+            if node:
+                return node
             return None
         except Exception as error:
             raise error
-        
+
     @staticmethod
-    def update_node(id: str, central: str, account_node: str, state: str, ip: (str | None)=None, region: (str | None)=None) -> bool:
+    def update_node(
+        id: str,
+        central: str,
+        account_node: str,
+        state: str,
+        ip: str | None = None,
+        region: str | None = None,
+    ) -> bool:
         try:
-            return DatabaseController.update_nodo(id, central, account_node, state, ip, region)
+            return DatabaseController.update_nodo(
+                id, central, account_node, state, ip, region
+            )
         except Exception as error:
             raise error

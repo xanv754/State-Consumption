@@ -10,14 +10,13 @@ DB_NAME = getenv("DB")
 
 
 def open_connection() -> Database:
-    """Open connection to mongo database
-    """
+    """Open connection to mongo database"""
     mongo_client = MongoClient(MONGO_URI)
     db = mongo_client.get_database(DB_NAME)
     return db
 
+
 def close_connection() -> None:
-    """Close connection to mongo database
-    """
+    """Close connection to mongo database"""
     mongo_client = MongoClient(MONGO_URI)
     mongo_client.close()

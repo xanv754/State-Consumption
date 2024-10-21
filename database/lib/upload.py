@@ -7,9 +7,12 @@ load_dotenv(override=True)
 
 MASTERNODO = getenv("MASTERNODO_PATH")
 
+
 def upload_file() -> DataFrame:
     if MASTERNODO:
         df = File.read_excel(MASTERNODO)
-        if df.empty: raise Exception("Data not found")
+        if df.empty:
+            raise Exception("Data not found")
         return df
-    else: raise Exception("There is no file to update")
+    else:
+        raise Exception("There is no file to update")
