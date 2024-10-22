@@ -4,7 +4,6 @@ from database.lib.masternode import MasternodeController
 from database.models.node import NodeModel
 
 class Conductor:
-    """Conductor to the CLI commands."""
 
     @staticmethod
     def add_nodes_by_file() -> int:

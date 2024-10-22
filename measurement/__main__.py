@@ -1,8 +1,5 @@
 import click
-import pandas as pd
-from taccess.measurement import ConsumptionTaccess
-from common.utils.file import FileController
-from common.constant import filename as FILE
+from measurement import generate
 
 @click.group()
 def cli():
@@ -18,28 +15,7 @@ def cli():
 
 @cli.command(help="Get measurements from Taccess API.")
 def taccess():
-    try:
-        click.echo("Getting measurements...")
-        Measurement = ConsumptionTaccess()
-        if not Measurement.err:
-            click.echo("Measurements found")
-            df = pd.DataFrame(Measurement.bras)
-            FileController.write_excel(df, filename=FILE.MEASUREMENT)
-    except Exception as error:
-        raise error
-
-
-@cli.command(help="Get measurements from a external file.")
-@click.option("-f", "--file", help="Specifies the file to be used.")
-def external(file):
-    try:
-        if file:
-            click.echo("Getting measurements...")
-        else:
-            click.echo("Filepath is required")
-    except Exception as error:
-        raise error
-
+    generate.get_consumption_by_taccess()
 
 if __name__ == "__main__":
     try:
