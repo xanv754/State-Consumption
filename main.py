@@ -1,14 +1,9 @@
 import click
-import traceback
 import pandas as pd
 from typing import List
 from tqdm import tqdm
-from common.constant import filename
-from common.utils.file import FileController
-from common.constant import colname
-from common.constant.states import states
-from common.utils.totalling import add_total_sum_by_col, add_total_sum_by_row
-from measurement.constant import interface as INTERFACE
+from common import filename, FileController, colname, add_total_sum_by_col, add_total_sum_by_row, states as GLOBAL
+from measurement import interface as INTERFACE
 
 @click.group()
 def cli():
@@ -32,7 +27,7 @@ def total(fileporcentage, fileconsumption):
             df_porcentage = FileController.read_excel(PORCENTAGE)
             df_measurement = FileController.read_excel(MEASUREMENT)
             df_porcentage = df_porcentage.drop(df_porcentage.index[-1])
-            df = pd.DataFrame({colname.STATE: states})
+            df = pd.DataFrame({colname.STATE: GLOBAL.states})
             if not df_porcentage.empty and not df_measurement.empty:
                 for _index, row in tqdm(df_measurement.iterrows(), total=df_measurement.shape[0]):
                     current_bras = str(row[colname.BRAS]).lower()
