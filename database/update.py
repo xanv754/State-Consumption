@@ -1,7 +1,4 @@
-from database.lib.data import upload_file
-from database.lib.database import DatabaseController
-from database.lib.masternode import MasternodeController
-from database.models.node import NodeModel
+from database import upload_file, NodeModel, DatabaseController, MasternodeController
 
 class Conductor:
 

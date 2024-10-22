@@ -1,9 +1,8 @@
 from pymongo.results import InsertOneResult, InsertManyResult
-from database.utils.db import open_connection, close_connection
-from database.entity.node import Node
-from database.constant import collection as COLLECTION
+from database import open_connection, close_connection, NodeEntity
+from database import collection as COLLECTION
 
-def insert_new_node(node: Node) -> InsertOneResult:
+def insert_new_node(node: NodeEntity) -> InsertOneResult:
     """Insert a new node in the database.
     
     Parameters
@@ -23,7 +22,7 @@ def insert_new_node(node: Node) -> InsertOneResult:
         return res
 
 
-def insert_new_nodes(nodes: list[Node]) -> InsertManyResult:
+def insert_new_nodes(nodes: list[NodeEntity]) -> InsertManyResult:
     """Insert multiple nodes in the database.
     
     Parameters

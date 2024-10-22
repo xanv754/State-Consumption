@@ -8,7 +8,7 @@ def cli():
     This module is used to update the database with nodes.
 
     \b
-    update -e file   Update the database with the masternode file.
+    update -e file     Update the database with the masternode file.
     update -e input    Update the database with input data.
     """
     pass

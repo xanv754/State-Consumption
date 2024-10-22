@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-class Node(BaseModel):
+class NodeEntity(BaseModel):
     """Entity of nodes for the database.
 
     Notes

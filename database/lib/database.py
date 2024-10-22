@@ -1,16 +1,13 @@
 from typing import List
 from tqdm import tqdm
-from database.entity.node import Node
-from database.models.node import NodeModel
-from database.query.find import find_node
-from database.query.insert import insert_new_node
-from database.query.update import update_nodo
+from database import NodeEntity, NodeModel
+from database import find_node, insert_new_node, update_nodo
 
 class DatabaseController:
     """Controller of the database to add, update and more functions."""
     
     @staticmethod
-    def save_new_nodes(nodes: List[Node]) -> int:
+    def save_new_nodes(nodes: List[NodeEntity]) -> int:
         """Save nodes on the database.
         
         Parameters
@@ -79,7 +76,7 @@ class DatabaseController:
         try:
             if find_node(state, central, account_node): return True
             else:
-                new_node = Node(
+                new_node = NodeEntity(
                     state=state,
                     central=central,
                     ip=ip,
@@ -120,7 +117,7 @@ class DatabaseController:
             Region of the node.
         """
         try:
-            new_node = Node(
+            new_node = NodeEntity(
                 state=state,
                 central=central,
                 ip=ip,

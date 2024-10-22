@@ -1,7 +1,6 @@
-from database.utils.db import open_connection, close_connection
-from database.models.node import NodeModel
-from database.constant import collection as COLLECTION
-from database.constant import node as NODE
+from database import open_connection, close_connection, NodeModel
+from database import collection as COLLECTION
+from database import node as NODE
 
 def find_node(state: str, central: str, account_code: str) -> NodeModel:
     """Find a node in the database.

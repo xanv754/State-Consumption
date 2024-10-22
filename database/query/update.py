@@ -1,11 +1,10 @@
 from bson import ObjectId
 from pymongo.results import UpdateResult
-from database.utils.db import open_connection, close_connection
-from database.constant import collection as COLLECTION
-from database.entity.node import Node
-from database.constant import node as NODE
+from database import open_connection, close_connection, NodeEntity
+from database import collection as COLLECTION
+from database import node as NODE
 
-def update_nodo(id: str, nodo: Node) -> UpdateResult:
+def update_nodo(id: str, nodo: NodeEntity) -> UpdateResult:
     """Update an node in the database.
 
     Parameters

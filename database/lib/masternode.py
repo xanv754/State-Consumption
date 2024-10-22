@@ -2,8 +2,7 @@ import pandas as pd
 from common.constant import exception, exportname, filename, states
 from common.utils.fix import fix_column_word, fix_format_word, fix_ip
 from common.utils.export import export_missing_nodes
-from database.constant import columns
-from database.entity.node import Node
+from database import NodeEntity, columns
 
 class MasternodeController:
     """Node driver for database updates.
@@ -31,7 +30,7 @@ class MasternodeController:
     """
     _validate: bool = False
     data: pd.DataFrame
-    data_nodes: list[Node] = []
+    data_nodes: list[NodeEntity] = []
     missing_nodes: list[dict] = []
     central_col_name: str | None = None
     state_col_name: str | None = None
@@ -146,7 +145,7 @@ class MasternodeController:
                     current_region = None
 
                 if node_accepted:
-                    new_node = Node(
+                    new_node = NodeEntity(
                         state=current_state,
                         central=current_central,
                         ip=current_ip,
