@@ -1,6 +1,5 @@
 from boss.lib.clients import ClientController
-from boss.lib.report import ReportBossController
-from boss.lib.data import save_data_clients, save_data_porcentage
+from boss import ClientController, ReportBossController, save_data_clients, save_data_porcentage
 from common.utils.totalling import add_total_sum_by_col, add_total_sum_by_row
 from common.constant import colname
 

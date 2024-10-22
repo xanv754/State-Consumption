@@ -1,5 +1,5 @@
 import click
-from boss import generate
+from boss import clients_by_BRAS_and_state
 
 @click.group()
 def cli():
@@ -11,7 +11,7 @@ def cli():
 
 @cli.command(help="Create the total clients report by state and bras")
 def clients():
-    generate.clients_by_BRAS_and_state()
+    clients_by_BRAS_and_state()
 
 if __name__ == "__main__":
     try:

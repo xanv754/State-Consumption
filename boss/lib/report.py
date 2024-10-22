@@ -1,12 +1,12 @@
 import pandas as pd
 from tqdm import tqdm
-from boss.constant import columns as colboss
-from boss.lib.data import load_report_boss, save_new_report_boss
+from boss import colboss
+from boss import load_report_boss, save_new_report_boss
 from common.constant import colname, exportname
 from common.utils.transform import transform_states
 from common.utils.export import export_missing_nodes
-from database.entity.node import Node
-from database.query.find import find_node_by_account_code
+from database import NodeEntity
+from database import find_node_by_account_code
 
 class ReportBossController:
     validate: bool = False
@@ -42,7 +42,7 @@ class ReportBossController:
             if account_code in self.states.keys():
                 return self.states[account_code]
             else:
-                res: list[Node] = find_node_by_account_code(account_code)
+                res: list[NodeEntity] = find_node_by_account_code(account_code)
                 if len(res) <= 0: return None
                 elif len(res) == 1:
                     self.states[account_code] = res[0].state

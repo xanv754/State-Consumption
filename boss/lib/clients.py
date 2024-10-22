@@ -1,6 +1,6 @@
 import pandas as pd
 from tqdm import tqdm
-from boss.constant import columns as colboss
+from boss import colboss
 from common.constant import colname
 
 class ClientController:
