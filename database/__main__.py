@@ -1,5 +1,5 @@
 import click
-from update import Conductor
+from database import Conductor
 
 @click.group()
 def cli():
