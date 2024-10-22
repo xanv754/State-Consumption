@@ -1,7 +1,6 @@
-from common.constant import bras
+from common.constant import bras, colname
 
-
-def validate_name_bras(name: str) -> bool:
+def name_bras(name: str) -> bool:
     """Validates the name of a BRAS node."""
     name = name.upper()
     if len(name) < 11:
@@ -10,7 +9,7 @@ def validate_name_bras(name: str) -> bool:
         return False
     if not name.count("_") >= 1:
         return False
-    if not name.split("-")[1] == bras.NAME:
+    if not name.split("-")[1] == colname.BRAS:
         return False
     if not (
         (name.split("-")[0] == bras.ANZ)

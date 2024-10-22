@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 
-
 class InterfaceModel(BaseModel):
     name: str
     time: str

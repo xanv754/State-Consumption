@@ -1,5 +1,3 @@
-STATE: str = "ESTADO"
-NAME: str = "BRAS"
 ANZ: str = "ANZ"
 BOL: str = "BOL"
 BTO: str = "BTO"

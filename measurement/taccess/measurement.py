@@ -3,23 +3,31 @@ from typing import List
 from tqdm import tqdm
 from dotenv import load_dotenv
 from requests import post, exceptions
-from common.utils.date import getFirstDayOfMonth, getLastDayAvailableOfMonth
+from common.utils import validate, date, transform
 from common.utils.export import export_logs
-from common.utils.validate import validate_name_bras
-from common.utils.transform import bits_a_gbps
-from common.constant import group, file
-from common.constant import bras as BRAS
+from common.constant import filename, group, colname
 from measurement.model.interface import InterfaceModel
-from measurement.constant import payload as PAYLOAD
-from measurement.constant import interface as INTERFACE
+from measurement.constant import payload as PAYLOAD, interface as INTERFACE
 
 load_dotenv(override=True)
 
 TACCESS = getenv("TACCESS_URL")
-CURRENT_EHEALTH = getenv("EHEALTH")
+CURRENT_EHEALTH = "ehealth1"
 
-
-class MeasurementTaccess:
+class ConsumptionTaccess:
+    """Taccess Consumption Controller
+    
+    Attributes
+    ----------
+    interfaces: List[InterfaceModel]
+        List of interfaces from Taccess.
+    bras: dict
+        Dictionary of bras to be exported.
+    err: bool
+        Error flag.
+    logs: list
+        List of logs.
+    """
     interfaces: List[InterfaceModel] = []
     bras: dict
     err: bool = False
@@ -30,7 +38,7 @@ class MeasurementTaccess:
         if len(self.logs) <= 0:
             self.__generate_usage_data()
         else:
-            export_logs(self.logs, filename=file.TACCESS_LOG)
+            export_logs(self.logs, filename=filename.TACCESS_LOG)
 
     def __get_data(self) -> None:
         """Performs an HTTP post request to the Taccess server to obtain
@@ -55,8 +63,8 @@ class MeasurementTaccess:
                     group.POD,
                     group.SCR,
                 ],
-                PAYLOAD.INIT_DAY: getFirstDayOfMonth(),
-                PAYLOAD.LAST_DAY: getLastDayAvailableOfMonth(),
+                PAYLOAD.INIT_DAY: date.getFirstDayOfMonth(),
+                PAYLOAD.LAST_DAY: date.getLastDayAvailableOfMonth(),
             }
             res = post(f"{TACCESS}/trends", json=payload, timeout=20)
             if res.status_code == 200:
@@ -64,14 +72,14 @@ class MeasurementTaccess:
                 for interface_ in tqdm(data):
                     total = len(interface_[INTERFACE.TIMES])
                     for i in range(0, total - 1):
-                        if validate_name_bras(interface_[INTERFACE.NAME]):
+                        if validate.name_bras(interface_[INTERFACE.NAME]):
                             current_interface = InterfaceModel(
                                 name=interface_[INTERFACE.NAME],
                                 time=interface_[INTERFACE.TIMES][i]
                                 .split("T")[0]
                                 .replace("-", ""),
-                                in_=bits_a_gbps(interface_[INTERFACE.IN][i]),
-                                out=bits_a_gbps(interface_[INTERFACE.OUT][i]),
+                                in_=transform.bits_a_gbps(interface_[INTERFACE.IN][i]),
+                                out=transform.bits_a_gbps(interface_[INTERFACE.OUT][i]),
                                 bandwidth=interface_[INTERFACE.BANDWIDTH][i],
                             )
                             self.interfaces.append(current_interface)
@@ -114,7 +122,7 @@ class MeasurementTaccess:
                     values_max.append(in_max)
                 bras.append(bras_name)
                 total_in_max.append(sum(values_max))
-            self.bras = {BRAS.NAME: bras, INTERFACE.IN: total_in_max}
+            self.bras = {colname.BRAS: bras, INTERFACE.IN: total_in_max}
         except Exception as error:
             raise error
 

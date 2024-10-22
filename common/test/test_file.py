@@ -1,6 +1,6 @@
 import pandas as pd
 from os import getcwd, listdir, remove
-from common.utils.file import File
+from common.utils.file import FileController
 
 DATA = [
     {
@@ -30,7 +30,7 @@ def test_read_csv():
             line = f"{value['id']},{value['central']},{value['account_code']},{value['state']},{value['ip']},{value['region']}\n"
             file.write(line)
     file.close()
-    df = File.read_csv(filepath, delimiter=",")
+    df = FileController.read_csv(filepath, delimiter=",")
     result_test = df.equals(pd.DataFrame(DATA))
     remove(filepath)
     assert result_test
@@ -41,7 +41,7 @@ def test_read_excel():
     filepath = f"{getcwd()}/test.xlsx"
     with pd.ExcelWriter(filepath, engine="openpyxl") as writer:
         df_original.to_excel(writer, index=False)
-    df = File.read_excel(filepath)
+    df = FileController.read_excel(filepath)
     result_test = df.equals(df_original)
     remove(filepath)
     assert result_test
@@ -49,7 +49,7 @@ def test_read_excel():
 
 def test_write_excel():
     df_original = pd.DataFrame(DATA)
-    File.write_excel(df_original, filename="test.xlsx")
+    FileController.write_excel(df_original, filename="test.xlsx")
     filepath = f"{getcwd()}/test.xlsx"
     if "test.xlsx" in listdir(getcwd()):
         df = pd.read_excel(filepath)

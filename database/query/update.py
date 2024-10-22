@@ -5,8 +5,16 @@ from database.constant import collection as COLLECTION
 from database.entity.node import Node
 from database.constant import node as NODE
 
-
 def update_nodo(id: str, nodo: Node) -> UpdateResult:
+    """Update an node in the database.
+
+    Parameters
+    ----------
+    id: str
+        ID of the node in the database.
+    node: Node
+        Node with the update data.
+    """
     try:
         db = open_connection()
         collection = db.get_collection(COLLECTION.NODE)

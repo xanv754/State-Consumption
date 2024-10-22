@@ -1,6 +1,5 @@
 import click
-from lib.update import UpdateController
-
+from lib.update import Conductor
 
 @click.group()
 def cli():
@@ -9,7 +8,7 @@ def cli():
     This module is used to update the database with nodes.
 
     \b
-    update -e normal   Update the database with the masternode file.
+    update -e file   Update the database with the masternode file.
     update -e input    Update the database with input data.
     """
     pass
@@ -17,7 +16,7 @@ def cli():
 
 def update_by_file():
     try:
-        nodes_updated = UpdateController.update_by_file()
+        nodes_updated = Conductor.add_nodes_by_file()
         if nodes_updated > 0:
             click.echo(f"The database was updated with {nodes_updated} nodes")
             click.echo(
@@ -36,7 +35,7 @@ def update_by_input():
         central = str(input("CENTRAL: ")).upper()
         state = str(input("STATE: ")).upper()
         account_code = str(input("ACCOUNT CODE: ")).upper()
-        node = UpdateController.search_node(account_code, central, state)
+        node = Conductor.search_node(account_code, central, state)
         if node:
             click.clear()
             id = node.id
@@ -73,7 +72,7 @@ def update_by_input():
             print("REGION: ", region)
             updated = click.confirm("Confirm you want to update the node?")
             if updated:
-                if UpdateController.update_node(
+                if Conductor.update_node(
                     id, central, account_code, state, ip, region
                 ):
                     click.echo("Node updated!")
@@ -92,7 +91,7 @@ def update_by_input():
     "-e", "--extracted", help="Specifies where the database is to be updated from."
 )
 def update(extracted):
-    if extracted == "normal":
+    if extracted == "file":
         update_by_file()
     elif extracted == "input":
         update_by_input()
@@ -137,7 +136,7 @@ def create():
         print("IP: ", ip)
         print("REGION: ", region)
         updated = click.confirm("Confirm you want to create the node?")
-        if updated and UpdateController.create_new_node(
+        if updated and Conductor.add_node(
             central, account_code, state, ip, region
         ):
             click.echo("New node saved!")

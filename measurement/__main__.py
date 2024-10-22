@@ -1,8 +1,8 @@
 import click
 import pandas as pd
-from taccess.measurement import MeasurementTaccess
-from common.utils.file import File
-from common.constant import file as FILE
+from taccess.measurement import ConsumptionTaccess
+from common.utils.file import FileController
+from common.constant import filename as FILE
 
 @click.group()
 def cli():
@@ -20,11 +20,11 @@ def cli():
 def taccess():
     try:
         click.echo("Getting measurements...")
-        Measurement = MeasurementTaccess()
+        Measurement = ConsumptionTaccess()
         if not Measurement.err:
             click.echo("Measurements found")
             df = pd.DataFrame(Measurement.bras)
-            File.write_excel(df, filename=FILE.MEASUREMENT)
+            FileController.write_excel(df, filename=FILE.MEASUREMENT)
     except Exception as error:
         raise error
 

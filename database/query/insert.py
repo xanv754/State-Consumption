@@ -3,8 +3,14 @@ from database.utils.db import open_connection, close_connection
 from database.entity.node import Node
 from database.constant import collection as COLLECTION
 
-
 def insert_new_node(node: Node) -> InsertOneResult:
+    """Insert a new node in the database.
+    
+    Parameters
+    ----------
+    node: Node
+        Node to be inserted.
+    """
     try:
         db = open_connection()
         collection = db.get_collection(COLLECTION.NODE)
@@ -18,6 +24,13 @@ def insert_new_node(node: Node) -> InsertOneResult:
 
 
 def insert_new_nodes(nodes: list[Node]) -> InsertManyResult:
+    """Insert multiple nodes in the database.
+    
+    Parameters
+    ----------
+    nodes: list[Node]
+        List of nodes to be inserted.
+    """
     try:
         db = open_connection()
         collection = db.get_collection(COLLECTION.NODE)

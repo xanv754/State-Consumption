@@ -1,7 +1,12 @@
 from pydantic import BaseModel
 
-
 class NodeModel(BaseModel):
+    """Model of nodes for the response database.
+
+    Notes
+    -----
+    These variables must be in line with the entitys and the constant node's.
+    """
     id: str
     state: str
     central: str

@@ -1,4 +1,4 @@
-from common.utils.file import File
+from common.utils.file import FileController
 from dotenv import load_dotenv
 from os import getenv
 
@@ -10,15 +10,15 @@ FILE_WITH_CONTENT_TXT = getenv("FILE_CONTENT_TXT")
 
 
 def test_read_excel():
-    df = File.read_excel(FILE_WITH_CONTENT_EXCEL)
+    df = FileController.read_excel(FILE_WITH_CONTENT_EXCEL)
     assert df.empty == False
 
 
 def test_read_csv():
-    df = File.read_csv(FILE_WITH_CONTENT_CSV)
+    df = FileController.read_csv(FILE_WITH_CONTENT_CSV)
     assert df.empty == False
 
 
 def test_read_txt():
-    df = File.read_txt(FILE_WITH_CONTENT_TXT)
+    df = FileController.read_txt(FILE_WITH_CONTENT_TXT)
     assert df.empty == False

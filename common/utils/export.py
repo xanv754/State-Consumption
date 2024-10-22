@@ -1,7 +1,7 @@
 from os import getcwd
 from tqdm import tqdm
 from pandas import DataFrame
-from common.utils.file import File
+from common.utils.file import FileController
 
 
 def export_missing_nodes(
@@ -26,7 +26,7 @@ def export_missing_nodes(
                 missing_nodes[key_name].append(node[key_name])
         if missing_nodes:
             df = DataFrame(missing_nodes)
-            File.write_excel(df, filename)
+            FileController.write_excel(df, filename)
     except Exception as error:
         pass
         raise error

@@ -1,13 +1,12 @@
 import pandas as pd
 from tqdm import tqdm
-from common.constant import export as EXPORT
-from common.utils.export import export_missing_nodes
+from boss.constant import columns as colboss
+from boss.lib.data import load_report_boss, save_new_report_boss
+from common.constant import colname, exportname
 from common.utils.transform import transform_states
-from database.query.find import find_node_by_account_code
+from common.utils.export import export_missing_nodes
 from database.entity.node import Node
-from boss.lib.load import load_report_boss, save_new_report_boss
-from boss.constant import columns as COLUMNS
-
+from database.query.find import find_node_by_account_code
 
 class ReportBossController:
     validate: bool = False
@@ -19,21 +18,32 @@ class ReportBossController:
         if not df.empty:
             self.report = df
             self.states = {}
-            if not self.__validate_state_column():
+            self.__add_complete_bras()
+            colname_state = self.__validate_state_column()
+            if not colname_state:
                 self.validate = self.__add_state()
-                if self.validate:
-                    save_new_report_boss(self.report)
+                if self.validate: save_new_report_boss(self.report)
             else:
+                self.__refactor_state_name(colname_state)
                 self.validate = True
 
+    def __validate_state_column(self) -> (str | None):
+        """Checks for the presence of the 'Estado' column within the data frame."""
+        try:
+            for column in self.report.columns.tolist():
+                if column in colboss.STATE: return column
+            return None
+        except Exception as error:
+            raise error
+
     def __search_state(self, account_code: str) -> str:
+        """Find the corresponding status in the database. Use the accounting code."""
         try:
             if account_code in self.states.keys():
                 return self.states[account_code]
             else:
                 res: list[Node] = find_node_by_account_code(account_code)
-                if len(res) <= 0:
-                    return None
+                if len(res) <= 0: return None
                 elif len(res) == 1:
                     self.states[account_code] = res[0].state
                     return res[0].state
@@ -47,68 +57,64 @@ class ReportBossController:
         except Exception as error:
             raise error
 
-    def __validate_state_column(self) -> bool:
-        try:
-            columns = self.report.columns.tolist()
-            if columns in COLUMNS.STATE:
-                return True
-            else:
-                return False
-        except Exception as error:
-            raise error
-
     def __add_state(self) -> bool:
+        """Add the state to the node."""
         try:
             df = self.report
             missing_nodes = []
-            if (
-                COLUMNS.CENTRAL in df.columns.tolist()
-                and not COLUMNS.NEW_STATE in df.columns.to_list()
-            ):
-                df.insert(len(df.columns.to_list()), COLUMNS.NEW_STATE, "")
-                df.insert(len(df.columns.to_list()), COLUMNS.NEW_BRAS, "")
+            if colboss.CENTRAL in df.columns.tolist():
+                df.insert(len(df.columns.to_list()), colname.STATE, "")
                 for index, row in tqdm(df.iterrows(), total=df.shape[0]):
-                    state = self.__search_state(str(row[COLUMNS.ACCOUNT_CODE]))
+                    state = self.__search_state(str(row[colboss.ACCOUNT_CODE]))
                     if state:
-                        df.iloc[index, df.columns.get_loc(COLUMNS.NEW_STATE)] = state
-                        df.iloc[index, df.columns.get_loc(COLUMNS.NEW_BRAS)] = (
-                            str(row[COLUMNS.ACRONYM_BRAS])
-                            + "-"
-                            + str(row[COLUMNS.BRAS])
-                        )
+                        df.iloc[index, df.columns.get_loc(colname.STATE)] = state
                     else:
                         missing_nodes.append(
                             {
-                                EXPORT.INDEX: index + 2,
-                                EXPORT.CENTRAL: row[COLUMNS.CENTRAL],
-                                EXPORT.ACCOUNT_CODE: row[COLUMNS.ACCOUNT_CODE],
-                                EXPORT.BRAS: str(row[COLUMNS.ACRONYM_BRAS])
+                                exportname.INDEX: index + 2,
+                                exportname.CENTRAL: row[colboss.CENTRAL],
+                                exportname.ACCOUNT_CODE: row[colboss.ACCOUNT_CODE],
+                                exportname.BRAS: str(row[colboss.ACRONYM_BRAS])
                                 + "-"
-                                + str(row[COLUMNS.BRAS]),
+                                + str(row[colboss.BRAS]),
                             }
                         )
                 if len(missing_nodes) > 0:
                     export_missing_nodes(missing_nodes)
                     return False
-                self.report = df
-                return True
-            elif (
-                COLUMNS.CENTRAL in df.columns.tolist()
-                and COLUMNS.NEW_STATE in df.columns.to_list()
-            ):
-                df[COLUMNS.NEW_STATE] = df[COLUMNS.NEW_STATE].apply(
-                    lambda state: transform_states(str(state))
-                )
-                df.insert(len(df.columns.to_list()), COLUMNS.NEW_BRAS, "")
-                for index, row in tqdm(df.iterrows(), total=df.shape[0]):
-                    df.iloc[index, df.columns.get_loc(COLUMNS.NEW_BRAS)] = (
-                        str(row[COLUMNS.ACRONYM_BRAS]) + "-" + str(row[COLUMNS.BRAS])
-                    )
-                self.report = df
-                return True
+                else:
+                    self.report = df
+                    return True
             else:
                 raise Exception(
-                    f"Column with the central data ({COLUMNS.CENTRAL}) not found"
+                    f"Column with the central data ({colboss.CENTRAL}) not found"
                 )
+        except Exception as error:
+            raise error
+
+    def __add_complete_bras(self) -> None:
+        """Add the complete bras name to the node."""
+        try:
+            df = self.report
+            df.insert(len(df.columns.to_list()), colname.BRAS, "")
+            for index, row in tqdm(df.iterrows(), total=df.shape[0]):
+                df.iloc[index, df.columns.get_loc(colname.BRAS)] = (
+                    str(row[colboss.ACRONYM_BRAS])
+                    + "-"
+                    + str(row[colboss.BRAS])
+                )
+            self.report = df
+        except Exception as error:
+            raise error
+    
+    def __refactor_state_name(self, colname_state: str) -> None:
+        """Refactor the state name to the node."""
+        try:
+            df = self.report
+            df[colname_state] = df[colname_state].apply(
+                lambda state: transform_states(str(state))
+            )
+            df = df.rename(columns={colname_state:colname.STATE})
+            self.report = df
         except Exception as error:
             raise error

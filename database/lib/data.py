@@ -1,16 +1,16 @@
 from os import getenv
 from dotenv import load_dotenv
 from pandas import DataFrame
-from common.utils.file import File
+from common.utils.file import FileController
 
 load_dotenv(override=True)
 
 MASTERNODO = getenv("MASTERNODO_PATH")
 
-
 def upload_file() -> DataFrame:
+    """Load the masternodo to get the dataframe."""
     if MASTERNODO:
-        df = File.read_excel(MASTERNODO)
+        df = FileController.read_excel(MASTERNODO)
         if df.empty:
             raise Exception("Data not found")
         return df

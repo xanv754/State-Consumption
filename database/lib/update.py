@@ -1,29 +1,31 @@
+from database.lib.data import upload_file
 from database.lib.database import DatabaseController
-from database.lib.upload import upload_file
+from database.lib.masternode import MasternodeController
 from database.models.node import NodeModel
 
-
-class UpdateController:
+class Conductor:
+    """Conductor to the CLI commands."""
 
     @staticmethod
-    def update_by_file() -> int:
+    def add_nodes_by_file() -> int:
+        """Add new nodes from a file."""
         try:
             df = upload_file()
-            Database = DatabaseController(df)
-            nodes_updated = Database.update_database()
-            Database.export_missing_nodes()
+            masternodo = MasternodeController(df)
+            nodes_updated = DatabaseController.save_new_nodes(masternodo.data_nodes)
             return nodes_updated
         except Exception as error:
             raise error
 
     @staticmethod
-    def create_new_node(
+    def add_node(
         central: str,
         account_node: str,
         state: str,
         ip: str | None = None,
         region: str | None = None,
     ) -> bool:
+        """Add new node on the database."""
         try:
             return DatabaseController.save_new_node(
                 central, account_node, state, ip, region
@@ -33,6 +35,17 @@ class UpdateController:
 
     @staticmethod
     def search_node(account_code: str, central: str, state: str) -> NodeModel | None:
+        """Search a node by their central, state and account code.
+        
+        Parameters
+        ----------
+        account_code: str
+            Account code of the node.
+        central: str
+            Central of the node.
+        State: str
+            State of the node.
+        """
         try:
             node = DatabaseController.get_node(account_code, central, state)
             if node:
@@ -50,6 +63,23 @@ class UpdateController:
         ip: str | None = None,
         region: str | None = None,
     ) -> bool:
+        """Update data of an existing node.
+        
+        Parameters
+        ----------
+        id: str
+            ID of the node on the database.
+        central: str
+            Central of the node.
+        account_code: str
+            Account code of the node.
+        state: str
+            State of the node.
+        ip: str | None, default None
+            IP of the node.
+        region: str | None, default None
+            Region of the node.
+        """
         try:
             return DatabaseController.update_nodo(
                 id, central, account_node, state, ip, region

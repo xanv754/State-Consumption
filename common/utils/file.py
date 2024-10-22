@@ -3,8 +3,7 @@ from os import getcwd
 import pandas as pd
 import traceback
 
-
-class File:
+class FileController:
 
     @staticmethod
     def read_csv(path: str, delimiter: str = ",") -> pd.DataFrame:
