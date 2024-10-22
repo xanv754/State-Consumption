@@ -1,7 +1,5 @@
-from boss.lib.clients import ClientController
 from boss import ClientController, ReportBossController, save_data_clients, save_data_porcentage
-from common.utils.totalling import add_total_sum_by_col, add_total_sum_by_row
-from common.constant import colname
+from common import colname, add_total_sum_by_col, add_total_sum_by_row
 
 def clients_by_BRAS_and_state():
     """Generate the file with the total clients by bras and state and the percentages."""

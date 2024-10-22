@@ -3,9 +3,7 @@ from typing import List
 from tqdm import tqdm
 from dotenv import load_dotenv
 from requests import post, exceptions
-from common.utils import validate, date, transform
-from common.utils.export import export_logs
-from common.constant import filename, group, colname
+from common import validate, date, bits_a_gbps, export_logs, filename, group, colname
 from measurement import InterfaceModel, payload as PAYLOAD, interface as INTERFACE
 
 load_dotenv(override=True)
@@ -77,8 +75,8 @@ class ConsumptionTaccess:
                                 time=interface_[INTERFACE.TIMES][i]
                                 .split("T")[0]
                                 .replace("-", ""),
-                                in_=transform.bits_a_gbps(interface_[INTERFACE.IN][i]),
-                                out=transform.bits_a_gbps(interface_[INTERFACE.OUT][i]),
+                                in_=bits_a_gbps(interface_[INTERFACE.IN][i]),
+                                out=bits_a_gbps(interface_[INTERFACE.OUT][i]),
                                 bandwidth=interface_[INTERFACE.BANDWIDTH][i],
                             )
                             self.interfaces.append(current_interface)

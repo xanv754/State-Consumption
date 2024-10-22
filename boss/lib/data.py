@@ -1,8 +1,7 @@
 from os import getenv
 from pandas import DataFrame
 from dotenv import load_dotenv
-from common.utils.file import FileController
-from common.constant import filename
+from common import FileController, filename
 
 load_dotenv(override=True)
 
