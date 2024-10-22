@@ -1,5 +1,5 @@
 import click
-from measurement import generate
+from measurement import get_consumption_by_taccess
 
 @click.group()
 def cli():
@@ -15,7 +15,7 @@ def cli():
 
 @cli.command(help="Get measurements from Taccess API.")
 def taccess():
-    generate.get_consumption_by_taccess()
+    get_consumption_by_taccess()
 
 if __name__ == "__main__":
     try:

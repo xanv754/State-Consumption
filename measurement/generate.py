@@ -1,5 +1,5 @@
 import pandas as pd
-from taccess.measurement import ConsumptionTaccess
+from measurement import ConsumptionTaccess
 from common.utils.file import FileController
 from common.constant import filename as FILE
 

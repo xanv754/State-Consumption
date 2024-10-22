@@ -6,8 +6,7 @@ from requests import post, exceptions
 from common.utils import validate, date, transform
 from common.utils.export import export_logs
 from common.constant import filename, group, colname
-from measurement.model.interface import InterfaceModel
-from measurement.constant import payload as PAYLOAD, interface as INTERFACE
+from measurement import InterfaceModel, payload as PAYLOAD, interface as INTERFACE
 
 load_dotenv(override=True)
 
