@@ -11,7 +11,7 @@ def cli():
 
     \b
     Arguments:
-      total -p [PORCENTAGE_CLIENTS_FILE] -c [CONSUMPTION_BRAS_FILE]
+      total -p [PORCENTAGE_CLIENTS_FILE] -c [CONSUMPTION_BRAS_FILE]  The file extension must be .xlsx
     """
     pass
 
