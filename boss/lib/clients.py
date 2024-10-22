@@ -20,7 +20,6 @@ class ClientController:
             A dataframe with the total number of clients by BRAS in each state.
         """
         try:
-            # TODO: Separate ADSL and MDU
             df_bras = pd.DataFrame()
             df[colboss.CLIENTS] = df[colboss.CLIENTS].astype(int)
             df = df.sort_values(by=colname.STATE, ascending=True)

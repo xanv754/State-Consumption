@@ -5,3 +5,4 @@ ACRONYM_BRAS = "Location"
 BRAS = "Nrpname"
 CLIENTS = "Cantidad"
 STATE = ["ESTADO", "Estado", "estado", "EDO", "Edo", "edo"]
+EQUIPMENT = "Provider.1"

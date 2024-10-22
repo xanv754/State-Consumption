@@ -35,7 +35,7 @@ def save_data_clients(data: DataFrame) -> None:
         raise error
 
 
-def save_new_report_boss(data: DataFrame) -> None:
+def save_new_report_boss(data: DataFrame, data_adsl: (DataFrame | None) = None, data_mdu: (DataFrame | None) = None) -> None:
     """Save the boss report with states.
     
     Parameters
@@ -45,6 +45,10 @@ def save_new_report_boss(data: DataFrame) -> None:
     """
     try:
         FileController.write_excel(data, filename=filename.NEW_REPORT_BOSS)
+        if data_adsl is not None:
+            FileController.write_excel(data_adsl, filename=filename.NEW_REPORT_ADSL)
+        if data_mdu is not None:
+            FileController.write_excel(data_mdu, filename=filename.NEW_REPORT_MDU)
     except Exception as error:
         raise error
 

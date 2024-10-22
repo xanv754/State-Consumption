@@ -1,5 +1,7 @@
 MISSING_NODES = "nodos_no_ubicados.xlsx"
-NEW_REPORT_BOSS = "boss_con_estados.xlsx"
+NEW_REPORT_BOSS = "reporte_boss_con_estados.xlsx"
+NEW_REPORT_ADSL = "reporte_boss_adsl_con_estados.xlsx"
+NEW_REPORT_MDU = "reporte_boss_mdu_con_estados.xlsx"
 CLIENTS_BY_BRAS = "clientes_por_agregador.xlsx"
 TACCESS_LOG = "taccess.log"
 PORCENTAGE = "porcentajes_de_clientes_por_agregador.xlsx"

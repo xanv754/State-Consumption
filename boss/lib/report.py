@@ -1,6 +1,6 @@
 import pandas as pd
 from tqdm import tqdm
-from boss import colboss, load_report_boss, save_new_report_boss
+from boss import colboss, load_report_boss, save_new_report_boss, valboss
 from common import colname, exportname, transform_states, export_missing_nodes
 from database import NodeEntity, find_node_by_account_code
 
@@ -8,6 +8,8 @@ class ReportBossController:
     validate: bool = False
     report: pd.DataFrame
     states: dict
+    data_adsl: pd.DataFrame
+    data_mdu: pd.DataFrame
 
     def __init__(self):
         df = load_report_boss()
@@ -18,10 +20,31 @@ class ReportBossController:
             colname_state = self.__validate_state_column()
             if not colname_state:
                 self.validate = self.__add_state()
-                if self.validate: save_new_report_boss(self.report)
+                if self.validate: 
+                    save_new_report_boss(self.report, data_adsl=self.data_adsl, data_mdu=self.data_mdu)
+                    self.__define_provider()
             else:
                 self.__refactor_state_name(colname_state)
+                self.__define_provider()
                 self.validate = True
+
+    
+    def __define_provider(self) -> None:
+        """Define the data that is ADSL and the data that is MDU."""
+        try:
+            df_mdu = pd.DataFrame()
+            df_adsl = pd.DataFrame()
+            equipments = self.report[colboss.EQUIPMENT].unique()
+            for equipment in tqdm(equipments):
+                df_filtered = self.report[self.report[colboss.EQUIPMENT] == equipment]
+                if equipment in valboss.MDU:
+                    df_mdu = pd.concat([df_mdu, df_filtered], axis=0)
+                else:
+                    df_adsl = pd.concat([df_adsl, df_filtered], axis=0)
+            self.data_adsl = df_adsl
+            self.data_mdu = df_mdu
+        except Exception as error:
+            raise error
 
     def __validate_state_column(self) -> (str | None):
         """Checks for the presence of the 'Estado' column within the data frame."""
