@@ -1,6 +1,7 @@
 from pymongo.results import InsertOneResult, InsertManyResult
-from database import open_connection, close_connection, NodeEntity
-from database import collection as COLLECTION
+from database.utils.db import open_connection, close_connection
+from database.entity.node import NodeEntity
+from database.constant import collection as COLLECTION
 
 def insert_new_node(node: NodeEntity) -> InsertOneResult:
     """Insert a new node in the database.

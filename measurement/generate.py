@@ -1,6 +1,6 @@
 import pandas as pd
-from measurement import ConsumptionTaccess
 from common import FileController, filename as FILE
+from measurement.taccess.measurement import ConsumptionTaccess
 
 def get_consumption_by_taccess():
     """Generate the file with the consumption by bras from Taccess API."""

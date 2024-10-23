@@ -1,7 +1,10 @@
 from typing import List
 from tqdm import tqdm
-from database import NodeEntity, NodeModel
-from database import find_node, insert_new_node, update_nodo
+from database.entity.node import NodeEntity
+from database.models.node import NodeModel
+from database.query.find import find_node
+from database.query.insert import insert_new_node
+from database.query.update import update_nodo
 
 class DatabaseController:
     """Controller of the database to add, update and more functions."""

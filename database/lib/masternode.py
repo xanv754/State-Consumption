@@ -1,6 +1,7 @@
 import pandas as pd
 from common import exception, exportname, filename, states, fix_column_word, fix_format_word, fix_ip, export_missing_nodes
-from database import NodeEntity, columns
+from database.entity.node import NodeEntity
+from database.constant import columns
 
 class MasternodeController:
     """Node driver for database updates.

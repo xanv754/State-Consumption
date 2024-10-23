@@ -4,7 +4,9 @@ from tqdm import tqdm
 from dotenv import load_dotenv
 from requests import post, exceptions
 from common import validate, date, bits_a_gbps, export_logs, filename, group, colname
-from measurement import InterfaceModel, payload as PAYLOAD, interface as INTERFACE
+from measurement.model.interface import InterfaceModel
+from measurement.constant import payload as PAYLOAD
+from measurement.constant import interface as INTERFACE
 
 load_dotenv(override=True)
 

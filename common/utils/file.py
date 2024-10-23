@@ -1,7 +1,6 @@
+import pandas as pd
 from tqdm import tqdm
 from os import getcwd
-import pandas as pd
-import traceback
 
 class FileController:
 
@@ -17,7 +16,6 @@ class FileController:
             Delimiter of the file to be read.
         """
         try:
-            tqdm.write("Loading file...")
             return pd.read_csv(
                 path, delimiter=delimiter, encoding="latin-1", low_memory=False
             )
@@ -36,7 +34,6 @@ class FileController:
             Name of the sheet to be read.
         """
         try:
-            tqdm.write("Loading file...")
             if not sheetname:
                 return pd.read_excel(path, index_col=None)
             else:
@@ -59,7 +56,6 @@ class FileController:
             pwd = getcwd()
             path = f"{pwd}/{filename}"
             if not df.empty:
-                tqdm.write("Save data a file .xlsx ...")
                 if len(df) < 900000:
                     with pd.ExcelWriter(path, engine="openpyxl") as writer:
                         df.to_excel(
@@ -87,10 +83,9 @@ class FileController:
                             )
                             df = df[i:]
                             number_sheet += 1
-                tqdm.write(f"Saved data in {path}")
             else:
                 tqdm.write(
                     f"WARNING: Empty dataframe. Saving of {filename} has been canceled."
                 )
-        except:
-            traceback.print_exc()
+        except Exception as error:
+            raise error

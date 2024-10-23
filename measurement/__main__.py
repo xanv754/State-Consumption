@@ -1,5 +1,5 @@
 import click
-from measurement import get_consumption_by_taccess
+from measurement.generate import get_consumption_by_taccess
 
 @click.group()
 def cli():
