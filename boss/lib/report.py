@@ -1,8 +1,9 @@
 import pandas as pd
 from tqdm import tqdm
-from boss import colboss, load_report_boss, save_new_report_boss, valboss
 from common import colname, exportname, transform_states, export_missing_nodes
 from database import NodeEntity, find_node_by_account_code
+from boss.constant import columns as colboss, equipment as EQUIPMENT
+from boss.lib.data import load_report_boss, save_new_report_boss, save_report_by_equipment
 
 class ReportBossController:
     validate: bool = False
@@ -21,11 +22,13 @@ class ReportBossController:
             if not colname_state:
                 self.validate = self.__add_state()
                 if self.validate: 
-                    save_new_report_boss(self.report, data_adsl=self.data_adsl, data_mdu=self.data_mdu)
                     self.__define_provider()
+                    save_new_report_boss(self.report)
+                    save_report_by_equipment(self.data_adsl, self.data_mdu)
             else:
                 self.__refactor_state_name(colname_state)
                 self.__define_provider()
+                save_report_by_equipment(self.data_adsl, self.data_mdu)
                 self.validate = True
 
     
@@ -37,7 +40,7 @@ class ReportBossController:
             equipments = self.report[colboss.EQUIPMENT].unique()
             for equipment in tqdm(equipments):
                 df_filtered = self.report[self.report[colboss.EQUIPMENT] == equipment]
-                if equipment in valboss.MDU:
+                if equipment in EQUIPMENT.MDU:
                     df_mdu = pd.concat([df_mdu, df_filtered], axis=0)
                 else:
                     df_adsl = pd.concat([df_adsl, df_filtered], axis=0)

@@ -1,5 +1,5 @@
 import click
-from boss import clients_by_BRAS_and_state
+from boss.generate import clients_by_BRAS_and_state
 
 @click.group()
 def cli():
