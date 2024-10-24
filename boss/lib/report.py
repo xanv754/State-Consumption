@@ -3,7 +3,7 @@ from tqdm import tqdm
 from common import colname, exportname, transform_states, export_missing_nodes
 from database import NodeEntity, find_node_by_account_code
 from boss.constant import columns as colboss, equipment as EQUIPMENT
-from boss.lib.data import load_report_boss, save_new_report_boss, save_report_by_equipment
+from boss.lib.data import load_report_boss, save_new_report_boss, save_report_by_equipment, load_file
 
 class ReportBossController:
     validate: bool = False
@@ -12,8 +12,8 @@ class ReportBossController:
     data_adsl: pd.DataFrame
     data_mdu: pd.DataFrame
 
-    def __init__(self):
-        df = load_report_boss()
+    def __init__(self, filename: str):
+        df = load_file(filename)
         if not df.empty:
             self.report = df
             self.states = {}

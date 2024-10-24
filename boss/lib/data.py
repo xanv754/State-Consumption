@@ -7,11 +7,11 @@ load_dotenv(override=True)
 
 REPORT_BOSS = getenv("REPORTBOSS_PATH")
 
-def load_report_boss() -> DataFrame:
+def load_report_boss(filename: str) -> DataFrame:
     """Load the boss report to get the dataframe."""
     try:
         if ".xlsx" in REPORT_BOSS:
-            df = FileController.read_excel(REPORT_BOSS)
+            df = FileController.read_excel(filename)
             if df.empty:
                 raise Exception("Report boss data not found")
             return df
@@ -20,6 +20,23 @@ def load_report_boss() -> DataFrame:
     except Exception as error:
         raise error
 
+def load_file(filename: str) -> DataFrame:
+    """Load the file to get the dataframe.
+    
+    Parameters
+    ----------
+    filepath:
+        Path of the file to be read.
+    """
+    if ".xlsx" in filename:
+        df = FileController.read_excel(filename)
+        if df.empty: raise Exception("Data not found")
+    elif ".csv" in filename:
+        df = FileController.read_csv(filename)
+        if df.empty: raise Exception("Data not found")
+    else:
+        raise Exception("Data file not valid")
+    return df
 
 def save_data_clients(data: DataFrame) -> None:
     """Save the data of Clients x Bras/State.

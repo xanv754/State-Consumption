@@ -34,7 +34,7 @@ def total_adsl_mdu(fileporcentage: str, fileconsumption: str) -> None:
             new_values.append(round((value / total * 100), 2))
         new_values.append(sum(new_values))
         df[colname.TOTAL_BY_USAGE] = new_values
-        FileController.write_excel(df, filename=filename.CONSUMPTION_BY_BRAS)
+        FileController.write_excel(df, filename=filename.ADSL_CONSUMPTION)
     except Exception as error:
         raise error
 
