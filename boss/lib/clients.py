@@ -78,25 +78,3 @@ class ClientController:
             return df_porcentage
         except Exception as error:
             raise error
-
-    # @staticmethod
-    # def add_total_sum_by_bras(df: pd.DataFrame) -> pd.DataFrame:
-    #     try:
-    #         index_col = len(df)
-    #         list_columns = df.columns.to_list()[1:]
-    #         df.loc[index_col, df.columns[0]] = COLUMNS.TOTAL_BY_BRAS
-    #         for column_name in tqdm(list_columns):
-    #             df.loc[index_col, column_name] = df[column_name].sum()
-    #         return df
-    #     except Exception as error:
-    #         raise error
-
-    # @staticmethod
-    # def add_total_sum_by_state(df: pd.DataFrame) -> pd.DataFrame:
-    #     try:
-    #         df_filter = df.drop(COLUMNS.NEW_STATE, axis=1)
-    #         df[COLUMNS.TOTAL_BY_STATE] = df_filter.sum(axis=1)
-    #         return df
-    #     except Exception as error:
-    #         raise error
-
