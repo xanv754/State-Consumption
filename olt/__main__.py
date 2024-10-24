@@ -1,4 +1,3 @@
-import traceback
 import click
 from olt.generate import clients_by_BRAS_and_state
 
@@ -17,5 +16,4 @@ if __name__ == "__main__":
     try:
         cli()
     except Exception as error:
-        # click.echo(error)
-        traceback.print_exc()
+        click.echo(error)
