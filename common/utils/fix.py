@@ -56,6 +56,16 @@ def fix_format_word(word: str) -> str:
             word = word.replace("Ó", "O")
         if "Ú" in word:
             word = word.replace("Ú", "U")
+        if "á" in word:
+            word = word.replace("á", "a")
+        if "é" in word:
+            word = word.replace("é", "e")
+        if "í" in word:
+            word = word.replace("í", "i")
+        if "ó" in word:
+            word = word.replace("ó", "o")
+        if "ú" in word:
+            word = word.replace("ú", "u")
         word = word.strip()
         return word
     except Exception as error:
