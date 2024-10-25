@@ -4,6 +4,7 @@ CLIENTS = "clientes_por_agregador.xlsx"
 PORCENTAGE = "porcentajes_de_clientes_por_agregador.xlsx"
 MEASUREMENT = "consumo.xlsx"
 TACCESS_LOG = "taccess.log"
+VPTI = "CONSUMO_POR_ESTADO_VPTI.xlsx"
 
 ADSL_REPORT_BOSS = "adsl_reporte_boss_con_estados.xlsx"
 ADSL_CLIENTS = "adsl_clientes.xlsx"
