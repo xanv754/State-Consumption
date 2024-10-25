@@ -105,26 +105,27 @@ def mdu_clients_by_BRAS_and_state(filename: str, process: bool = False) -> pd.Da
     except Exception as error:
         raise error
 
-def total_comsuption_by_state(porcentage: str | pd.DataFrame, measurement: str, equipment: str) -> None:
+def total_comsuption_by_state(porcentage: str | pd.DataFrame, measurement: str | pd.DataFrame, equipment: str) -> None:
     """Generate the file with the total consumption by state.
     
     Parameters
     ----------
-    porcentage: str
-        Filepath of porcentage by ADSL or MDU file.
-    measurement: str
-        Filepath of consumption by BRAS file.
+    porcentage: str | DataFrame
+        Filepath or DataFrame of porcentage by ADSL or MDU file.
+    measurement: str | DataFrame
+        Filepath or DataFrame of consumption by BRAS file.
     type: str, default adsl
         Type of equipment to be used (ADSL o MDU).
     """
     try:
         if type(porcentage) == str: df_porcentage = FileController.read_excel(porcentage)
         else: df_porcentage = porcentage
-        df_measurement = FileController.read_excel(measurement)
+        if type(measurement) == str: df_measurement = FileController.read_excel(measurement)
+        else: df_measurement = measurement
         df_porcentage = df_porcentage.drop(df_porcentage.index[-1])
         df = pd.DataFrame({colname.STATE: df_porcentage[colname.STATE]})
         if not df_porcentage.empty and not df_measurement.empty:
-            for _index, row in tqdm(df_measurement.iterrows(), total=df_measurement.shape[0]):
+            for _index, row in tqdm(df_measurement.iterrows(), total=df_measurement.shape[0], desc="Calculating total comsumption by state..."):
                 current_bras = str(row[colname.BRAS]).lower()
                 if current_bras in df_porcentage.columns.to_list():
                     total = row[INTERFACE.IN]
@@ -140,7 +141,7 @@ def total_comsuption_by_state(porcentage: str | pd.DataFrame, measurement: str, 
         total = total_porcentage[len(total_porcentage) - 1]
         total_porcentage = total_porcentage[:-1]
         new_values: List[float] = []
-        for value in total_porcentage:
+        for value in tqdm(total_porcentage, desc="Adding total comsumptions..."):
             new_values.append(round((value / total * 100), 2))
         new_values.append(sum(new_values))
         df[colname.TOTAL_BY_USAGE] = new_values

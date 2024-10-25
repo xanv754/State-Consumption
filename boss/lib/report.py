@@ -43,7 +43,7 @@ class ReportBossController:
             df_mdu = pd.DataFrame()
             df_adsl = pd.DataFrame()
             equipments = self.report[colboss.EQUIPMENT].unique()
-            for equipment in tqdm(equipments):
+            for equipment in tqdm(equipments, desc="Recognising equipment..."):
                 df_filtered = self.report[self.report[colboss.EQUIPMENT] == equipment]
                 if equipment in EQUIPMENT.MDU:
                     df_mdu = pd.concat([df_mdu, df_filtered], axis=0)
@@ -91,7 +91,7 @@ class ReportBossController:
             missing_nodes = []
             if colboss.CENTRAL in df.columns.tolist():
                 df.insert(len(df.columns.to_list()), colname.STATE, "")
-                for index, row in tqdm(df.iterrows(), total=df.shape[0]):
+                for index, row in tqdm(df.iterrows(), total=df.shape[0], desc="Adding state to report..."):
                     state = self.__search_state(str(row[colboss.ACCOUNT_CODE]))
                     if state:
                         df.iloc[index, df.columns.get_loc(colname.STATE)] = state
@@ -124,7 +124,7 @@ class ReportBossController:
         try:
             df = self.report
             df.insert(len(df.columns.to_list()), colname.BRAS, "")
-            for index, row in tqdm(df.iterrows(), total=df.shape[0]):
+            for index, row in tqdm(df.iterrows(), total=df.shape[0], desc="Adding complete bras name to report..."):
                 df.iloc[index, df.columns.get_loc(colname.BRAS)] = (
                     str(row[colboss.ACRONYM_BRAS])
                     + "-"

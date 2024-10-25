@@ -31,7 +31,7 @@ class ClientController:
                     colname.BRAS
                 ].unique()
             )
-            for bras_name in tqdm(list_bras):
+            for bras_name in tqdm(list_bras, desc="Calculating clients by state..."):
                 clients = (
                     df[df[colname.BRAS] == bras_name]
                     .groupby(colname.STATE)[colboss.CLIENTS]
@@ -67,7 +67,7 @@ class ClientController:
             bras = df.columns.to_list()
             bras.pop(0)
             bras.pop(-1)
-            for bras_name in tqdm(bras):
+            for bras_name in tqdm(bras, desc="Calculating total clients..."):
                 values = []
                 total = df.iloc[len(df) - 1, df.columns.get_loc(bras_name)]
                 for i in range(0, len(df) - 1):

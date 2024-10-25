@@ -68,7 +68,7 @@ class ConsumptionTaccess:
             res = post(f"{TACCESS}/trends", json=payload, timeout=20)
             if res.status_code == 200:
                 data = res.json()
-                for interface_ in tqdm(data):
+                for interface_ in tqdm(data, desc="Getting consumption by taccess..."):
                     total = len(interface_[INTERFACE.TIMES])
                     for i in range(0, total - 1):
                         if validate.name_bras(interface_[INTERFACE.NAME]):
@@ -109,7 +109,7 @@ class ConsumptionTaccess:
             bras: List[str] = []
             total_in_max: List[float] = []
             bras_names = self.get_name_bras()
-            for bras_name in tqdm(bras_names):
+            for bras_name in tqdm(bras_names, desc="Calculating consumption by bras..."):
                 values_max: List[float] = []
                 bras_interfaces = self.filter_by_bras_name(bras_name)
                 interfaces_names = self.get_name_interfaces(bras_interfaces)

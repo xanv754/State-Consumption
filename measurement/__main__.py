@@ -15,7 +15,7 @@ def cli():
 
 @cli.command(help="Get measurements from Taccess API.")
 def taccess():
-    get_consumption_by_taccess()
+    get_consumption_by_taccess(process=True)
 
 if __name__ == "__main__":
     try:

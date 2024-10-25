@@ -24,7 +24,7 @@ class DatabaseController:
         """
         try:
             total_saved = 0
-            for node in tqdm(nodes):
+            for node in tqdm(nodes, desc="Saving nodes..."):
                 node_saved = find_node(node.state, node.central, node.account_code)
                 if not node_saved:
                     res = insert_new_node(node)
