@@ -2,6 +2,7 @@
 *.txt
 *.csv
 *.xlsx
+*.xlsx#
 *.xls
 data/
 files/
