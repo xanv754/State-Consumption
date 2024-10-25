@@ -28,6 +28,6 @@ def save_data_olt(data: DataFrame) -> None:
         Dataframe for saving in .xlsx format.
     """
     try:
-        FileController.write_excel(data, filename=filename.CLIENTS_BY_BRAS_OLT)
+        FileController.write_excel(data, filename=filename.OLT_CLIENTS)
     except Exception as error:
         raise error

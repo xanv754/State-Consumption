@@ -1,9 +1,9 @@
 import pandas as pd
 from tqdm import tqdm
-from common import colname, exportname, transform_states, export_missing_nodes
+from common import colname, exportname, FileController, transform_states, export_missing_nodes
 from database import NodeEntity, find_node_by_account_code
 from boss.constant import columns as colboss, equipment as EQUIPMENT
-from boss.lib.data import load_report_boss, save_new_report_boss, save_report_by_equipment, load_file
+from boss.lib.data import save_new_report_boss, save_report_by_equipment
 
 class ReportBossController:
     validate: bool = False
@@ -12,8 +12,8 @@ class ReportBossController:
     data_adsl: pd.DataFrame
     data_mdu: pd.DataFrame
 
-    def __init__(self, filename: str):
-        df = load_file(filename)
+    def __init__(self, filename: str, process: bool = False, equipment: str = "all"):
+        df = FileController.read_excel(filename)
         if not df.empty:
             self.report = df
             self.states = {}
@@ -23,12 +23,17 @@ class ReportBossController:
                 self.validate = self.__add_state()
                 if self.validate: 
                     self.__define_provider()
-                    save_new_report_boss(self.report)
-                    save_report_by_equipment(self.data_adsl, self.data_mdu)
+                    if process: 
+                        save_new_report_boss(self.report)
+                        if equipment == "all": save_report_by_equipment(self.data_adsl, self.data_mdu)
+                        elif equipment == "adsl": save_report_by_equipment(data_adsl=self.data_adsl)
+                        elif equipment == "mdu": save_report_by_equipment(data_mdu=self.data_mdu)
             else:
                 self.__refactor_state_name(colname_state)
                 self.__define_provider()
-                save_report_by_equipment(self.data_adsl, self.data_mdu)
+                if process and equipment == "all": save_report_by_equipment(self.data_adsl, self.data_mdu)
+                elif process and equipment == "adsl": save_report_by_equipment(data_adsl=self.data_adsl)
+                elif process and equipment == "mdu": save_report_by_equipment(data_mdu=self.data_mdu)    
                 self.validate = True
 
     
