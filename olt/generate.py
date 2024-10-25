@@ -1,8 +1,8 @@
 from olt.lib.report import ReportOLTController
 from olt.lib.data import save_data_olt
 
-def clients_by_BRAS_and_state(filename: str):
-    """Generate the file with the total clients by bras and state and the percentages."""
+def total_by_state(filename: str):
+    """Generate the file with the total clients by state and the percentages."""
     try:
         ReportOLT = ReportOLTController(filename)
         if ReportOLT.validate:

@@ -15,4 +15,4 @@ MDU_CLIENTS = "mdu_clientes.xlsx"
 MDU_PORCENTAGE = "mdu_porcentajes.xlsx"
 MDU_CONSUMPTION = "mdu_consumo.xlsx"
 
-OLT_CLIENTS = "olt_clientes.xlsx"
+OLT_TOTAL = "olt_consumo.xlsx"

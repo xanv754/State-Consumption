@@ -66,7 +66,7 @@ def adsl_clients_by_BRAS_and_state(filename: str, process: bool = False) -> pd.D
             if not df_data_adsl.empty:
                 df_data_adsl = add_total_sum_by_col(df_data_adsl, name_col=colname.TOTAL_BY_BRAS)
                 df_data_adsl = add_total_sum_by_row(df_data_adsl, name_row=colname.TOTAL_BY_STATE)
-                if process: save_data_clients_adsl(df_data_adsl)
+                save_data_clients_adsl(df_data_adsl)
                 df_adsl_porcentage = ClientController.total_porcentage(df_data_adsl)
                 df_adsl_porcentage = add_total_sum_by_col(df_adsl_porcentage, name_col=colname.TOTAL_BY_BRAS)
                 df_adsl_porcentage = add_total_sum_by_row(df_adsl_porcentage, name_row=colname.TOTAL_BY_STATE)
@@ -94,7 +94,7 @@ def mdu_clients_by_BRAS_and_state(filename: str, process: bool = False) -> pd.Da
             if not df_data_mdu.empty:
                 df_data_mdu = add_total_sum_by_col(df_data_mdu, name_col=colname.TOTAL_BY_BRAS)
                 df_data_mdu = add_total_sum_by_row(df_data_mdu, name_row=colname.TOTAL_BY_STATE)
-                if process: save_data_clients_mdu(df_data_mdu)
+                save_data_clients_mdu(df_data_mdu)
                 df_mdu_porcentage = ClientController.total_porcentage(df_data_mdu)
                 df_mdu_porcentage = add_total_sum_by_col(df_mdu_porcentage, name_col=colname.TOTAL_BY_BRAS)
                 df_mdu_porcentage = add_total_sum_by_row(df_mdu_porcentage, name_row=colname.TOTAL_BY_STATE)
