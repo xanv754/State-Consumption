@@ -28,6 +28,7 @@ class ReportBossController:
                         if equipment == "all": save_report_by_equipment(self.data_adsl, self.data_mdu)
                         elif equipment == "adsl": save_report_by_equipment(data_adsl=self.data_adsl)
                         elif equipment == "mdu": save_report_by_equipment(data_mdu=self.data_mdu)
+                else: tqdm.write("WARNING: Report boss couln't add state to nodes. Reminder: Check if the data has been moved.")
             else:
                 self.__refactor_state_name(colname_state)
                 self.__define_provider()

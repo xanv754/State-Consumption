@@ -34,6 +34,7 @@ class FileController:
             Name of the sheet to be read.
         """
         try:
+            tqdm.write(f"Reading {path}...")
             if not sheetname:
                 return pd.read_excel(path, index_col=None)
             else:
@@ -55,6 +56,7 @@ class FileController:
         try:
             pwd = getcwd()
             path = f"{pwd}/{filename}"
+            tqdm.write(f"Saving {filename}...")
             if not df.empty:
                 if len(df) < 900000:
                     with pd.ExcelWriter(path, engine="openpyxl") as writer:

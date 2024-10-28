@@ -56,5 +56,5 @@ if __name__ == "__main__":
     try:
         cli()
     except Exception as error:
-        # click.echo(error)
-        traceback.print_exc()
+        click.echo(error)
+        #traceback.print_exc()

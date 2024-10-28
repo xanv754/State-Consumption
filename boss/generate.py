@@ -74,6 +74,7 @@ def adsl_clients_by_BRAS_and_state(filename: str, process: bool = False) -> pd.D
                 return df_adsl_porcentage
             else:
                 raise Exception("Nodes without state exist")
+        raise Exception("ERROR: Report boss file not valid")
     except Exception as error:
         raise error
     
