@@ -17,3 +17,5 @@ MDU_PORCENTAGE = "mdu_porcentajes.xlsx"
 MDU_CONSUMPTION = "mdu_consumo.xlsx"
 
 OLT_TOTAL = "olt_consumo.xlsx"
+
+CONSUMPTION = "Consumo_por_Estado_ADSL_MDU.xlsx"

@@ -1,4 +1,4 @@
 from .generate import clients_by_BRAS_and_state
-from .generate import adsl_clients_by_BRAS_and_state
-from .generate import mdu_clients_by_BRAS_and_state
+from .generate import total_porcentages_by_state
 from .generate import total_comsuption_by_state
+from .generate import total_clients_by_state
