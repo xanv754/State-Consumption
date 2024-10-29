@@ -56,8 +56,8 @@ def global_clients_by_BRAS(filename: str):
     except Exception as error:
         raise error
 
-def total_clients_by_bras(filename: str, process: bool = False) -> pd.DataFrame:
-    """Generate the file with the total of clients by state.
+def clients_porcentages_by_bras(filename: str, process: bool = False) -> None:
+    """Generate the file with the total of clients and porcentages by BRAS.
     
     Parameters
     ----------
@@ -67,7 +67,7 @@ def total_clients_by_bras(filename: str, process: bool = False) -> pd.DataFrame:
         If the process is True, the will export the data to a file.
     """
     try:
-        ReportBoss = ReportBossController(filename)
+        ReportBoss = ReportBossController(filename, process=process)
         if ReportBoss.validate:
             df_data_adsl = ClientController.total_bras_by_state(
                 ReportBoss.data_adsl    
