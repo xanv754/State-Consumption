@@ -52,9 +52,11 @@ class ClientController:
 
         Parameters
         ----------
-        df: DataFrame
-            Dataframe with the total clients by state and BRAS.
-
+        df1: DataFrame
+            Dataframe ADSL or MDU with the total clients by state and BRAS.
+        df2: DataFrame
+            Dataframe ADSL or MDU with the total clients by state and BRAS.
+            
         Returns
         -------
         DataFrame

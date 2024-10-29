@@ -1,6 +1,6 @@
 import click
 import traceback
-from boss.generate import clients_by_BRAS_and_state, total_porcentages_by_state, total_clients_by_state, total_comsuption_by_state
+from boss.generate import global_clients_by_BRAS, total_consumption_by_bras, total_clients_by_bras, total_comsuption_by_state
 from common import filename, FileController
 
 @click.group()
@@ -18,12 +18,12 @@ def cli():
 @click.option("-p", "--process", help="Allows you to save all files generated in execution", is_flag=True)
 def consumption(filereport, fileconsumption, process):
     if filereport and fileconsumption:
-        if process: total_clients_by_state(filereport, process=True)
-        else: total_clients_by_state(filereport)
+        if process: total_clients_by_bras(filereport, process=True)
+        else: total_clients_by_bras(filereport)
         df_adsl = FileController.read_excel(filename.ADSL_PORCENTAGE)
         df_mdu = FileController.read_excel(filename.MDU_PORCENTAGE)
         if not df_adsl.empty or not df_mdu.empty:
-            total_porcentages_by_state(df_adsl, df_mdu, fileconsumption, equipment="adsl")
+            total_consumption_by_bras(df_adsl, df_mdu, fileconsumption, equipment="adsl")
         else:
             raise Exception("Data ADSL or MDU not found")
         
@@ -41,8 +41,8 @@ def total(fileadslclients, fileadslporcentage, filemduclients, filemduporcentage
         df_mdu_porcentage = FileController.read_excel(filemduporcentage)
         df_consumption = FileController.read_excel(fileconsumption)
         if not df_adsl_porcentage.empty and not df_mdu_porcentage.empty and not df_consumption.empty:
-            df_adsl_consumption = total_porcentages_by_state(df_adsl_porcentage, df_consumption, "adsl")
-            df_mdu_consumption = total_porcentages_by_state(df_mdu_porcentage, df_consumption, "mdu")
+            df_adsl_consumption = total_consumption_by_bras(df_adsl_porcentage, df_consumption, "adsl")
+            df_mdu_consumption = total_consumption_by_bras(df_mdu_porcentage, df_consumption, "mdu")
             total_comsuption_by_state(df_adsl_clients, df_adsl_consumption, df_mdu_clients, df_mdu_consumption)
         else:            
             raise Exception("Data ADSL or MDU not found")
@@ -51,7 +51,7 @@ def total(fileadslclients, fileadslporcentage, filemduclients, filemduporcentage
 @click.option("-fr", "--filereport", help="BOSS report file path", type=click.Path(exists=True))
 def maximun(filereport):
     if filereport:
-        clients_by_BRAS_and_state(filereport)
+        global_clients_by_BRAS(filereport)
 
 if __name__ == "__main__":
     try:

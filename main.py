@@ -4,7 +4,7 @@ import click
 import pandas as pd
 from typing import List
 from tqdm import tqdm
-from boss import adsl_clients_by_BRAS_and_state, mdu_clients_by_BRAS_and_state, total_porcentages_by_state
+from boss import adsl_clients_by_BRAS_and_state, mdu_clients_by_BRAS_and_state, total_consumption_by_bras
 from measurement import get_consumption_by_taccess, interface as INTERFACE
 from common import states as GLOBAL, FileController, filename
 from olt import total_by_state
@@ -111,11 +111,11 @@ def auto(filereport, fileolt, fileconsumption, process):
         if not fileconsumption: 
             if process: df_bras_consumption = get_consumption_by_taccess(process=True)
             else: df_bras_consumption = get_consumption_by_taccess()
-            total_porcentages_by_state(df_porcentage_adsl, df_bras_consumption, equipment="adsl")
-            total_porcentages_by_state(df_porcentage_mdu, df_bras_consumption, equipment="mdu")
+            total_consumption_by_bras(df_porcentage_adsl, df_bras_consumption, equipment="adsl")
+            total_consumption_by_bras(df_porcentage_mdu, df_bras_consumption, equipment="mdu")
         else:
-            total_porcentages_by_state(df_porcentage_adsl, fileconsumption, equipment="adsl")
-            total_porcentages_by_state(df_porcentage_mdu, fileconsumption, equipment="mdu")
+            total_consumption_by_bras(df_porcentage_adsl, fileconsumption, equipment="adsl")
+            total_consumption_by_bras(df_porcentage_mdu, fileconsumption, equipment="mdu")
         total_by_state(fileolt)
         df_adsl_clients = FileController.read_excel(filename.ADSL_CLIENTS)
         if df_adsl_clients.empty: raise Exception("ADSL clients not found")
