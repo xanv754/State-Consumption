@@ -3,9 +3,9 @@
 
 This module handles the creation or updating of the network node database. A file of type `.xlsx`, `.csv` (delimited by `;`) or `.txt` (delimited by `,`) must be provided with the following data
 
-- **Nodo:** Name of the node or name of central (mandatory)
-- **Estado:** Location state of the node (mandatory)
-- **Código Contable:** The accounting code associated with the Node. (Mandatory)
+- **Nodo:** Name of the node or name of central (Required)
+- **Estado:** Location state of the node (Required)
+- **Código Contable:** The accounting code associated with the Node. (Required)
 - **IP:** The service IP of the Node. (Optional)
 - **Region:** The region of the location state of the Node. (Optional)
 

@@ -3,9 +3,9 @@
 
 This module is responsible for generating the total number of clients and total consumption per state for ADSL and MDU equipment. It requires the BOSS report, which is a `.xlsx` file. The necessary columns of this file for the correct execution of the module are:
 
-- **Nrpname:** Specification of the node's aggregator (mandatory).
-- **Location:** Aggregator status of the node (Mandatory)
-- **Name Coid:** Name of the node (Mandatory)
+- **Nrpname:** Specification of the node's aggregator (Required).
+- **Location:** Aggregator status of the node (Required)
+- **Name Coid:** Name of the node (Required)
 > **Note:** The chief report often has problems with some node names. For some nodes, the column data is shifted one column to the right. This needs to be corrected manually.
 - **Cantidad:** Number of clients for the node (required).
 
