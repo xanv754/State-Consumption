@@ -1,4 +1,5 @@
 # MÓDULO: BASE DE DATOS (DATABASE)
+> [English version](./README.md)
 
 Este modúlo se encarga de manejar la creación o actualización de base de datos de los Nodos de la red. Para ello, se debe proporcionar un archivo de tipo `.xlsx`, `.csv` (delimitado por `;`) o `.txt` (delimitado por `,`) con los siguientes datos:
 
