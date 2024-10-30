@@ -18,8 +18,6 @@ And a file with the consumption by aggregator (BRAS. Also a `.xlsx` file). The n
 Existing libraries in the `requirements.txt` file of this project for easy installation.
 
 ## Usage
-To get the `Consumption_by_State_ADSL_MDU.xlsx` file you need the BOSS report and the BRAS (aggregator) consumption file.
-
 The module has its own CLI commands, which can be executed from the command line:
 ```bash
 python -m boss # Valid if the module is in PYTHONPATH.
@@ -46,6 +44,6 @@ python -m boss manual -fac <clientes_adsl_por_agregador> -fap <porcentage_client
 
 python -m boss/__main__.py manual -fac <clientes_adsl_por_agregador> -fap <porcentage_clientes_adsl_por_agregador> -fmc <clientes_mdu_por_agregador> -fmp <porcentage_clientes_mdu_por_agregador> -fc <archivo_consumo>
 ```
-This command generates the file `Consumption_by_State_ADSL_MDU.xlsx` with the data provided in the specified files. You should have both the total number of customers for each aggregator in each state and their percentage representation. For both ADSL and MDU installations.
+This command generates the file `Consumo_por_Estado_ADSL_MDU.xlsx` with the data provided in the specified files. You should have both the total number of customers for each aggregator in each state and their percentage representation. For both ADSL and MDU installations.
 
 For more information see the CLI of the module.
