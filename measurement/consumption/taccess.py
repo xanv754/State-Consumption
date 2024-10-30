@@ -13,7 +13,7 @@ load_dotenv(override=True)
 TACCESS = getenv("TACCESS_URL")
 CURRENT_EHEALTH = "ehealth1"
 
-class ConsumptionTaccess:
+class TaccessConsumption:
     """Taccess Consumption Controller
     
     Attributes
