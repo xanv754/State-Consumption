@@ -2,7 +2,6 @@ import os
 import traceback
 import click
 import pandas as pd
-from typing import List
 from tqdm import tqdm
 from boss import clients_porcentages_by_bras, total_consumption_by_bras, total_comsuption_by_state 
 from measurement import get_consumption_by_taccess, interface as INTERFACE
@@ -51,36 +50,50 @@ def generate_data(df: pd.DataFrame, df_olt: pd.DataFrame) -> pd.DataFrame:
         clients_olt = []
         consumption_olt = []
         for state in tqdm(GLOBAL.states, desc="Generating consumption by state..."):
-            state = state.upper()
-
+            state = state
+            # TOTAL CLIENTS
             df_adsl_clients_filtered = df[df[colname.STATE] == state]
             if not df_adsl_clients_filtered.empty:
-                total_adsl_clients = df_adsl_clients_filtered[colname.TOTAL_BY_STATE].iloc[0]
+                total_adsl_clients = df_adsl_clients_filtered[colname.CLIENTS_ADSL].iloc[0]
             else: total_adsl_clients = 0
-            df_mdu_clients_filtered = df_mdu[df_mdu[colname.STATE] == state]
+            df_mdu_clients_filtered = df[df[colname.STATE] == state]
             if not df_mdu_clients_filtered.empty:
-                total_mdu_clients = df_mdu_clients_filtered[colname.TOTAL_BY_STATE].iloc[0]
+                total_mdu_clients = df_mdu_clients_filtered[colname.CLIENTS_MDU].iloc[0]
             else: total_mdu_clients = 0
-            df_adsl_comsumption_filtered = df_adsl_consumption[df_adsl_consumption[colname.STATE] == state]
+            df_olt_clients_filtered = df_olt[df_olt[colname.STATE] == state.upper()]
+            if not df_olt_clients_filtered.empty:
+                total_olt_clients = df_olt_clients_filtered[colname.CLIENTS].iloc[0]
+            else: total_olt_clients = 0
+            # TOTAL CONSUMPTION
+            df_adsl_comsumption_filtered = df[df[colname.STATE] == state]
             if not df_adsl_comsumption_filtered.empty:
-                total_adsl_comsumption = df_adsl_comsumption_filtered[colname.TOTAL_BY_STATE].iloc[0]
+                total_adsl_comsumption = df_adsl_comsumption_filtered[colname.CONSUMPTION_ADSL].iloc[0]
             else: total_adsl_comsumption = 0
-            df_mdu_filtered = df_mdu_consumption[df_mdu_consumption[colname.STATE] == state]
-            if not df_mdu_filtered.empty:
-                total_mdu_consumption = df_mdu_filtered[colname.TOTAL_BY_STATE].iloc[0]
+            df_mdu_consumption_filtered = df[df[colname.STATE] == state]
+            if not df_mdu_consumption_filtered.empty:
+                total_mdu_consumption = df_mdu_consumption_filtered[colname.CONSUMPTION_MDU].iloc[0]
             else: total_mdu_consumption = 0
+            df_olt_consumption_filtered = df_olt[df_olt[colname.STATE] == state.upper()]
+            if not df_olt_consumption_filtered.empty:
+                total_olt_consumption = df_olt_consumption_filtered[colname.CONSUMPTION].iloc[0]
+            else: total_olt_consumption = 0
+
             clients_adsl.append(total_adsl_clients)
             consumption_adsl.append(total_adsl_comsumption)
             clients_mdu.append(total_mdu_clients)
             consumption_mdu.append(total_mdu_consumption)
-        df = pd.DataFrame({
+            clients_olt.append(total_olt_clients)
+            consumption_olt.append(total_olt_consumption)
+        df_data = pd.DataFrame({
             colname.STATE: GLOBAL.states, 
             colname.CLIENTS_ADSL: clients_adsl, 
             colname.CONSUMPTION_ADSL: consumption_adsl, 
             colname.CLIENTS_MDU: clients_mdu, 
-            colname.CONSUMPTION_MDU: consumption_mdu
+            colname.CONSUMPTION_MDU: consumption_mdu,
+            colname.CLIENTS_OLT: clients_olt,
+            colname.CONSUMPTION_OLT: consumption_olt
         })
-
+        return df_data
     except Exception as error:
         raise error
     
@@ -98,7 +111,7 @@ def cli():
 @click.option("-fo", "--fileolt", help="OLT report file path by OLT equipment", type=click.Path(exists=True))
 @click.option("-fc", "--fileconsumption", help="Consumption file path by ADSL and MDU equipment", type=click.Path(exists=True))
 @click.option("-p", "--process", help="Allows you to save all files generated in execution", is_flag=True)
-def auto(filereport, fileolt, fileconsumption, process):
+def consumption(filereport, fileolt, fileconsumption, process):
     """Generate the total clients consumption by state."""
     if filereport and fileolt:
         if process: clients_porcentages_by_bras(filereport, process=True)
@@ -125,10 +138,6 @@ def auto(filereport, fileolt, fileconsumption, process):
         df_data = generate_data(df_adsl_mdu, df_olt)
         FileController.write_excel(df_data, filename.VPTI)
         if not process: delete_files()
-
-def manual():
-    pass
-
 
 if __name__ == "__main__":
     try:
