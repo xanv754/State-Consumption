@@ -27,13 +27,16 @@ def get_consumption_by_file(filename: str, sheetname: str = None, process: bool 
     ----------
     filename: str
         Filename to be read.
+    sheetname: str, default None
+        Name of the sheet to be read.
+    process: bool, default False
+        Flag to save the generated data.
     """
     try:
         if sheetname: df = FileController.read_excel(filename, sheetname=sheetname)
         else: df = FileController.read_excel(filename)
         Consumption = ExternalConsumption(df)
-        if not Consumption.err:
-            if process: FileController.write_excel(Consumption.data, filename=FILE.CONSUMPTION_EXTERNAL)
-            return Consumption.data
+        if process: FileController.write_excel(Consumption.data, filename=FILE.CONSUMPTION_EXTERNAL)
+        return Consumption.data
     except Exception as error:
         raise error

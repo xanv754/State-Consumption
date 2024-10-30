@@ -4,8 +4,18 @@ from measurement.constant import column, interface as INTERFACE
 from measurement.lib.refactor import refactor_bras_name
 
 class ExternalConsumption:
+    """Controller of the consumption data from external file.
+    
+    Attributes
+    ----------
     data: pd.DataFrame
-    err: bool = False
+        Dataframe with the consumption data.
+    bras_col_name: str | None
+        Name of the column with the bras data.
+    consumption_col_name: str | None
+        Name of the column with the consumption data.
+    """
+    data: pd.DataFrame
     bras_col_name: str | None = None
     consumption_col_name: str | None = None
 
