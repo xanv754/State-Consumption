@@ -13,7 +13,7 @@ def cli():
 
 @cli.command(help="Create the total OLT consumption by state")
 @click.option("-fr", "--filereport", help="OLT report file path", type=click.Path(exists=True))
-def total(filereport):
+def auto(filereport):
     if filereport:
         total_by_state(filereport)
 
