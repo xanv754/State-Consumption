@@ -125,3 +125,29 @@ def save_data_consumption(data: DataFrame) -> None:
         FileController.write_excel(data, filename=filename.CONSUMPTION)
     except Exception as error:
         raise error
+    
+def save_data_consumption_adsl(data: DataFrame) -> None:
+    """Save the data consumption by state.
+    
+    Parameters
+    ----------
+    data: DataFrame
+        Dataframe for saving in .xlsx format.
+    """
+    try:
+        FileController.write_excel(data, filename=filename.ADSL_CONSUMPTION)
+    except Exception as error:
+        raise error
+    
+def save_data_consumption_mdu(data: DataFrame) -> None:
+    """Save the data consumption by state.
+    
+    Parameters
+    ----------
+    data: DataFrame
+        Dataframe for saving in .xlsx format.
+    """
+    try:
+        FileController.write_excel(data, filename=filename.MDU_CONSUMPTION)
+    except Exception as error:
+        raise error

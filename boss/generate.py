@@ -95,7 +95,7 @@ def clients_porcentages_by_bras(filename: str, process: bool = False) -> None:
     except Exception as error:
         raise error
 
-def total_consumption_by_bras(df: pd.DataFrame, df_consumption: pd.DataFrame, equipment: str) -> pd.DataFrame:
+def total_consumption_by_bras(df: pd.DataFrame, df_consumption: pd.DataFrame, equipment: str, process: bool = False) -> pd.DataFrame:
     """Generate the file with the total consumption by bras.
     
     Parameters
@@ -114,7 +114,6 @@ def total_consumption_by_bras(df: pd.DataFrame, df_consumption: pd.DataFrame, eq
         df_total_consumption[colname.STATE] = df[colname.STATE]
         bras = df.columns.to_list()
         bras.pop(0)
-        bras.pop(-1)
         states = df[colname.STATE].to_list()
         states.pop(-1)
         for bras_name in tqdm(bras, desc=f"Generating consumption by state {equipment}..."):
@@ -128,6 +127,9 @@ def total_consumption_by_bras(df: pd.DataFrame, df_consumption: pd.DataFrame, eq
             df_total_consumption[bras_name] = values
         df_total_consumption = add_total_sum_by_col(df_total_consumption, name_col=colname.TOTAL_BY_BRAS)
         df_total_consumption = add_total_sum_by_row(df_total_consumption, name_row=colname.TOTAL_BY_STATE)
+        if process:
+            if equipment == "adsl": data.save_data_consumption_adsl(df_total_consumption)
+            elif equipment == "mdu": data.save_data_consumption_mdu(df_total_consumption)
         return df_total_consumption
     except Exception as error:
         raise error

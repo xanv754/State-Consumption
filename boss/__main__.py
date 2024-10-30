@@ -25,8 +25,8 @@ def auto(filereport, fileconsumption, process):
         df_adsl_porcentage = FileController.read_excel(filename.ADSL_PORCENTAGE)
         df_mdu_porcentage = FileController.read_excel(filename.MDU_PORCENTAGE)
         df_consumption = FileController.read_excel(fileconsumption)
-        df_adsl_consumption = total_consumption_by_bras(df_adsl_porcentage, df_consumption, "adsl")
-        df_mdu_consumption = total_consumption_by_bras(df_mdu_porcentage, df_consumption, "mdu")
+        df_adsl_consumption = total_consumption_by_bras(df_adsl_porcentage, df_consumption, "adsl", process=process)
+        df_mdu_consumption = total_consumption_by_bras(df_mdu_porcentage, df_consumption, "mdu", process=process)
         total_comsuption_by_state(df_adsl_clients, df_adsl_consumption, df_mdu_clients, df_mdu_consumption)
         
 @cli.command(help="Manually generate the total comsuption by state")

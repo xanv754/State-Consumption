@@ -17,8 +17,10 @@ class ReportBossController:
         if not df.empty:
             self.report = df
             self.states = {}
-            self.__add_complete_bras()
+            if not colname.BRAS in self.report.columns.to_list():
+                self.__add_complete_bras()
             colname_state = self.__validate_state_column()
+            print(colname_state)
             if not colname_state:
                 self.validate = self.__add_state()
                 if self.validate: 
@@ -138,7 +140,7 @@ class ReportBossController:
             df[colname_state] = df[colname_state].apply(
                 lambda state: transform_states(str(state))
             )
-            df = df.rename(columns={colname_state:colname.STATE})
+            df = df.rename(columns={colname_state: colname.STATE})
             self.report = df
         except Exception as error:
             raise error
