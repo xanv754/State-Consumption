@@ -30,7 +30,7 @@ There you will find usage information for each function of the module.
 python -m boss auto -fr <report_boss> -fc <consumption_file 
 python -m boss/__main__.py auto -fr <boss_report> -fc <consumption_file> -fc <consumption_file>.
 ```
-This command will create the `Consumption_by_State_ADSL_MDU.xlsx' file containing the consumption data by state.
+This command will create the `Consumo_por_Estado_ADSL_MDU.xlsx` file containing the consumption data by state.
 
 If you want to get all the files generated at runtime, add the `-p` flag at the end of the command.
 ```bash
