@@ -35,7 +35,8 @@ def auto(filereport, fileconsumption, process):
 @click.option("-fmc", "--filemduclients", help="MDU total clients file path", type=click.Path(exists=True))
 @click.option("-fmp", "--filemduporcentage", help="MDU total porcentage file path", type=click.Path(exists=True))
 @click.option("-fc", "--fileconsumption", help="Path of the file with the consumption by BRAS", type=click.Path(exists=True))
-def manual(fileadslclients, fileadslporcentage, filemduclients, filemduporcentage, fileconsumption):
+@click.option("-p", "--process", help="Allows you to save all files generated in execution", is_flag=True)
+def manual(fileadslclients, fileadslporcentage, filemduclients, filemduporcentage, fileconsumption, process):
     if fileadslclients and fileadslporcentage and filemduclients and filemduporcentage and fileconsumption:
         df_adsl_clients = FileController.read_excel(fileadslclients)
         df_mdu_clients = FileController.read_excel(filemduclients)
@@ -43,8 +44,10 @@ def manual(fileadslclients, fileadslporcentage, filemduclients, filemduporcentag
         df_mdu_porcentage = FileController.read_excel(filemduporcentage)
         df_consumption = FileController.read_excel(fileconsumption)
         if not df_adsl_porcentage.empty and not df_mdu_porcentage.empty and not df_consumption.empty:
-            df_adsl_consumption = total_consumption_by_bras(df_adsl_porcentage, df_consumption, "adsl")
-            df_mdu_consumption = total_consumption_by_bras(df_mdu_porcentage, df_consumption, "mdu")
+            if process: df_adsl_consumption = total_consumption_by_bras(df_adsl_porcentage, df_consumption, "adsl", process=True)
+            else: df_adsl_consumption = total_consumption_by_bras(df_adsl_porcentage, df_consumption, "adsl")
+            if process: df_mdu_consumption = total_consumption_by_bras(df_mdu_porcentage, df_consumption, "mdu", process=True)
+            else: df_mdu_consumption = total_consumption_by_bras(df_mdu_porcentage, df_consumption, "mdu")
             total_comsuption_by_state(df_adsl_clients, df_adsl_consumption, df_mdu_clients, df_mdu_consumption)
         else:            
             raise Exception("Data ADSL or MDU not found")
