@@ -39,6 +39,8 @@ def delete_files() -> None:
         os.remove(f"{path}/{filename.CLIENTS}")
     if os.path.exists(f"{path}/{filename.PORCENTAGE}"):
         os.remove(f"{path}/{filename.PORCENTAGE}")
+    if os.path.exists(f"{path}/{filename.CONSUMPTION}"):
+        os.remove(f"{path}/{filename.CONSUMPTION}")
 
 def generate_data(df: pd.DataFrame, df_olt: pd.DataFrame) -> pd.DataFrame:
     """Generate the VPI data."""
