@@ -20,7 +20,6 @@ class ReportBossController:
             if not colname.BRAS in self.report.columns.to_list():
                 self.__add_complete_bras()
             colname_state = self.__validate_state_column()
-            print(colname_state)
             if not colname_state:
                 self.validate = self.__add_state()
                 if self.validate: 
