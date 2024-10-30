@@ -1,4 +1,5 @@
 # MODULE: DATABASE
+> [Spanish version](./README_es.md)
 
 This module handles the creation or updating of the network node database. A file of type `.xlsx`, `.csv` (delimited by `;`) or `.txt` (delimited by `,`) must be provided with the following data
 
