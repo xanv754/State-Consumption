@@ -83,3 +83,50 @@ class ClientController:
             return df_porcentage
         except Exception as error:
             raise error
+
+    @staticmethod
+    def total_by_bras(df_adsl: pd.DataFrame, df_mdu: pd.DataFrame) -> pd.DataFrame:
+        """Total clients by bras.
+
+        Parameters
+        ----------
+        df_adsl: DataFrame
+            Dataframe ADSL with the total clients by state and BRAS.
+        df_mdu: DataFrame
+            Dataframe MDU with the total clients by state and BRAS.
+
+        Returns
+        -------
+        DataFrame
+            A dataframe with the total number of clients by BRAS.
+        """
+        try:
+            data = {
+                "AGREGADOR": [],
+                "ADSL": [],
+                "MDU": [],
+                "TOTAL": []
+            }
+            brasnames = list(set(list(df_adsl[colname.BRAS].unique()) + list(df_mdu[colname.BRAS].unique())))
+            brasnames.sort()
+            bras_short_names = []
+            for bras in brasnames:
+                new_bras = bras[0:3]
+                if not new_bras in bras_short_names:
+                    bras_short_names.append(new_bras)
+            bras_short_names.sort()
+            for bras_short in tqdm(bras_short_names, desc="Generating total clients for each bras..."):
+                data["AGREGADOR"].append(bras_short)
+                total_adsl = 0
+                total_mdu = 0   
+                for bras in brasnames:
+                    if bras[0:3] == bras_short:
+                        total_adsl += df_adsl[df_adsl[colname.BRAS] == bras][colboss.CLIENTS].sum()
+                        total_mdu += df_mdu[df_mdu[colname.BRAS] == bras][colboss.CLIENTS].sum()
+                data["ADSL"].append(total_adsl)
+                data["MDU"].append(total_mdu)
+                data["TOTAL"].append(total_adsl + total_mdu)
+            df = pd.DataFrame(data)
+            return df
+        except Exception as error:
+            raise error
