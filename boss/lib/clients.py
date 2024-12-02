@@ -47,32 +47,37 @@ class ClientController:
             raise error
 
     @staticmethod
-    def total_porcentage(df: pd.DataFrame) -> pd.DataFrame:
+    def total_porcentage(df1: pd.DataFrame, df2: pd.DataFrame = None) -> pd.DataFrame:
         """Returns percentages of total clients value.
 
         Parameters
         ----------
-        df: DataFrame
-            Dataframe with the total clients by state and BRAS.
-
+        df1: DataFrame
+            Dataframe ADSL or MDU with the total clients by state and BRAS.
+        df2: DataFrame
+            Dataframe ADSL or MDU with the total clients by state and BRAS.
+            
         Returns
         -------
         DataFrame
             A dataframe with the percentage of total clients value by BRAS in each state.
         """
         try:
-            states = df[colname.STATE]
-            states.drop([len(df) - 1], axis=0, inplace=True)
+            states = df1[colname.STATE]
+            states.drop([len(df1) - 1], axis=0, inplace=True)
             df_porcentage = pd.DataFrame(states)
-            bras = df.columns.to_list()
+            bras = df1.columns.to_list()
             bras.pop(0)
             bras.pop(-1)
             for bras_name in tqdm(bras, desc="Calculating total clients..."):
                 values = []
-                total = df.iloc[len(df) - 1, df.columns.get_loc(bras_name)]
-                for i in range(0, len(df) - 1):
-                    clients = df.iloc[i, df.columns.get_loc(bras_name)]
-                    porcentage = clients / total
+                total_adsl = df1[bras_name].iloc[len(df1) - 1]
+                if bras_name in df2.columns.to_list(): total_mdu = df2[bras_name].iloc[len(df2) - 1]
+                else: total_mdu = 0
+                total = total_adsl + total_mdu
+                for i in range(0, len(df1[bras_name]) - 1):
+                    clients = df1[bras_name][i]
+                    porcentage = (clients * 100) / total
                     values.append(round(porcentage, 2))
                 df_porcentage[bras_name] = values
             return df_porcentage

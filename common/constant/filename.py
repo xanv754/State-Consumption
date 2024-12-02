@@ -2,7 +2,8 @@ MISSING_NODES = "nodos_no_ubicados.xlsx"
 NEW_REPORT_BOSS = "reporte_boss_con_estados.xlsx"
 CLIENTS = "clientes_por_agregador.xlsx"
 PORCENTAGE = "porcentajes_de_clientes_por_agregador.xlsx"
-MEASUREMENT = "consumo.xlsx"
+COMSUPTION_TACCESS = "consumo_taccess.xlsx"
+CONSUMPTION_EXTERNAL = "consumo_agregador.xlsx"
 TACCESS_LOG = "taccess.log"
 VPTI = "CONSUMO_POR_ESTADO_VPTI.xlsx"
 
@@ -16,4 +17,6 @@ MDU_CLIENTS = "mdu_clientes.xlsx"
 MDU_PORCENTAGE = "mdu_porcentajes.xlsx"
 MDU_CONSUMPTION = "mdu_consumo.xlsx"
 
-OLT_TOTAL = "olt_consumo.xlsx"
+OLT_TOTAL = "Consumo_por_Estado_OLT.xlsx"
+
+CONSUMPTION = "Consumo_por_Estado_ADSL_MDU.xlsx"

@@ -12,12 +12,13 @@ class ReportBossController:
     data_adsl: pd.DataFrame
     data_mdu: pd.DataFrame
 
-    def __init__(self, filename: str, process: bool = False, equipment: str = "all"):
+    def __init__(self, filename: str, process: bool = False):
         df = FileController.read_excel(filename)
         if not df.empty:
             self.report = df
             self.states = {}
-            self.__add_complete_bras()
+            if not colname.BRAS in self.report.columns.to_list():
+                self.__add_complete_bras()
             colname_state = self.__validate_state_column()
             if not colname_state:
                 self.validate = self.__add_state()
@@ -25,16 +26,12 @@ class ReportBossController:
                     self.__define_provider()
                     if process: 
                         save_new_report_boss(self.report)
-                        if equipment == "all": save_report_by_equipment(self.data_adsl, self.data_mdu)
-                        elif equipment == "adsl": save_report_by_equipment(data_adsl=self.data_adsl)
-                        elif equipment == "mdu": save_report_by_equipment(data_mdu=self.data_mdu)
+                        save_report_by_equipment(self.data_adsl, self.data_mdu)
                 else: tqdm.write("WARNING: Report boss couln't add state to nodes. Reminder: Check if the data has been moved.")
             else:
                 self.__refactor_state_name(colname_state)
                 self.__define_provider()
-                if process and equipment == "all": save_report_by_equipment(self.data_adsl, self.data_mdu)
-                elif process and equipment == "adsl": save_report_by_equipment(data_adsl=self.data_adsl)
-                elif process and equipment == "mdu": save_report_by_equipment(data_mdu=self.data_mdu)    
+                if process: save_report_by_equipment(self.data_adsl, self.data_mdu)
                 self.validate = True
 
     
@@ -142,7 +139,7 @@ class ReportBossController:
             df[colname_state] = df[colname_state].apply(
                 lambda state: transform_states(str(state))
             )
-            df = df.rename(columns={colname_state:colname.STATE})
+            df = df.rename(columns={colname_state: colname.STATE})
             self.report = df
         except Exception as error:
             raise error

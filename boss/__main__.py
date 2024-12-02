@@ -1,7 +1,7 @@
 import click
 import traceback
-from boss.generate import clients_by_BRAS_and_state, total_comsuption_by_state, adsl_clients_by_BRAS_and_state, mdu_clients_by_BRAS_and_state
-from common.constant import filename
+from boss.generate import global_clients_by_BRAS, total_consumption_by_bras, clients_porcentages_by_bras, total_comsuption_by_state
+from common import filename, FileController
 
 @click.group()
 def cli():
@@ -12,49 +12,63 @@ def cli():
     """
     pass
 
-@cli.command(help="Create the total ADSL consumption by state (and BRAS)")
+@cli.command(help="Generate the total consumption by state")
 @click.option("-fr", "--filereport", help="BOSS report file path", type=click.Path(exists=True))
 @click.option("-fc", "--fileconsumption", help="Path of the file with the consumption by BRAS", type=click.Path(exists=True))
 @click.option("-p", "--process", help="Allows you to save all files generated in execution", is_flag=True)
-def adsl(filereport, fileconsumption, process):
+def auto(filereport, fileconsumption, process):
     if filereport and fileconsumption:
-        if process: df_porcentage = adsl_clients_by_BRAS_and_state(filereport, process=True)
-        else: df_porcentage = adsl_clients_by_BRAS_and_state(filereport)
-        total_comsuption_by_state(df_porcentage, fileconsumption, equipment="adsl")
-
-@cli.command(help="Create the total MDU consumption by state (and BRAS)")
-@click.option("-fr", "--filereport", help="BOSS report file path", type=click.Path(exists=True))
+        if process: clients_porcentages_by_bras(filereport, process=True)
+        else: clients_porcentages_by_bras(filereport)
+        df_adsl_clients = FileController.read_excel(filename.ADSL_CLIENTS)
+        df_mdu_clients = FileController.read_excel(filename.MDU_CLIENTS)
+        df_adsl_porcentage = FileController.read_excel(filename.ADSL_PORCENTAGE)
+        df_mdu_porcentage = FileController.read_excel(filename.MDU_PORCENTAGE)
+        df_consumption = FileController.read_excel(fileconsumption)
+        df_adsl_consumption = total_consumption_by_bras(df_adsl_porcentage, df_consumption, "adsl", process=process)
+        df_mdu_consumption = total_consumption_by_bras(df_mdu_porcentage, df_consumption, "mdu", process=process)
+        total_comsuption_by_state(df_adsl_clients, df_adsl_consumption, df_mdu_clients, df_mdu_consumption)
+        
+@cli.command(help="Manually generate the total comsuption by state")
+@click.option("-fac", "--fileadslclients", help="ADSL total clients file path", type=click.Path(exists=True))
+@click.option("-fap", "--fileadslporcentage", help="ADSL total porcentage file path", type=click.Path(exists=True))
+@click.option("-fmc", "--filemduclients", help="MDU total clients file path", type=click.Path(exists=True))
+@click.option("-fmp", "--filemduporcentage", help="MDU total porcentage file path", type=click.Path(exists=True))
 @click.option("-fc", "--fileconsumption", help="Path of the file with the consumption by BRAS", type=click.Path(exists=True))
 @click.option("-p", "--process", help="Allows you to save all files generated in execution", is_flag=True)
-def mdu(filereport, fileconsumption, process):
-    if filereport and fileconsumption:
-        if process: df_porcentage = mdu_clients_by_BRAS_and_state(filereport, process=True)
-        else: df_porcentage = mdu_clients_by_BRAS_and_state(filereport)
-        total_comsuption_by_state(df_porcentage, fileconsumption, equipment="mdu")
+def manual(fileadslclients, fileadslporcentage, filemduclients, filemduporcentage, fileconsumption, process):
+    if fileadslclients and fileadslporcentage and filemduclients and filemduporcentage and fileconsumption:
+        df_adsl_clients = FileController.read_excel(fileadslclients)
+        df_mdu_clients = FileController.read_excel(filemduclients)
+        df_adsl_porcentage = FileController.read_excel(fileadslporcentage)
+        df_mdu_porcentage = FileController.read_excel(filemduporcentage)
+        df_consumption = FileController.read_excel(fileconsumption)
+        if not df_adsl_porcentage.empty and not df_mdu_porcentage.empty and not df_consumption.empty:
+            if process: df_adsl_consumption = total_consumption_by_bras(df_adsl_porcentage, df_consumption, "adsl", process=True)
+            else: df_adsl_consumption = total_consumption_by_bras(df_adsl_porcentage, df_consumption, "adsl")
+            if process: df_mdu_consumption = total_consumption_by_bras(df_mdu_porcentage, df_consumption, "mdu", process=True)
+            else: df_mdu_consumption = total_consumption_by_bras(df_mdu_porcentage, df_consumption, "mdu")
+            total_comsuption_by_state(df_adsl_clients, df_adsl_consumption, df_mdu_clients, df_mdu_consumption)
+        else:            
+            raise Exception("Data ADSL or MDU not found")
 
-@cli.command(help="Manually create the total number of ADSL and MDU clients by state and BRAS")
+@cli.command(help="Manually generate the total number of clients and porcentages by BRAS. In addition, generate the total comsuption by state.")
 @click.option("-fr", "--filereport", help="BOSS report file path", type=click.Path(exists=True))
-def clients(filereport):
-    if filereport:
-        clients_by_BRAS_and_state(filereport)
-
-@cli.command(help="Manually create the ADSL consumption total")
-@click.option("-fp", "--fileporcentage", help="Total clients by state and bras file path", type=click.Path(exists=True))
 @click.option("-fc", "--fileconsumption", help="Path of the file with the consumption by BRAS", type=click.Path(exists=True))
-def adslmanual(fileporcentage, fileconsumption):
-    if fileporcentage and fileconsumption:
-        total_comsuption_by_state(fileporcentage, fileconsumption, equipment="adsl")
-
-@cli.command(help="Manually create the MDU consumption total")
-@click.option("-fp", "--fileporcentage", help="Total clients by state and bras file path", type=click.Path(exists=True))
-@click.option("-fc", "--fileconsumption", help="Path of the file with the consumption by BRAS", type=click.Path(exists=True))
-def mdumanual(fileporcentage, fileconsumption):
-    if fileporcentage and fileconsumption:
-        total_comsuption_by_state(fileporcentage, fileconsumption, equipment="mdu")
+def total(filereport, fileconsumption):
+    if filereport and fileconsumption:
+        global_clients_by_BRAS(filereport)
+        df_adsl_clients = FileController.read_excel(filename.ADSL_CLIENTS)
+        df_mdu_clients = FileController.read_excel(filename.MDU_CLIENTS)
+        df_adsl_porcentage = FileController.read_excel(filename.ADSL_PORCENTAGE)
+        df_mdu_porcentage = FileController.read_excel(filename.MDU_PORCENTAGE)
+        df_consumption = FileController.read_excel(fileconsumption)
+        df_adsl_consumption = total_consumption_by_bras(df_adsl_porcentage, df_consumption, "adsl")
+        df_mdu_consumption = total_consumption_by_bras(df_mdu_porcentage, df_consumption, "mdu")
+        total_comsuption_by_state(df_adsl_clients, df_adsl_consumption, df_mdu_clients, df_mdu_consumption)
 
 if __name__ == "__main__":
     try:
         cli()
     except Exception as error:
         click.echo(error)
-        #traceback.print_exc()

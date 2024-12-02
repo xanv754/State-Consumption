@@ -1,69 +1,62 @@
 # MODULE: DATABASE
-> **DOCUMENTATION VERSION: EN** 
+> [Spanish version](./README_es.md)
 
-...
+This module handles the creation or updating of the network node database. A file of type `.xlsx`, `.csv` (delimited by `;`) or `.txt` (delimited by `,`) must be provided with the following data
 
-> **DOCUMENTATION VERSION: ES** 
+- **Nodo:** Name of the node or name of central (Required)
+- **Estado:** Location state of the node (Required)
+- **Código Contable:** The accounting code associated with the Node. (Required)
+- **IP:** The service IP of the Node. (Optional)
+- **Region:** The region of the location state of the Node. (Optional)
 
-Este modúlo se encarga de manejar la base de datos de los Nodos de la red. Su función es poder proporcionar un archivo de tipo `.xlsx`, `.csv` (delimitado por `;`) o `.txt` (delimitado por `,`) con los siguientes datos:
+**Important:** The file must have a single column for each of the above data, i.e. the columns must not contain keywords (e.g. **Código**, **Estado** o **Nodo**) in the name, unless it is the exact column containing such information, as these words are used to identify the specific columns.
 
-- Nodo: Nombre del Nodo o nombre de la central. (Obligatorio)
-- Estado: Estado de ubicación del Nodo. (Obligatorio)
-- Código Contable: El código contable asociado al nodo. (Obligatorio)
-- IP: IP de servicio del Nodo. (Opcional)
-- Region: Región del estado de ubicación del Nodo. (Opcional)
-
-El archivo debe tener una única columna para cada uno de los datos anteriores, de manera que el archivo se pueda leer con un solo comando.
-
-**Importante:** Las columnas no deben contener palabras clave (ej: **Código**, **Estado** o **Nodo**) en el nombre a menos que sea la columna precisa con dicha información, ya que estas palabras se usarán para identificar las columnas específicas.
+Example of columns in the file:
 
     ✅ Numero, Estado, Nombre del Nodo, IP, Otra columna sin palabra clave
     ❌ Numero del Nodo, Estado del Nodo, Nombre del Nodo del Estado, IP del Nodo, Otra columna con palabra clave
 
-## Requerimientos
-Librerías existentes en el archivo `requirements.txt` de este proyecto para su fácil instalación.
+## Requirements
+Existing libraries in the `requirements.txt` file of this project for easy installation.
 
-## Variables de Entorno
-Se necesita proporcionar un archivo `.env` con las siguientes variables de entorno:
+## Environment Variables
+An `.env` file must be provided with the following environment variables:
 
-**Obligatorias**
+- `URI`: MongoDB server URI
+- `DB`: Name of the database
+- `MASTERNODO_PATH`: Path to the data file
 
-- `URI`: URI del servidor de MongoDB
-- `DB`: Nombre de la base de datos
-- `MASTERNODO_PATH`: Ruta del archivo de datos
-
-**Para las pruebas unitarias** 
-
-- `FILE_CONTENT_EXCEL`: Contenido del archivo `.xlsx` de prueba
-- `FILE_CONTENT_CSV`: Contenido del archivo `.csv` de prueba
-- `FILE_CONTENT_TXT`: Contenido del archivo `.txt` de prueba
-
-## Uso
-Al tener un nuevo archivo `MASTERNODO` para actualizar la base de datos, solo basta con añadir el módulo de `database` al PYTHONPATH para poderlo ejecutar.
+## Usage
+If you have a new `MASTERNODO` file to update the database, simply add the `database` module to the PYTHONPATH to run it:
 
 ```bash
 python -m database
 ```
 
-De otra forma, se puede ejecutar directamente el archivo:
+Otherwise you can run the file directly:
 ```bash
 python database/__main__.py
 ```
+There you will find the CLI for the module to get information about the different functions found in the module.
 
-## Pruebas Unitarias
-Si se desea ejecutar las pruebas unitarias, se debe ejecutar el archivo de testing:
+## Unit tests
+If you want to run unit tests, you need to add the following variables to your `.env`
+
+- `FILE_CONTENT_EXCEL`: Contents of the `.xlsx` test file.
+- `FILE_CONTENT_CSV`: Contents of the test `.csv` file.
+- `FILE_CONTENT_TXT`: Contents of the test `.txt` file
+
+The test file is ready to run:
 ```bash
 python -m pytest database/test/test_files.py
-python -m pytest database/test/test_finds.py
+python -m pytest database/test/test_files.py
 python -m pytest database/test/test_inserts.py
 ```
-También se puede ejecutar una función de prueba individual:
+You can also run a single test function:
 ```bash
 py -m pytest database/test/test_files.py::test_read_excel
 ```
 
-## Modelos
-
-#### `database/entity/node.py`
-
-Representa un Nodo de la red.
+## Models
+**`database/entity/node.py`**: Represents a node in the network.<br>
+**`database/models/node.py`**: Represents the database response for a node in the network.
