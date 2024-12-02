@@ -151,3 +151,16 @@ def save_data_consumption_mdu(data: DataFrame) -> None:
         FileController.write_excel(data, filename=filename.MDU_CONSUMPTION)
     except Exception as error:
         raise error
+    
+def save_data_clients_by_bras(data: DataFrame) -> None:
+    """Save the data of Clients x Bras.
+
+    Parameters
+    ----------
+    data: DataFrame
+        Dataframe for saving in .xlsx format.
+    """
+    try:
+        FileController.write_excel(data, filename=filename.CLIENTS_BY_BRAS)
+    except Exception as error:
+        raise error

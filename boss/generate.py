@@ -188,3 +188,19 @@ def total_comsuption_by_state(df_adsl_clients: pd.DataFrame,
         data.save_data_consumption(df)
     except Exception as error:
         raise error
+    
+def total_by_bras(filereport) -> None:
+    """Generate the file with the total clients by bras.
+    
+    Parameters
+    ----------
+    filereport: str
+        Filepath of the report boss file to be read.
+    """
+    try:
+        ReportBoss = ReportBossController(filereport)
+        if ReportBoss.validate:
+            df = ClientController.total_by_bras(ReportBoss.data_adsl, ReportBoss.data_mdu)
+            data.save_data_clients_by_bras(df)
+    except Exception as error:
+        raise error
