@@ -48,3 +48,12 @@ python -m boss/__main__.py manual -fac <clientes_adsl_por_agregador> -fap <porce
 Este comando generará el archivo `Consumo_por_Estado_ADSL_MDU.xlsx` con los datos proporcionados en los archivos indicados. Se debe tener tanto el total de clientes de cada agregador en cada estado, como su representación porcentual. Ambos para los equipos ADSL y MDU.
 
 Para más información, consulte el CLI del módulo.
+
+### Generar Total de Clientes por Agregador
+```bash
+python -m boss clients -fr <reporte_boss>
+python -m boss/__main__.py clients -fr <reporte_boss>
+```
+Este comando generará el archivo `Clientes_por_Bras.xlsx` con el total de clientes para cada agregador.
+
+Para más información, consulte el CLI del módulo.
