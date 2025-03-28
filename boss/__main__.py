@@ -1,6 +1,5 @@
 import click
-import traceback
-from boss.generate import global_clients_by_BRAS, total_consumption_by_bras, clients_porcentages_by_bras, total_comsuption_by_state
+from boss.generate import global_clients_by_BRAS, total_consumption_by_bras, clients_porcentages_by_bras, total_comsuption_by_state, total_by_bras
 from common import filename, FileController
 
 @click.group()
@@ -66,6 +65,12 @@ def total(filereport, fileconsumption):
         df_adsl_consumption = total_consumption_by_bras(df_adsl_porcentage, df_consumption, "adsl")
         df_mdu_consumption = total_consumption_by_bras(df_mdu_porcentage, df_consumption, "mdu")
         total_comsuption_by_state(df_adsl_clients, df_adsl_consumption, df_mdu_clients, df_mdu_consumption)
+
+@cli.command(help="Generate the total clients by BRAS")
+@click.option("-fr", "--filereport", help="BOSS report file path", type=click.Path(exists=True))
+def clients(filereport):
+    if filereport:
+        total_by_bras(filereport)
 
 if __name__ == "__main__":
     try:
