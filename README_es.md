@@ -15,3 +15,8 @@ Este comando generará el archivo `CONSUMO_POR_ESTADO_VPTI.xlsx` con los datos d
 
 Para más información, consulte el CLI del módulo o la documentación de cada módulo.
 
+# PYTHONPATH
+Para poder ejecutar el proyecto, es necesario definir la variable de entorno `PYTHONPATH` con los siguientes valores:
+```
+export PYTHONPATH="$(pwd)/boss:$(pwd)/common:$(pwd)/database:$(pwd)/measurement:$(pwd)/olt"
+```
