@@ -1,0 +1,30 @@
+class BossNameColumns:
+    """Column names to get the data from the process."""
+
+    SUFFIX_BRAS: str = "Nrpname"
+    PREFIX_BRAS: str = "Location"
+    EQUIPMENT: str = "Provider.1"
+    CENTRAL: str = "Name Coid"
+    ACCOUNT_CODE: str = "Coid"
+    TOTAL_CLIENTS: str = "Cantidad"
+
+class BossNewNameColumns:
+    BRAS: str = "Bras"
+    STATE: str = "Estado"
+    EQUIPMENT: str = "Modelo"
+    CENTRAL: str = "Central"
+    ACCOUNT_CODE: str = "CC"
+    TOTAL_CLIENTS: str = "Total Clientes"
+
+boss_all_columns = [
+    BossNameColumns.SUFFIX_BRAS,
+    BossNameColumns.PREFIX_BRAS,
+    BossNameColumns.EQUIPMENT,
+    BossNameColumns.CENTRAL,
+    BossNameColumns.ACCOUNT_CODE,
+    BossNameColumns.TOTAL_CLIENTS,
+]
+
+class TrafficNewNameColumns:
+    BRAS: str = "Bras"
+    CONSUMPTION: str = "Consumo"

@@ -1,0 +1,27 @@
+STATEs = [
+    "AMAZONAS",
+    "ANZOATEGUI",
+    "APURE",
+    "ARAGUA",
+    "BARINAS",
+    "BOLIVAR",
+    "CARABOBO",
+    "COJEDES",
+    "DELTA-AMACURO",
+    "DEPENDENCIAS-FEDERALES"
+    "DISTRITO-CAPITAL",
+    "FALCON",
+    "GUARICO",
+    "LARA",
+    "MERIDA",
+    "MIRANDA",
+    "MONAGAS",
+    "NUEVA-ESPARTA",
+    "PORTUGUESA",
+    "SUCRE",
+    "TACHIRA",
+    "TRUJILLO",
+    "VARGAS",
+    "YARACUY",
+    "ZULIA"
+]
