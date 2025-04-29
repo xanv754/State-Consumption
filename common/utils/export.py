@@ -26,6 +26,7 @@ def export_missing_nodes(
                 missing_nodes[key_name].append(node[key_name])
         if missing_nodes:
             df = DataFrame(missing_nodes)
+            df = df.drop_duplicates(subset=['Central', 'Código Contable'])
             FileController.write_excel(df, filename)
     except Exception as error:
         pass
