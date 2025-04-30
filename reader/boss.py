@@ -19,11 +19,11 @@ class BossReader(Reader):
             if column.startswith("Unnamed"):
                 raise Exception("The BOSS file has missing columns. Maybe the data has been moved")
             
-    def __check_column_state(self, df: pd.DataFrame) -> None:
-            """Check if the column state is in the data."""
-            return BossNewNameColumns.STATE in df.columns.to_list()
+    def __check_column_state(self, df: pd.DataFrame) -> bool:
+        """Check if the column state is in the data."""
+        return BossNewNameColumns.STATE in df.columns.to_list()
     
-    def __check_state(self, df: pd.DataFrame) -> None:
+    def __check_data_state(self, df: pd.DataFrame) -> bool:
         """Check if all rows have a state."""
         return df[BossNewNameColumns.STATE].isnull().any()
         
@@ -67,7 +67,7 @@ class BossReader(Reader):
             df = df[df[BossNewNameColumns.STATE].isnull()]
             df = df[df.nunique(axis=1) > 1]
             if not df.empty:
-                df.to_excel(Filepath.MISSING_NODES, index=False)
+                df.to_excel(Filepath.MISSING_NODES_BOSS, index=False)
         except Exception as error:
             raise error
 
@@ -81,9 +81,9 @@ class BossReader(Reader):
             df = self.__rename_columns(df)
             if not self.__check_column_state(df): 
                 df = self.__add_state(df)
-            if self.__check_state(df):
+            if self.__check_data_state(df):
                 self.__export_missing_nodes(df)
-                raise ValueError(f"Some nodes are missing the state. See the file in {Filepath.MISSING_NODES}")
+                raise ValueError(f"Some nodes are missing the state. See the file in {Filepath.MISSING_NODES_BOSS}")
         except Exception as error:
             print(error, __file__)
             exit(1)

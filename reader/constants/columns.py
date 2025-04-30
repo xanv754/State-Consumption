@@ -8,6 +8,7 @@ class BossNameColumns:
     ACCOUNT_CODE: str = "Coid"
     TOTAL_CLIENTS: str = "Cantidad"
 
+
 class BossNewNameColumns:
     BRAS: str = "Bras"
     STATE: str = "Estado"
@@ -15,6 +16,7 @@ class BossNewNameColumns:
     CENTRAL: str = "Central"
     ACCOUNT_CODE: str = "CC"
     TOTAL_CLIENTS: str = "Total Clientes"
+
 
 boss_all_columns = [
     BossNameColumns.SUFFIX_BRAS,
@@ -25,6 +27,26 @@ boss_all_columns = [
     BossNameColumns.TOTAL_CLIENTS,
 ]
 
+
 class TrafficNewNameColumns:
     BRAS: str = "Bras"
     CONSUMPTION: str = "Consumo"
+
+
+class AsfNameColumns:
+    DNI: str = "DOCUMENTO"
+    BRAS: str = "HOSTNAME"
+    STATE: str = "ESTADO"
+
+
+class AsfNewNameColumns:
+    DNI: str = "DOCUMENTO"
+    BRAS: str = "Bras"
+    STATE: str = "Estado"
+
+
+asf_all_columns = [
+    AsfNameColumns.DNI,
+    AsfNameColumns.BRAS,
+    AsfNameColumns.STATE,
+]
