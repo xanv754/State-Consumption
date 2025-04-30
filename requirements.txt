@@ -9,6 +9,8 @@ fsspec==2024.9.0
 idna==3.10
 iniconfig==2.0.0
 locket==1.0.0
+markdown-it-py==3.0.0
+mdurl==0.1.2
 mypy-extensions==1.0.0
 numpy==2.1.1
 openpyxl==3.1.5
@@ -20,6 +22,7 @@ platformdirs==4.3.6
 pluggy==1.5.0
 pydantic==2.9.2
 pydantic_core==2.23.4
+Pygments==2.19.1
 pymongo==4.10.1
 pytest==8.3.3
 python-dateutil==2.9.0.post0
@@ -27,6 +30,7 @@ python-dotenv==1.0.1
 pytz==2024.2
 PyYAML==6.0.2
 requests==2.32.3
+rich==14.0.0
 six==1.16.0
 toolz==1.0.0
 tqdm==4.66.5
