@@ -72,22 +72,22 @@ class MasternodeController:
                     or name in columns.CENTRAL
                 ):
                     self.central_col_name = name
-                elif self.central_col_name is not None:
-                    raise Exception(
-                        f"There are two columns related to «Nodo» or «Central» in its name"
-                    )
+                # elif self.central_col_name is not None:
+                #     raise Exception(
+                #         f"There are two columns related to «Nodo» or «Central» in its name"
+                #     )
                 if self.state_col_name is None and name in columns.STATE:
                     self.state_col_name = name
-                elif self.state_col_name is not None:
-                    raise Exception(
-                        f"There are two columns related to the «Estado» in its name"
-                    )
+                # elif self.state_col_name is not None:
+                #     raise Exception(
+                #         f"There are two columns related to the «Estado» in its name"
+                #     )
                 if self.account_code_col_name is None and name in columns.ACCOUNT_CODE:
                     self.account_code_col_name = name
-                elif self.account_code_col_name is not None:
-                    raise Exception(
-                        f"There are two columns related to the «Codigo Contable» in its name"
-                    )
+                # elif self.account_code_col_name is not None:
+                #     raise Exception(
+                #         f"There are two columns related to the «Codigo Contable» in its name"
+                #     )
                 # Optional Columns
                 if self.ip_col_name is None and name in columns.IP:
                     self.ip_col_name = name
