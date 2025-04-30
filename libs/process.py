@@ -1,6 +1,8 @@
 import pandas as pd
 from reader.constants.columns import BossNewNameColumns, TrafficNewNameColumns
+from reader.constants.equipment import EquipmentModelConstant
 from reader.boss import BossReader
+from reader.asf import AsfReader
 from reader.traffic import ConsumptionTrafficReader
 
 
@@ -9,37 +11,54 @@ class DataProcess:
 
     data_adsl: pd.DataFrame
     data_mdu: pd.DataFrame
+    data_asf: pd.DataFrame
     data_consumption: pd.DataFrame
 
-    def __init__(self, boss_path: str, consumption_path: str, process_consumption: bool = False) -> None:
-        readerHandler = BossReader(boss_path)
-        data = readerHandler.get_data()
+    def __init__(self, boss_path: str, consumption_path: str, asf_path: str, process_consumption: bool = False) -> None:
+        boss = BossReader(boss_path)
+        data = boss.get_data()
         self.data_adsl = self.__adsl_filter(data)
         self.data_mdu = self.__mdu_filter(data)
-        consumptionHandler = ConsumptionTrafficReader(path=consumption_path, process=process_consumption)
-        self.data_consumption = consumptionHandler.get_data()
+        consumption = ConsumptionTrafficReader(path=consumption_path, process=process_consumption)
+        self.data_consumption = consumption.get_data()
+        asf = AsfReader(asf_path)
+        self.data_asf = asf.get_data()
 
 
     def __adsl_filter(self, df: pd.DataFrame) -> None:
         """Get the ADSL from the dataframe."""
-        df = df[df[BossNewNameColumns.EQUIPMENT] != "MDU_HW"]
+        df = df[df[BossNewNameColumns.EQUIPMENT] != EquipmentModelConstant.MDU]
         columns_required = [BossNewNameColumns.BRAS, BossNewNameColumns.STATE, BossNewNameColumns.TOTAL_CLIENTS]
         df = df[columns_required]
+        df = df.reset_index(drop=True)
         return df
     
     def __mdu_filter(self, df: pd.DataFrame) -> None:
         """Get the MDU from the dataframe."""
-        df = df[df[BossNewNameColumns.EQUIPMENT] == "MDU_HW"]
+        df = df[df[BossNewNameColumns.EQUIPMENT] == EquipmentModelConstant.MDU]
         columns_required = [BossNewNameColumns.BRAS, BossNewNameColumns.STATE, BossNewNameColumns.TOTAL_CLIENTS]
         df = df[columns_required]
+        df = df.reset_index(drop=True)
         return df
     
+    def get_data_adsl(self) -> pd.DataFrame:
+        """Get the data of ADSL."""
+        return self.data_adsl
+    
+    def get_data_mdu(self) -> pd.DataFrame:
+        """Get the data of MDU."""
+        return self.data_mdu
+    
+    def get_data_asf(self) -> pd.DataFrame:
+        """Get the data of ASF."""
+        return self.data_asf
+        
     def total_clients_adsl_by_state(self) -> pd.DataFrame:
         """Totalize clients columns in the data of ADSL by bras and state."""
         df = self.data_adsl.copy()
         df = df.groupby([BossNewNameColumns.BRAS, BossNewNameColumns.STATE]).sum()
         df[BossNewNameColumns.TOTAL_CLIENTS] = df[BossNewNameColumns.TOTAL_CLIENTS].round(2)
-        df = df.reset_index()
+        df =  df.reset_index()
         return df
     
     def total_clients_adsl_by_bras(self) -> pd.DataFrame:
@@ -48,15 +67,15 @@ class DataProcess:
         df.drop(columns=[BossNewNameColumns.STATE], inplace=True)
         df = df.groupby(BossNewNameColumns.BRAS).sum()
         df[BossNewNameColumns.TOTAL_CLIENTS] = df[BossNewNameColumns.TOTAL_CLIENTS].round(2)
-        df = df.reset_index()
+        df =  df.reset_index()
         return df
     
     def total_clients_mdu_by_state(self) -> pd.DataFrame:
         """Totalize clients columns in the data of MDU by bras and state."""
-        df = self.data_adsl
+        df = self.data_mdu
         df = df.groupby([BossNewNameColumns.BRAS, BossNewNameColumns.STATE]).sum()
         df[BossNewNameColumns.TOTAL_CLIENTS] = df[BossNewNameColumns.TOTAL_CLIENTS].round(2)
-        df = df.reset_index()
+        df =  df.reset_index()
         return df
     
     def total_clients_by_bras(self) -> pd.DataFrame:
@@ -84,6 +103,7 @@ class DataProcess:
                 total_clients_adsl = df_adsl_by_bras[df_adsl_by_bras[BossNewNameColumns.BRAS] == name][BossNewNameColumns.TOTAL_CLIENTS].iloc[0]
                 total_clients_bras = df_total_bras[df_total_bras[BossNewNameColumns.BRAS] == name][BossNewNameColumns.TOTAL_CLIENTS].iloc[0]
                 total_consumption_bras = self.data_consumption[self.data_consumption[TrafficNewNameColumns.BRAS] == name][TrafficNewNameColumns.CONSUMPTION].iloc[0].round(2)
+                print(total_clients_adsl, total_consumption_bras, total_clients_bras)
                 total_consumption_adsl_bras = (total_clients_adsl * total_consumption_bras) / total_clients_bras
                 new_data[BossNewNameColumns.BRAS].append(name)
                 new_data[TrafficNewNameColumns.CONSUMPTION].append(total_consumption_adsl_bras.round(2))
@@ -130,7 +150,7 @@ class DataProcess:
             
 
 if __name__ == "__main__":
-    boss_path = "/home/xanv/Proyectos/State-Consumption/files/Clientes_ABA_Registros_FE24032025.xlsx"
-    consumption_path = "/home/xanv/Proyectos/State-Consumption/files/agregador.xlsx"
+    boss_path = "./clientes.xlsx"
+    consumption_path = "./consumo.xlsx"
     processHandler = DataProcess(boss_path, consumption_path, process_consumption=True)
     print(processHandler.process())
