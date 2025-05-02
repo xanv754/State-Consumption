@@ -3,6 +3,7 @@ from openpyxl import load_workbook
 from openpyxl.styles.colors import Color
 from openpyxl.styles import Font, PatternFill, Border, Side
 from constants.sheetnames import SheetNames
+from constants.cells import cells
 
 class Excel:
     """Class to export the data to excel."""
@@ -23,9 +24,8 @@ class Excel:
             max_row = sheet.max_row
 
             # Set the width of the columns
-            sheet.column_dimensions['A'].width = 30
-            sheet.column_dimensions['B'].width = 20
-            sheet.column_dimensions['C'].width = 20
+            for column in range(1, max_column + 1):
+                sheet.column_dimensions[cells[column]].width = 25
 
             # Set header styles 
             font = Font(bold=True, color=Color(rgb="FFFFFF"))
