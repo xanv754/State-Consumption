@@ -1,3 +1,12 @@
+class NameColumns:
+    """Column names to get the data from the process."""
+
+    BRAS: str = "Bras"
+    STATE: str = "Estado"
+    TOTAL_CLIENTS: str = "Total Clientes"
+    CONSUMPTION: str = "Consumo"
+    
+
 class BossNameColumns:
     """Column names to get the data from the process."""
 
@@ -10,12 +19,15 @@ class BossNameColumns:
 
 
 class BossNewNameColumns:
-    BRAS: str = "Bras"
-    STATE: str = "Estado"
     EQUIPMENT: str = "Modelo"
     CENTRAL: str = "Central"
     ACCOUNT_CODE: str = "CC"
-    TOTAL_CLIENTS: str = "Total Clientes"
+
+
+class AsfNameColumns:
+    DNI: str = "DOCUMENTO"
+    BRAS: str = "HOSTNAME"
+    STATE: str = "ESTADO"
 
 
 boss_all_columns = [
@@ -27,26 +39,9 @@ boss_all_columns = [
     BossNameColumns.TOTAL_CLIENTS,
 ]
 
-
-class TrafficNewNameColumns:
-    BRAS: str = "Bras"
-    CONSUMPTION: str = "Consumo"
-
-
-class AsfNameColumns:
-    DNI: str = "DOCUMENTO"
-    BRAS: str = "HOSTNAME"
-    STATE: str = "ESTADO"
-
-
-class AsfNewNameColumns:
-    DNI: str = "DOCUMENTO"
-    BRAS: str = "Bras"
-    STATE: str = "Estado"
-
-
 asf_all_columns = [
     AsfNameColumns.DNI,
     AsfNameColumns.BRAS,
-    AsfNameColumns.STATE,
+    AsfNameColumns.STATE
 ]
+

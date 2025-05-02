@@ -1,5 +1,5 @@
 import pandas as pd
-from reader.constants.columns import asf_all_columns, AsfNameColumns, AsfNewNameColumns
+from reader.constants.columns import asf_all_columns, AsfNameColumns, NameColumns
 from reader.constants.filepath import Filepath
 from reader.reader import Reader
 
@@ -14,16 +14,15 @@ class AsfReader(Reader):
         
     def __check_data_state(self, df: pd.DataFrame) -> bool:
         """Check if all rows have a state."""
-        return df[AsfNewNameColumns.STATE].isnull().any()
+        return df[NameColumns.STATE].isnull().any()
         
     def __rename_columns(self, df: pd.DataFrame) -> pd.DataFrame:
         """Rename the columns of the data."""
         df = df.copy()
         df.rename(
             columns={
-                AsfNameColumns.DNI: AsfNewNameColumns.DNI,
-                AsfNameColumns.BRAS: AsfNewNameColumns.BRAS, 
-                AsfNameColumns.STATE: AsfNewNameColumns.STATE,
+                AsfNameColumns.BRAS: NameColumns.BRAS, 
+                AsfNameColumns.STATE: NameColumns.STATE,
             }, 
             inplace=True
         )
@@ -32,7 +31,7 @@ class AsfReader(Reader):
     def __export_missing_nodes(self, df: pd.DataFrame) -> None:
         """Export the missing nodes to a .xlsx file."""
         try:
-            df = df[df[AsfNameColumns.STATE].isnull()]
+            df = df[df[NameColumns.STATE].isnull()]
             df = df[df.nunique(axis=1) > 1]
             if not df.empty:
                 df.to_excel(Filepath.MISSING_NODES_ASF, index=False)
@@ -48,6 +47,8 @@ class AsfReader(Reader):
             if self.__check_data_state(df):
                 self.__export_missing_nodes(df)
                 raise ValueError(f"Some nodes are missing the state. See the file in {Filepath.MISSING_NODES_BOSS}")
+            df = df.drop_duplicates(subset=[AsfNameColumns.DNI])
+            df = df.reset_index(drop=True)
         except Exception as error:
             print(error, __file__)
             exit(1)

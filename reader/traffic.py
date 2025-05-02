@@ -1,5 +1,5 @@
 import pandas as pd
-from reader.constants.columns import TrafficNewNameColumns
+from reader.constants.columns import NameColumns
 from reader.reader import Reader
 
 
@@ -19,8 +19,8 @@ class ConsumptionTrafficReader(Reader):
         old_columns = df.columns.to_list()
         df.rename(
             columns={
-                old_columns[0]: TrafficNewNameColumns.BRAS,
-                old_columns[1]: TrafficNewNameColumns.CONSUMPTION
+                old_columns[0]: NameColumns.BRAS,
+                old_columns[1]: NameColumns.CONSUMPTION
             },
             inplace=True
         )
@@ -29,14 +29,14 @@ class ConsumptionTrafficReader(Reader):
     def __transform_data(self, df: pd.DataFrame) -> pd.DataFrame:
         """Transform the data to delete model and capacity of bras name."""
         df = df.copy()
-        df[TrafficNewNameColumns.BRAS] = df[TrafficNewNameColumns.BRAS].apply(lambda x: x.split("_")[0])
-        df[TrafficNewNameColumns.BRAS] = df[TrafficNewNameColumns.BRAS].str.upper()
+        df[NameColumns.BRAS] = df[NameColumns.BRAS].apply(lambda x: x.split("_")[0])
+        df[NameColumns.BRAS] = df[NameColumns.BRAS].str.upper()
         return df
 
     def __totalize_consumption(self, df: pd.DataFrame) -> pd.DataFrame:
         """Totalize the consumption by bras."""
         df = df.copy()
-        df = df.groupby(TrafficNewNameColumns.BRAS).sum()
+        df = df.groupby(NameColumns.BRAS).sum()
         df = df.reset_index()
         return df
 
