@@ -1,7 +1,8 @@
 import os
 import pandas as pd
 from abc import ABC, abstractmethod
-from reader.constants.columns import BossNameColumns, AsfNameColumns, NameColumns
+from constants.columns import NameColumns
+from reader.constants.columns import BossNameColumns, AsfNameColumns
 
 
 class FileTest(ABC):

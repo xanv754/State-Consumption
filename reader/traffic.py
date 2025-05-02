@@ -1,5 +1,5 @@
 import pandas as pd
-from reader.constants.columns import NameColumns
+from constants.columns import NameColumns
 from reader.reader import Reader
 
 

@@ -1,5 +1,6 @@
 import pandas as pd
-from reader.constants.columns import asf_all_columns, AsfNameColumns, NameColumns
+from constants.columns import NameColumns
+from reader.constants.columns import asf_all_columns, AsfNameColumns
 from reader.constants.filepath import Filepath
 from reader.reader import Reader
 

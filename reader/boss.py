@@ -1,6 +1,7 @@
 import pandas as pd
 from database.querys.nodes import NodesQueryMongo
-from reader.constants.columns import boss_all_columns, BossNewNameColumns, BossNameColumns, NameColumns
+from constants.columns import NameColumns
+from reader.constants.columns import boss_all_columns, BossNewNameColumns, BossNameColumns
 from reader.constants.filepath import Filepath
 from reader.reader import Reader
 

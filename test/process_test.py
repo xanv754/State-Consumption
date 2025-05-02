@@ -1,6 +1,6 @@
 import unittest 
 from libs.process.data import DataHandler
-from reader.constants.columns import NameColumns
+from constants.columns import NameColumns
 from test import BossFileTest, ConsumptionFileTest, AsfFileTest
 
 

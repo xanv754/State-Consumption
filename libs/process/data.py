@@ -1,5 +1,6 @@
 import pandas as pd
-from reader.constants.columns import BossNewNameColumns, NameColumns
+from constants.columns import NameColumns
+from reader.constants.columns import BossNewNameColumns
 from reader.constants.equipment import EquipmentModelConstant
 from reader.boss import BossReader
 from reader.asf import AsfReader
