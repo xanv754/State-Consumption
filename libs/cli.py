@@ -5,7 +5,7 @@ from rich.table import Table
 from database.libs.mongo import MongoDatabase
 from database.querys.nodes import NodesQueryMongo
 from database.model.node import NodeModel
-from libs.process import DataProcess
+from libs.process.data import DataHandler
 
 
 class DatabaseCLIHandler:
@@ -73,11 +73,4 @@ class ProcessCLIHandler:
     """Handler to process the data to CLI."""
 
     def main(self, boss_path: str, consumption_path: str, process_consumption: bool) -> bool:
-        data = DataProcess(
-            boss_path=boss_path, 
-            consumption_path=consumption_path, 
-            process_consumption=process_consumption
-        )
-        df = data.process()
-        print(df)
-        return True
+        pass
