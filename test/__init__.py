@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from abc import ABC, abstractmethod
-from reader.constants.columns import BossNameColumns, TrafficNewNameColumns, AsfNameColumns
+from reader.constants.columns import BossNameColumns, AsfNameColumns, NameColumns
 
 
 class FileTest(ABC):
@@ -51,8 +51,8 @@ class ConsumptionFileTest(FileTest):
 
     def create_excel(self) -> None:
         data = {
-            TrafficNewNameColumns.BRAS: ["CNT-BRAS-00_Huawei_10GB_GE_100", "CNT-BRAS-00_Huawei_10GB_GE_101"],
-            TrafficNewNameColumns.CONSUMPTION: [5.43, 5.42]
+            NameColumns.BRAS: ["CNT-BRAS-00_Huawei_10GB_GE_100", "CNT-BRAS-00_Huawei_10GB_GE_101"],
+            NameColumns.CONSUMPTION: [5.43, 5.42]
         }
         df = pd.DataFrame(data)
         df.to_excel(self.filepath, index=False)
