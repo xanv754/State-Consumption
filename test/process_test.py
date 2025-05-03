@@ -1,5 +1,5 @@
 import unittest 
-from libs.process.data import DataHandler
+from libs.process.process import ProcessHandler
 from constants.columns import NameColumns
 from test import BossFileTest, ConsumptionFileTest, AsfFileTest
 
@@ -39,7 +39,7 @@ class TestAdsl(unittest.TestCase):
         asf_path = self.create_asf()
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
-        dataHandler = DataHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
         data_adsl = dataHandler.get_data_adsl()
         self.delete_files()
 
@@ -50,7 +50,7 @@ class TestAdsl(unittest.TestCase):
         asf_path = self.create_asf()
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
-        dataHandler = DataHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
         data_adsl = dataHandler.total_clients_adsl()
         self.delete_files()
 
@@ -63,7 +63,7 @@ class TestAdsl(unittest.TestCase):
         asf_path = self.create_asf()
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
-        dataHandler = DataHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
         data_adsl = dataHandler.total_clients_adsl_by_bras()
         self.delete_files()
 
@@ -75,7 +75,7 @@ class TestAdsl(unittest.TestCase):
         asf_path = self.create_asf()
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
-        dataHandler = DataHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
         data_adsl = dataHandler.total_consumption_adsl_by_bras()
         self.delete_files()
 
@@ -87,7 +87,7 @@ class TestAdsl(unittest.TestCase):
         asf_path = self.create_asf()
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
-        dataHandler = DataHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
         data_adsl = dataHandler.total_consumption_state_adsl_by_bras()
         self.delete_files()
 
@@ -100,7 +100,7 @@ class TestAdsl(unittest.TestCase):
         asf_path = self.create_asf()
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
-        dataHandler = DataHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
         data_adsl = dataHandler.total_consumption_adsl_by_state()
         self.delete_files()
 
@@ -144,7 +144,7 @@ class TestMdu(unittest.TestCase):
         asf_path = self.create_asf()
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
-        dataHandler = DataHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
         data_mdu = dataHandler.get_data_mdu()
         self.delete_files()
 
@@ -155,7 +155,7 @@ class TestMdu(unittest.TestCase):
         asf_path = self.create_asf()
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
-        dataHandler = DataHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
         data_mdu = dataHandler.total_clients_mdu()
         self.delete_files()
 
@@ -168,7 +168,7 @@ class TestMdu(unittest.TestCase):
         asf_path = self.create_asf()
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
-        dataHandler = DataHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
         data_mdu = dataHandler.total_clients_mdu_by_bras()
         self.delete_files()
 
@@ -180,7 +180,7 @@ class TestMdu(unittest.TestCase):
         asf_path = self.create_asf()
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
-        dataHandler = DataHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
         data_mdu = dataHandler.total_consumption_mdu_by_bras()
         self.delete_files()
 
@@ -192,7 +192,7 @@ class TestMdu(unittest.TestCase):
         asf_path = self.create_asf()
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
-        dataHandler = DataHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
         data_mdu = dataHandler.total_consumption_state_mdu_by_bras()
         self.delete_files()
 
@@ -205,7 +205,7 @@ class TestMdu(unittest.TestCase):
         asf_path = self.create_asf()
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
-        dataHandler = DataHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
         data_mdu = dataHandler.total_consumption_mdu_by_state()
         self.delete_files()
 
@@ -249,7 +249,7 @@ class TestOlt(unittest.TestCase):
         asf_path = self.create_asf()
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
-        dataHandler = DataHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
         data_asf = dataHandler.get_data_asf()
         self.delete_files()
 
@@ -260,7 +260,7 @@ class TestOlt(unittest.TestCase):
         asf_path = self.create_asf()
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
-        dataHandler = DataHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
         data_asf = dataHandler.total_clients_olt()
         self.delete_files()
 
@@ -273,7 +273,7 @@ class TestOlt(unittest.TestCase):
         asf_path = self.create_asf()
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
-        dataHandler = DataHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
         data_asf = dataHandler.total_clients_olt_by_bras()
         self.delete_files()
 
@@ -285,7 +285,7 @@ class TestOlt(unittest.TestCase):
         asf_path = self.create_asf()
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
-        dataHandler = DataHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
         data_asf = dataHandler.total_consumption_olt_by_bras()
         self.delete_files()
 
@@ -297,7 +297,7 @@ class TestOlt(unittest.TestCase):
         asf_path = self.create_asf()
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
-        dataHandler = DataHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
         data_asf = dataHandler.total_consumption_state_olt_by_bras()
         self.delete_files()
 
@@ -309,7 +309,7 @@ class TestOlt(unittest.TestCase):
         asf_path = self.create_asf()
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
-        dataHandler = DataHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
         data_asf = dataHandler.total_consumption_olt_by_state()
         self.delete_files()
 
@@ -352,7 +352,7 @@ class TestData(unittest.TestCase):
         boss_path = self.create_boss()
         asf_path = self.create_asf()
         consumption_path = self.create_consumption()
-        dataHandler = DataHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
         data = dataHandler.total_clients_by_bras()
         self.delete_files()
 
