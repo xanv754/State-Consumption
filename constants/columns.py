@@ -10,7 +10,6 @@ class NameColumns:
 class ConsumptionStateColumns:
     """Column names to get the data from the process."""
 
-    STATE: str = "Estado"
     TOTAL_CLIENTS_ADSL: str = "Total Clientes ADSL"
     TOTAL_CLIENTS_MDU: str = "Total Clientes MDU"
     TOTAL_CLIENTS_OLT: str = "Total Clientes OLT"

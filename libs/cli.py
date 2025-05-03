@@ -1,4 +1,6 @@
+import os
 import rich
+from datetime import datetime
 from rich.prompt import Prompt
 from rich.console import Console
 from rich.table import Table
@@ -6,7 +8,8 @@ from database.libs.mongo import MongoDatabase
 from database.querys.nodes import NodesQueryMongo
 from database.model.node import NodeModel
 from libs.process.data import DataHandler
-
+from libs.process.process import ProcessHandler
+from libs.export.excel import Excel
 
 class DatabaseCLIHandler:
     """Handler to operate with the database to CLI."""
@@ -16,13 +19,11 @@ class DatabaseCLIHandler:
         if mongo.connected:
             return mongo.migration()
         
-
     def rollback(self) -> bool:
         mongo = MongoDatabase()
         if mongo.connected:
             return mongo.rollback()
         
-    
     def add_new_node(self) -> bool:
         state = Prompt.ask("State of new node")
         if not state: 
@@ -69,8 +70,134 @@ class DatabaseCLIHandler:
         return NodesQueryMongo.insert_one(node=new_node)
     
 
-class ProcessCLIHandler:
-    """Handler to process the data to CLI."""
+class ExportCLIHandler:
+    """Handler to process and export the data to CLI."""
 
-    def main(self, boss_path: str, consumption_path: str, process_consumption: bool) -> bool:
-        pass
+    boss_path: str
+    asf_path: str
+    bras_path: str
+    process_consumption: bool
+
+    def __init__(self, boss_path: str, asf_path: str, bras_path: str, process_consumption: bool) -> None:
+        self.boss_path = boss_path
+        self.asf_path = asf_path
+        self.bras_path = bras_path
+        self.process_consumption = process_consumption
+
+    def __get_path(self) -> str:
+        """Get the filepath to export the data."""
+        home = os.path.expanduser('~')
+        if os.path.exists(f"{home}/Descargas"):
+            return f"{home}/Descargas"
+        elif os.path.exists(f"{home}/Downloads"):
+            return f"{home}/Downloads"
+        else:
+            return f"./"
+
+    def clients_consumption_adsl_by_state(self, filepath: str | None = None) -> str | None:
+        """Get the clients and consumption ADSL by state.
+        
+        Parameters
+        ----------
+        filepath : str, optional
+            The path of the file to export the data. If None, the data will be exported in the current directory.
+
+        Returns
+        -------
+        str
+            The path of the file. None if the data was not exported.
+        """
+        try:
+            process = ProcessHandler(self.boss_path, self.bras_path, self.asf_path, self.process_consumption)
+            data = DataHandler(process)
+            df = data.clients_consumption_adsl_by_state()
+            if not filepath:
+                path = self.__get_path()
+                filepath = f"{path}/consumo_adsl_{datetime.now().strftime('%Y-%m-%d')}.xlsx"
+            excel = Excel(filepath, df)
+            savedIn = excel.export()
+            return savedIn
+        except Exception as error:
+            print(error, __file__)
+            return None
+        
+    def clients_consumption_mdu_by_state(self, filepath: str | None = None) -> str | None:
+        """Get the clients and consumption MDU by state.
+        
+        Parameters
+        ----------
+        filepath : str, optional
+            The path of the file to export the data. If None, the data will be exported in the current directory.
+
+        Returns
+        -------
+        str
+            The path of the file. None if the data was not exported.
+        """
+        try:
+            process = ProcessHandler(self.boss_path, self.bras_path, self.asf_path, self.process_consumption)
+            data = DataHandler(process)
+            df = data.clients_consumption_mdu_by_state()
+            if not filepath:
+                path = self.__get_path()
+                filepath = f"{path}/consumo_mdu_{datetime.now().strftime('%Y-%m-%d')}.xlsx"
+            excel = Excel(filepath, df)
+            savedIn = excel.export()
+            return savedIn
+        except Exception as error:
+            print(error, __file__)
+            return None
+        
+    def clients_consumption_olt_by_state(self, filepath: str | None = None) -> str | None:
+        """Get the clients and consumption OLT by state.
+        
+        Parameters
+        ----------
+        filepath : str, optional
+            The path of the file to export the data. If None, the data will be exported in the current directory.
+
+        Returns
+        -------
+        str
+            The path of the file. None if the data was not exported.
+        """
+        try:
+            process = ProcessHandler(self.boss_path, self.bras_path, self.asf_path, self.process_consumption)
+            data = DataHandler(process)
+            df = data.clients_consumption_olt_by_state()
+            if not filepath:
+                path = self.__get_path()
+                filepath = f"{path}/consumo_olt_{datetime.now().strftime('%Y-%m-%d')}.xlsx"
+            excel = Excel(filepath, df)
+            savedIn = excel.export()
+            return savedIn
+        except Exception as error:
+            print(error, __file__)
+            return None
+        
+    def clients_consumption_by_state(self, filepath: str | None = None) -> str | None:
+        """Get the clients and consumption by state.
+        
+        Parameters
+        ----------
+        filepath : str, optional
+            The path of the file to export the data. If None, the data will be exported in the current directory.
+
+        Returns
+        -------
+        str
+            The path of the file. None if the data was not exported.
+        """
+        try:
+            process = ProcessHandler(self.boss_path, self.bras_path, self.asf_path, self.process_consumption)
+            data = DataHandler(process)
+            df = data.clients_consumption_by_state()
+            if not filepath:
+                path = self.__get_path()
+                filepath = f"{path}/consumo_por_estado_{datetime.now().strftime('%Y-%m-%d')}.xlsx"
+            excel = Excel(filepath, df)
+            savedIn = excel.export()
+            return savedIn
+        except Exception as error:
+            print(error, __file__)
+            return None
