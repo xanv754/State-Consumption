@@ -12,26 +12,26 @@ class TestExport(unittest.TestCase):
     def create_boss(self) -> str:
         """Create the BOSS file."""
         self.boss = BossFileTest()
-        self.boss.create_excel()
+        self.boss.create_file()
         return self.boss.filepath
     
     def create_asf(self) -> str:
         """Create the ASF file."""
         self.asf = AsfFileTest()
-        self.asf.create_excel()
+        self.asf.create_file()
         return self.asf.filepath
 
     def create_consumption(self) -> str:
         """Create the consumption file."""
         self.consumption = ConsumptionFileTest()
-        self.consumption.create_excel()
+        self.consumption.create_file()
         return self.consumption.filepath
     
     def delete_files(self, filepath: str | None = None) -> None:
         """Delete the files."""
-        self.asf.delete_excel()
-        self.boss.delete_excel()
-        self.consumption.delete_excel()
+        self.asf.delete_file()
+        self.boss.delete_file()
+        self.consumption.delete_file()
         if filepath:
             if os.path.exists(filepath):
                 os.remove(filepath)

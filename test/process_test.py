@@ -13,26 +13,26 @@ class TestAdsl(unittest.TestCase):
     def create_boss(self) -> str:
         """Create the BOSS file."""
         self.boss = BossFileTest()
-        self.boss.create_excel()
+        self.boss.create_file()
         return self.boss.filepath
     
     def create_asf(self) -> str:
         """Create the ASF file."""
         self.asf = AsfFileTest()
-        self.asf.create_excel()
+        self.asf.create_file()
         return self.asf.filepath
 
     def create_consumption(self) -> str:
         """Create the consumption file."""
         self.consumption = ConsumptionFileTest()
-        self.consumption.create_excel()
+        self.consumption.create_file()
         return self.consumption.filepath
     
     def delete_files(self) -> None:
         """Delete the files."""
-        self.asf.delete_excel()
-        self.boss.delete_excel()
-        self.consumption.delete_excel()
+        self.asf.delete_file()
+        self.boss.delete_file()
+        self.consumption.delete_file()
     
     def test_get_data(self):
         """Test the get only data ADSL of BOSS file."""
@@ -118,26 +118,26 @@ class TestMdu(unittest.TestCase):
     def create_boss(self) -> str:
         """Create the BOSS file."""
         self.boss = BossFileTest()
-        self.boss.create_excel()
+        self.boss.create_file()
         return self.boss.filepath
     
     def create_asf(self) -> str:
         """Create the ASF file."""
         self.asf = AsfFileTest()
-        self.asf.create_excel()
+        self.asf.create_file()
         return self.asf.filepath
     
     def create_consumption(self) -> str:
         """Create the consumption file."""
         self.consumption = ConsumptionFileTest()
-        self.consumption.create_excel()
+        self.consumption.create_file()
         return self.consumption.filepath
     
     def delete_files(self) -> None:
         """Delete the files."""
-        self.asf.delete_excel()
-        self.boss.delete_excel()
-        self.consumption.delete_excel()
+        self.asf.delete_file()
+        self.boss.delete_file()
+        self.consumption.delete_file()
 
     def test_get_data(self):
         """Test the get only data MDU of BOSS file."""
@@ -223,26 +223,26 @@ class TestOlt(unittest.TestCase):
     def create_asf(self) -> str:
         """Create the ASF file."""
         self.asf = AsfFileTest()
-        self.asf.create_excel()
+        self.asf.create_file()
         return self.asf.filepath
     
     def create_boss(self) -> str:
         """Create the BOSS file."""
         self.boss = BossFileTest()
-        self.boss.create_excel()
+        self.boss.create_file()
         return self.boss.filepath
 
     def create_consumption(self) -> str:
         """Create the consumption file."""
         self.consumption = ConsumptionFileTest()
-        self.consumption.create_excel()
+        self.consumption.create_file()
         return self.consumption.filepath
     
     def delete_files(self) -> None:
         """Delete the files."""
-        self.boss.delete_excel()
-        self.asf.delete_excel()
-        self.consumption.delete_excel()
+        self.boss.delete_file()
+        self.asf.delete_file()
+        self.consumption.delete_file()
 
     def test_get_data(self):
         """Test the get only data ASF of BOSS file."""
@@ -326,26 +326,26 @@ class TestData(unittest.TestCase):
     def create_boss(self) -> str:
         """Create the BOSS file."""
         self.boss = BossFileTest()
-        self.boss.create_excel()
+        self.boss.create_file()
         return self.boss.filepath
     
     def create_asf(self) -> str:
         """Create the ASF file."""
         self.asf = AsfFileTest()
-        self.asf.create_excel()
+        self.asf.create_file()
         return self.asf.filepath
 
     def create_consumption(self) -> str:
         """Create the consumption file."""
         self.consumption = ConsumptionFileTest()
-        self.consumption.create_excel()
+        self.consumption.create_file()
         return self.consumption.filepath
     
     def delete_files(self) -> None:
         """Delete the files."""
-        self.asf.delete_excel()
-        self.boss.delete_excel()
-        self.consumption.delete_excel()
+        self.asf.delete_file()
+        self.boss.delete_file()
+        self.consumption.delete_file()
 
     def test_total_clients_by_bras(self):
         """Test the total clients by bras."""

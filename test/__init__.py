@@ -11,12 +11,12 @@ class FileTest(ABC):
     filepath: str
 
     @abstractmethod
-    def create_excel(self) -> None:
-        """Create the excel file."""
+    def create_file(self) -> None:
+        """Create the file."""
         pass
 
-    def delete_excel(self) -> None:
-        """Delete the excel file."""
+    def delete_file(self) -> None:
+        """Delete the file."""
         if os.path.exists(self.filepath):
             os.remove(self.filepath)
 
@@ -29,7 +29,7 @@ class BossFileTest(FileTest):
             filepath = f"./clientes.xlsx"
         self.filepath = filepath
 
-    def create_excel(self) -> None:
+    def create_file(self) -> None:
         data = {
             BossNameColumns.SUFFIX_BRAS: ["bras-00", "bras-00", "bras-00", "bras-00", "bras-00", "bras-00", "bras-00", "bras-00", "bras-00", "bras-00"],
             BossNameColumns.PREFIX_BRAS: ["cnt", "cnt", "cnt", "cnt", "cnt", "cnt", "cnt", "cnt", "cnt", "cnt"],
@@ -50,7 +50,7 @@ class ConsumptionFileTest(FileTest):
             filepath = f"./consumo.xlsx"
         self.filepath = filepath
 
-    def create_excel(self) -> None:
+    def create_file(self) -> None:
         data = {
             NameColumns.BRAS: ["CNT-BRAS-00_Huawei_10GB_GE_100", "CNT-BRAS-00_Huawei_10GB_GE_101"],
             NameColumns.CONSUMPTION: [5.43, 5.42]
@@ -67,7 +67,7 @@ class AsfFileTest(FileTest):
             filepath = f"./asf.xlsx"
         self.filepath = filepath
 
-    def create_excel(self) -> None:
+    def create_file(self) -> None:
         data = {
             AsfNameColumns.DNI: ["1111111111", "2222222222"],
             AsfNameColumns.BRAS: ["CNT-BRAS-00", "CNT-BRAS-00"],
@@ -77,14 +77,34 @@ class AsfFileTest(FileTest):
         df.to_excel(self.filepath, index=False)
 
 
+class UpdaterDatabaseFileTest(FileTest):
+    """Class to test the updater database file."""
+
+    def __init__(self, filepath: str | None = None) -> None:
+        if not filepath:
+            filepath = f"./updater_database.csv"
+        self.filepath = filepath
+
+    def create_file(self) -> None:
+        with open(self.filepath, "w") as file:
+            file.write("dato1;nodo;dato2;ip;dato3;cc;region;estado\n")
+            file.write("dato random;nodo 1;dato random;10.255.255.255;dato random;123A;Oriental;Anzoátegui\n")
+            file.write("dato random;nodo 2;dato random;10.255.255.255;dato random;NULL;Andina;Táchira\n")
+            file.write("dato random;nodo 3;dato random;10.255.255.255;dato random;;Los Llanos;Barinas\n")
+            file.write("dato random;nodo 4;dato random;10255255255;dato random;8645;Los Llanos;Bolívar\n")
+            file.write("dato random;nodo 5;dato random;10..119...1..50;dato random;8624;Los Llanos;Bolívar\n")
+
+
 if __name__ == "__main__":
     boss_file = BossFileTest()
     consumption_file = ConsumptionFileTest()
     asf_file = AsfFileTest()
+    updater_file = UpdaterDatabaseFileTest()
 
-    boss_file.create_excel()
-    consumption_file.create_excel()
-    asf_file.create_excel()
+    boss_file.create_file()
+    consumption_file.create_file()
+    asf_file.create_file()
+    updater_file.create_file()
 
     df = pd.read_excel(boss_file.filepath)
     print(df)
@@ -92,7 +112,10 @@ if __name__ == "__main__":
     print(df)
     df = pd.read_excel(asf_file.filepath)
     print(df)
+    df = pd.read_csv(updater_file.filepath, delimiter=";")
+    print(df)
 
-    boss_file.delete_excel()
-    consumption_file.delete_excel()
-    asf_file.delete_excel()
+    boss_file.delete_file()
+    consumption_file.delete_file()
+    asf_file.delete_file()
+    updater_file.delete_file()
