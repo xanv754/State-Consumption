@@ -1,4 +1,3 @@
-import os
 import unittest
 from constants.columns import ConsumptionStateColumns, NameColumns
 from libs.process.data import DataHandler
@@ -30,14 +29,11 @@ class TestData(unittest.TestCase):
         self.consumption.create_excel()
         return self.consumption.filepath
     
-    def delete_files(self, filepath: str | None = None) -> None:
+    def delete_files(self) -> None:
         """Delete the files."""
         self.asf.delete_excel()
         self.boss.delete_excel()
         self.consumption.delete_excel()
-        if filepath:
-            if os.path.exists(filepath):
-                os.remove(filepath)
 
     def test_clients_consumption_adsl(self):
         """Test the get clients and consumption by state ADSL."""
@@ -48,6 +44,7 @@ class TestData(unittest.TestCase):
         data = DataHandler(process)
         df = data.clients_consumption_adsl_by_state()
         columns = df.columns.to_list()
+        self.delete_files()
 
         self.assertFalse(df.empty)
         self.assertTrue(NameColumns.STATE in columns)
@@ -63,6 +60,7 @@ class TestData(unittest.TestCase):
         data = DataHandler(process)
         df = data.clients_consumption_mdu_by_state()
         columns = df.columns.to_list()
+        self.delete_files()
 
         self.assertFalse(df.empty)
         self.assertTrue(NameColumns.STATE in columns)
@@ -78,6 +76,7 @@ class TestData(unittest.TestCase):
         data = DataHandler(process)
         df = data.clients_consumption_olt_by_state()
         columns = df.columns.to_list()
+        self.delete_files()
 
         self.assertFalse(df.empty)
         self.assertTrue(NameColumns.STATE in columns)
@@ -93,6 +92,7 @@ class TestData(unittest.TestCase):
         data = DataHandler(process)
         df = data.clients_consumption_by_state()
         columns = df.columns.to_list()
+        self.delete_files()
 
         self.assertFalse(df.empty)
         self.assertTrue(NameColumns.STATE in columns)
@@ -105,6 +105,4 @@ class TestData(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    test = TestData()
-    test.test_export()
-
+    unittest.main()
