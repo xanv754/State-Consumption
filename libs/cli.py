@@ -8,9 +8,11 @@ from constants.sheetnames import SheetNames
 from database.libs.mongo import MongoDatabase
 from database.querys.nodes import NodesQueryMongo
 from database.model.node import NodeModel
+from database.updater import UpdaterDatabase
 from libs.process.data import DataHandler
 from libs.process.process import ProcessHandler
 from utils.excel import Excel
+from utils.format import FixFormat
 
 class DatabaseCLIHandler:
     """Handler to operate with the database to CLI."""
@@ -30,21 +32,22 @@ class DatabaseCLIHandler:
         if not state: 
             rich.print("[yellow2]Warning: State of node is required")
             return False
-        state = state.upper()
+        state = FixFormat.word(state)
         central = Prompt.ask("Central of new node")
         if not central: 
             rich.print("[yellow2]Warning: Central of node is required")
             return False
-        central = central.upper()
+        central = FixFormat.word(central)
         account_code = Prompt.ask("Account code of new node")
         if not account_code: 
             rich.print("[yellow2]Warning: Account code of node is required")
             return False
         ip = Prompt.ask("IP of new node")
         if not ip: ip = None
+        else: ip = FixFormat.ip(ip)
         region = Prompt.ask("Region of new node")
         if not region: region = None
-        else: region = region.upper()
+        else: region = FixFormat.word(region)
         new_node = NodeModel(
             state=state, 
             central=central, 
@@ -69,6 +72,18 @@ class DatabaseCLIHandler:
         if not response or response.lower() != "y": exit(0)
 
         return NodesQueryMongo.insert_one(node=new_node)
+    
+    def update_database(self, filepath: str) -> bool:
+        """Update the database extracted the data from the CSV or XLSX file.
+        
+        Parameters
+        ----------
+        filepath : str
+            The path of the file to update the database.
+        """
+        updaterHandler = UpdaterDatabase(filepath)
+        status = updaterHandler.update()
+        return status
     
 
 class ExportCLIHandler:

@@ -7,6 +7,7 @@ from libs.cli import DatabaseCLIHandler, ExportCLIHandler
 def cli():
     pass
 
+
 @cli.command(help="Operation with the database.")
 @click.option("--migration", help="Make migration of the database.", is_flag=True)
 @click.option("--rollback", help="Rollback of the database.", is_flag=True)
@@ -30,6 +31,16 @@ def database(migration: bool, rollback: bool, add: bool):
         status = databaseHandler.add_new_node()
         if status: rich.print("[green3]New node added successfully")
         else: rich.print("[red3]New node not added")
+
+
+@cli.command(help="Update the database.")
+@click.option("--filepath", help="Path of the file to extract the data.", type=click.Path(exists=True), required=True)
+def update(filepath: str):
+    rich.print("[orange3]Starting update database...")
+    databaseHandler = DatabaseCLIHandler()
+    status = databaseHandler.update_database(filepath)
+    if status: rich.print("[green3]Database updated successfully")
+    else: rich.print("[red3]Database not updated")
 
 
 @cli.command(help="Process the data to VPTI.")
