@@ -4,6 +4,7 @@ from constants.path import PathStderr
 from database.querys.nodes import NodesQueryMongo
 from libs.reader.constants.columns import boss_all_columns, BossNewNameColumns, BossNameColumns
 from libs.reader.reader import Reader
+from utils.format import FixFormat
 
 
 
@@ -62,6 +63,12 @@ class BossReader(Reader):
                 df.loc[mask, NameColumns.STATE] = data_node[0].state
         return df
     
+    def __fix_name_central(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Fix the name of the central."""
+        df = df.copy()
+        df = FixFormat.column_word(df, BossNewNameColumns.CENTRAL)
+        return df
+    
     def __export_missing_nodes(self, df: pd.DataFrame) -> None:
         """Export the missing nodes to a .xlsx file."""
         try:
@@ -80,6 +87,7 @@ class BossReader(Reader):
             df = all_df[boss_all_columns]
             df = self.__unite_columns(df)
             df = self.__rename_columns(df)
+            df = self.__fix_name_central(df)
             if not self.__check_column_state(df): 
                 df = self.__add_state(df)
             if self.__check_data_state(df):
