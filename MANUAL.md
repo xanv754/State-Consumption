@@ -150,3 +150,8 @@ Para ejecutar el procesamiento y obtención de consumo por estado únicamente de
 python main.py olt --boss <ruta del archivo BOSS> --asf <ruta del archivo ASF> --bras <ruta del archivo de consumo por bras>
 ```
 
+## Consumo Totalizado por Bras
+Para ejecutar el procesamiento y obtención de consumo totalizado por bras, se debe ejecutar el comando:
+```bash 
+python main.py bras --filepath <ruta del archivo de consumo por bras>
+```
