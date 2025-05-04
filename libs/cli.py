@@ -11,6 +11,7 @@ from database.model.node import NodeModel
 from database.updater import UpdaterDatabase
 from libs.process.data import DataHandler
 from libs.process.process import ProcessHandler
+from libs.reader.traffic import ConsumptionTrafficReader
 from utils.excel import Excel
 from utils.format import FixFormat
 
@@ -89,12 +90,12 @@ class DatabaseCLIHandler:
 class ExportCLIHandler:
     """Handler to process and export the data to CLI."""
 
-    boss_path: str
-    asf_path: str
+    boss_path: str | None
+    asf_path: str | None
     bras_path: str
     process_consumption: bool
 
-    def __init__(self, boss_path: str, asf_path: str, bras_path: str, process_consumption: bool) -> None:
+    def __init__(self, boss_path: str | None, asf_path: str | None, bras_path: str, process_consumption: bool) -> None:
         self.boss_path = boss_path
         self.asf_path = asf_path
         self.bras_path = bras_path
@@ -109,6 +110,32 @@ class ExportCLIHandler:
             return f"{home}/Downloads"
         else:
             return f"./"
+        
+    def consumtion_bras(self, filepath: str | None = None) -> str | None:
+        """Get the clients and consumption by bras.
+        
+        Parameters
+        ----------
+        filepath : str, optional
+            The path of the file to export the data. If None, the data will be exported in the current directory.
+        
+        Returns
+        -------
+        str
+            The path of the file. None if the data was not exported.
+        """
+        try:
+            consumption = ConsumptionTrafficReader(path=self.bras_path, process=self.process_consumption)
+            df_data = consumption.get_data()
+            if not filepath:
+                path = self.__get_path()
+                filepath = f"{path}/consumo_bras_totalizado_{datetime.now().strftime('%Y-%m-%d')}.xlsx"
+            excel = Excel(filepath)
+            excel.export(data=df_data, sheet_name=SheetNames.CONSUMPTION)
+            return filepath
+        except Exception as error:
+            print(error, __file__)
+            return None
 
     def clients_consumption_adsl_by_state(self, filepath: str | None = None) -> str | None:
         """Get the clients and consumption ADSL by state.
@@ -124,6 +151,9 @@ class ExportCLIHandler:
             The path of the file. None if the data was not exported.
         """
         try:
+            if self.boss_path is None or self.asf_path is None: 
+                rich.print("[red3]Missing BOSS or ASF file")
+                return None
             process = ProcessHandler(self.boss_path, self.bras_path, self.asf_path, self.process_consumption)
             data = DataHandler(process)
             df_data = data.clients_consumption_adsl_by_state()
@@ -132,9 +162,9 @@ class ExportCLIHandler:
                 path = self.__get_path()
                 filepath = f"{path}/consumo_adsl_{datetime.now().strftime('%Y-%m-%d')}.xlsx"
             excel = Excel(filepath)
-            savedIn = excel.export(data=df_data, sheet_name=SheetNames.ADSL)
+            excel.export(data=df_data, sheet_name=SheetNames.ADSL)
             excel.add(new_data=df_consumption, sheet_name=SheetNames.CONSUMPTION)
-            return savedIn
+            return filepath
         except Exception as error:
             print(error, __file__)
             return None
@@ -153,6 +183,9 @@ class ExportCLIHandler:
             The path of the file. None if the data was not exported.
         """
         try:
+            if self.boss_path is None or self.asf_path is None: 
+                rich.print("[red3]Missing BOSS or ASF file")
+                return None
             process = ProcessHandler(self.boss_path, self.bras_path, self.asf_path, self.process_consumption)
             data = DataHandler(process)
             df_data = data.clients_consumption_mdu_by_state()
@@ -161,9 +194,9 @@ class ExportCLIHandler:
                 path = self.__get_path()
                 filepath = f"{path}/consumo_mdu_{datetime.now().strftime('%Y-%m-%d')}.xlsx"
             excel = Excel(filepath)
-            savedIn = excel.export(data=df_data, sheet_name=SheetNames.MDU)
+            excel.export(data=df_data, sheet_name=SheetNames.MDU)
             excel.add(new_data=df_consumption, sheet_name=SheetNames.CONSUMPTION)
-            return savedIn
+            return filepath
         except Exception as error:
             print(error, __file__)
             return None
@@ -182,6 +215,9 @@ class ExportCLIHandler:
             The path of the file. None if the data was not exported.
         """
         try:
+            if self.boss_path is None or self.asf_path is None: 
+                rich.print("[red3]Missing BOSS or ASF file")
+                return None
             process = ProcessHandler(self.boss_path, self.bras_path, self.asf_path, self.process_consumption)
             data = DataHandler(process)
             df_data = data.clients_consumption_olt_by_state()
@@ -190,9 +226,9 @@ class ExportCLIHandler:
                 path = self.__get_path()
                 filepath = f"{path}/consumo_olt_{datetime.now().strftime('%Y-%m-%d')}.xlsx"
             excel = Excel(filepath)
-            savedIn = excel.export(data=df_data, sheet_name=SheetNames.OLT)
+            excel.export(data=df_data, sheet_name=SheetNames.OLT)
             excel.add(new_data=df_consumption, sheet_name=SheetNames.CONSUMPTION)
-            return savedIn
+            return filepath
         except Exception as error:
             print(error, __file__)
             return None
@@ -211,6 +247,9 @@ class ExportCLIHandler:
             The path of the file. None if the data was not exported.
         """
         try:
+            if self.boss_path is None or self.asf_path is None: 
+                rich.print("[red3]Missing BOSS or ASF file")
+                return None
             process = ProcessHandler(self.boss_path, self.bras_path, self.asf_path, self.process_consumption)
             data = DataHandler(process)
             df_data = data.clients_consumption_by_state()
@@ -219,9 +258,9 @@ class ExportCLIHandler:
                 path = self.__get_path()
                 filepath = f"{path}/consumo_por_estado_{datetime.now().strftime('%Y-%m-%d')}.xlsx"
             excel = Excel(filepath)
-            savedIn = excel.export(data=df_data, sheet_name=SheetNames.VPTI)
+            excel.export(data=df_data, sheet_name=SheetNames.VPTI)
             excel.add(new_data=df_consumption, sheet_name=SheetNames.CONSUMPTION)
-            return savedIn
+            return filepath
         except Exception as error:
             print(error, __file__)
             return None

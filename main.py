@@ -111,5 +111,15 @@ def olt(boss: str, asf:str, bras: str, process: bool, filepath: str | None):
     else: rich.print("[red3]Process failed")
 
 
+@cli.command(help="Totalize the bras consumption.")
+@click.option("--filepath", help="Path of the bras consumption file.", type=click.Path(exists=True), required=True)
+def bras(filepath: str):
+    rich.print("[orange3]Starting process...")
+    processHandler = ExportCLIHandler(boss_path=None, asf_path=None, bras_path=filepath, process_consumption=True)
+    savedIn = processHandler.consumtion_bras()
+    if savedIn: rich.print("[green3]Process completed successfully. File saved in", savedIn)
+    else: rich.print("[red3]Process failed")
+
+
 if __name__ == "__main__":
     cli()
