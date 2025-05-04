@@ -1,5 +1,7 @@
 class SheetNames:
     """Class to get the name of the sheets."""
-    ADSL: str = "Data ADSL"
-    MDU: str = "Data MDU"
-    OLT: str = "Data OLT"
+    ADSL: str = "ADSL"
+    MDU: str = "MDU"
+    OLT: str = "OLT"
+    VPTI: str = "Consumo por Estado"
+    CONSUMPTION: str = "Consumo Agregadores"

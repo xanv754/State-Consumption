@@ -4,6 +4,7 @@ from datetime import datetime
 from rich.prompt import Prompt
 from rich.console import Console
 from rich.table import Table
+from constants.sheetnames import SheetNames
 from database.libs.mongo import MongoDatabase
 from database.querys.nodes import NodesQueryMongo
 from database.model.node import NodeModel
@@ -110,12 +111,14 @@ class ExportCLIHandler:
         try:
             process = ProcessHandler(self.boss_path, self.bras_path, self.asf_path, self.process_consumption)
             data = DataHandler(process)
-            df = data.clients_consumption_adsl_by_state()
+            df_data = data.clients_consumption_adsl_by_state()
+            df_consumption = process.get_data_consumption()
             if not filepath:
                 path = self.__get_path()
                 filepath = f"{path}/consumo_adsl_{datetime.now().strftime('%Y-%m-%d')}.xlsx"
-            excel = Excel(filepath, df)
-            savedIn = excel.export()
+            excel = Excel(filepath)
+            savedIn = excel.export(data=df_data, sheet_name=SheetNames.ADSL)
+            excel.add(new_data=df_consumption, sheet_name=SheetNames.CONSUMPTION)
             return savedIn
         except Exception as error:
             print(error, __file__)
@@ -137,12 +140,14 @@ class ExportCLIHandler:
         try:
             process = ProcessHandler(self.boss_path, self.bras_path, self.asf_path, self.process_consumption)
             data = DataHandler(process)
-            df = data.clients_consumption_mdu_by_state()
+            df_data = data.clients_consumption_mdu_by_state()
+            df_consumption = process.get_data_consumption()
             if not filepath:
                 path = self.__get_path()
                 filepath = f"{path}/consumo_mdu_{datetime.now().strftime('%Y-%m-%d')}.xlsx"
-            excel = Excel(filepath, df)
-            savedIn = excel.export()
+            excel = Excel(filepath)
+            savedIn = excel.export(data=df_data, sheet_name=SheetNames.MDU)
+            excel.add(new_data=df_consumption, sheet_name=SheetNames.CONSUMPTION)
             return savedIn
         except Exception as error:
             print(error, __file__)
@@ -164,12 +169,14 @@ class ExportCLIHandler:
         try:
             process = ProcessHandler(self.boss_path, self.bras_path, self.asf_path, self.process_consumption)
             data = DataHandler(process)
-            df = data.clients_consumption_olt_by_state()
+            df_data = data.clients_consumption_olt_by_state()
+            df_consumption = process.get_data_consumption()
             if not filepath:
                 path = self.__get_path()
                 filepath = f"{path}/consumo_olt_{datetime.now().strftime('%Y-%m-%d')}.xlsx"
-            excel = Excel(filepath, df)
-            savedIn = excel.export()
+            excel = Excel(filepath)
+            savedIn = excel.export(data=df_data, sheet_name=SheetNames.OLT)
+            excel.add(new_data=df_consumption, sheet_name=SheetNames.CONSUMPTION)
             return savedIn
         except Exception as error:
             print(error, __file__)
@@ -191,12 +198,14 @@ class ExportCLIHandler:
         try:
             process = ProcessHandler(self.boss_path, self.bras_path, self.asf_path, self.process_consumption)
             data = DataHandler(process)
-            df = data.clients_consumption_by_state()
+            df_data = data.clients_consumption_by_state()
+            df_consumption = process.get_data_consumption()
             if not filepath:
                 path = self.__get_path()
                 filepath = f"{path}/consumo_por_estado_{datetime.now().strftime('%Y-%m-%d')}.xlsx"
-            excel = Excel(filepath, df)
-            savedIn = excel.export()
+            excel = Excel(filepath)
+            savedIn = excel.export(data=df_data, sheet_name=SheetNames.VPTI)
+            excel.add(new_data=df_consumption, sheet_name=SheetNames.CONSUMPTION)
             return savedIn
         except Exception as error:
             print(error, __file__)

@@ -55,6 +55,10 @@ class ProcessHandler:
         """Get the data of ASF."""
         return self.data_asf
     
+    def get_data_consumption(self) -> pd.DataFrame:
+        """Get the data of consumption."""
+        return self.data_consumption
+    
     def total_clients_by_bras(self) -> pd.DataFrame:
         """Total of all clients (ADSL, MDU and OLT) by bras."""
         df_total_adsl = self.total_clients_adsl()
