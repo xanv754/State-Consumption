@@ -3,7 +3,7 @@ from pymongo.database import Database
 from pymongo.collection import Collection
 from database.constants.collection import NameCollection
 from database.schemas.nodes import NODES_SCHEMA
-from libs.settings import SettingHandler
+from utils.settings import SettingHandler
 
 
 class MongoDatabase:

@@ -10,7 +10,7 @@ from database.querys.nodes import NodesQueryMongo
 from database.model.node import NodeModel
 from libs.process.data import DataHandler
 from libs.process.process import ProcessHandler
-from libs.export.excel import Excel
+from utils.excel import Excel
 
 class DatabaseCLIHandler:
     """Handler to operate with the database to CLI."""

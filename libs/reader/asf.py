@@ -1,8 +1,8 @@
 import pandas as pd
 from constants.columns import NameColumns
-from reader.constants.columns import asf_all_columns, AsfNameColumns
-from reader.constants.filepath import Filepath
-from reader.reader import Reader
+from constants.path import PathStderr
+from libs.reader.constants.columns import asf_all_columns, AsfNameColumns
+from libs.reader.reader import Reader
 
 
 
@@ -35,7 +35,7 @@ class AsfReader(Reader):
             df = df[df[NameColumns.STATE].isnull()]
             df = df[df.nunique(axis=1) > 1]
             if not df.empty:
-                df.to_excel(Filepath.MISSING_NODES_ASF, index=False)
+                df.to_excel(PathStderr.MISSING_NODES_ASF, index=False)
         except Exception as error:
             raise error
 
@@ -47,7 +47,7 @@ class AsfReader(Reader):
             df = self.__rename_columns(df)
             if self.__check_data_state(df):
                 self.__export_missing_nodes(df)
-                raise ValueError(f"Some nodes are missing the state. See the file in {Filepath.MISSING_NODES_BOSS}")
+                raise ValueError(f"Some nodes are missing the state. See the file in {PathStderr.MISSING_NODES_BOSS}")
             df = df.drop_duplicates(subset=[AsfNameColumns.DNI])
             df = df.reset_index(drop=True)
         except Exception as error:

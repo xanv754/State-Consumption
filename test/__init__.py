@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from abc import ABC, abstractmethod
 from constants.columns import NameColumns
-from reader.constants.columns import BossNameColumns, AsfNameColumns
+from libs.reader.constants.columns import BossNameColumns, AsfNameColumns
 
 
 class FileTest(ABC):

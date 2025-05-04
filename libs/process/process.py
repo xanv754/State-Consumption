@@ -1,10 +1,10 @@
 import pandas as pd
 from constants.columns import NameColumns
-from reader.constants.columns import BossNewNameColumns
-from reader.constants.equipment import EquipmentModelConstant
-from reader.boss import BossReader
-from reader.asf import AsfReader
-from reader.traffic import ConsumptionTrafficReader
+from libs.reader.constants.columns import BossNewNameColumns
+from libs.reader.constants.equipment import EquipmentModelConstant
+from libs.reader.boss import BossReader
+from libs.reader.asf import AsfReader
+from libs.reader.traffic import ConsumptionTrafficReader
 from libs.process.calculations import Calculate
 
 

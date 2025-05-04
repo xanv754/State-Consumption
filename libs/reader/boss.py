@@ -1,9 +1,9 @@
 import pandas as pd
-from database.querys.nodes import NodesQueryMongo
 from constants.columns import NameColumns
-from reader.constants.columns import boss_all_columns, BossNewNameColumns, BossNameColumns
-from reader.constants.filepath import Filepath
-from reader.reader import Reader
+from constants.path import PathStderr
+from database.querys.nodes import NodesQueryMongo
+from libs.reader.constants.columns import boss_all_columns, BossNewNameColumns, BossNameColumns
+from libs.reader.reader import Reader
 
 
 
@@ -68,7 +68,7 @@ class BossReader(Reader):
             df = df[df[NameColumns.STATE].isnull()]
             df = df[df.nunique(axis=1) > 1]
             if not df.empty:
-                df.to_excel(Filepath.MISSING_NODES_BOSS, index=False)
+                df.to_excel(PathStderr.MISSING_NODES_BOSS, index=False)
         except Exception as error:
             raise error
 
@@ -84,7 +84,7 @@ class BossReader(Reader):
                 df = self.__add_state(df)
             if self.__check_data_state(df):
                 self.__export_missing_nodes(df)
-                raise ValueError(f"Some nodes are missing the state. See the file in {Filepath.MISSING_NODES_BOSS}")
+                raise ValueError(f"Some nodes are missing the state. See the file in {PathStderr.MISSING_NODES_BOSS}")
         except Exception as error:
             print(error, __file__)
             exit(1)
