@@ -126,3 +126,7 @@ class Calculate:
         df = df.groupby(NameColumns.STATE)[NameColumns.CONSUMPTION].sum()
         df = df.reset_index()
         return df
+    
+    @staticmethod
+    def percentage_consumption_state_equipment_by_bras(df_consumption_equipment_by_state: pd.DataFrame):
+        pass
