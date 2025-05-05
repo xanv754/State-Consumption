@@ -109,6 +109,10 @@ El archivo debe las siguientes informaciones:
 Opcionalmente, el sistema almacena la IP y la región de cada nodo. Si es posible proporcionar dicha información, los nombres de las columnas obligatoriamente deben ser: *IP*, *Region*.
 > *Nota:* No es importante si el nombre de la columna está en mayúsculas o minúsculas o intercalado. Pero sí es importante si el nombre de la columna contiene o no acentos. Obligatorio es que no contenga acentos.
 
+```bash 
+python main.py update --filepath <ruta del archivo>
+```
+
 # Procesamiento
 **IMPORTANTE:** Si el archivo de consumo por bras no está totalizado globalmente por agregador, se debe ejecutar el comando con el parámetro `--process`. Si no se realiza esta operación, es posible que ocurra un error o no se obtenga correctamente la información.
 
