@@ -82,7 +82,7 @@ class FixFormat:
         ip : int | str | None
             IP to be fixed.
         """
-        if (ip is not None) and (type(ip) == int or ip.isdigit()):
+        if (ip is not None) and (type(ip) == int or type(ip) == float or ip.isdigit()):
             ip_string = str(ip)
             ip_string_reversed = "".join(reversed(ip_string))
             i = 0
