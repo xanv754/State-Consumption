@@ -50,8 +50,8 @@ class Calculate:
         return df
     
     @staticmethod
-    def total_consumption_equipment(df_total_clients_equipment_by_bras: pd.DataFrame, df_total_clients_by_bras: pd.DataFrame, df_consumption: pd.DataFrame, brasnames: list) -> pd.DataFrame:
-        """Calculate the total consumption by equipment in bras.
+    def total_consumption_equipment_by_bras(df_total_clients_equipment_by_bras: pd.DataFrame, df_total_clients_by_bras: pd.DataFrame, df_consumption: pd.DataFrame, brasnames: list) -> pd.DataFrame:
+        """Calculate the total consumption of a equipment group by bras.
         
         Parameters
         ----------
@@ -81,8 +81,8 @@ class Calculate:
             return df
         
     @staticmethod
-    def total_consumption_equipment_by_state(df_consumption_equipment: pd.DataFrame, df_total_clients_equipment_by_state: pd.DataFrame, df_total_clients_equipment_by_bras: pd.DataFrame) -> pd.DataFrame:
-        """Calculate the total consumption by equipment in bras.
+    def total_consumption_state_equipment_by_bras(df_consumption_equipment: pd.DataFrame, df_total_clients_equipment_by_state: pd.DataFrame, df_total_clients_equipment_by_bras: pd.DataFrame) -> pd.DataFrame:
+        """Calculate the total consumption of a equipment in a state group by bras.
         
         Parameters
         ----------
@@ -113,8 +113,8 @@ class Calculate:
             return df
         
     @staticmethod
-    def total_consumption_by_state(df_total_consumption_equipment_by_state: pd.DataFrame) -> pd.DataFrame:
-        """Calculate the total consumption by state.
+    def total_consumption_equipment_by_state(df_total_consumption_equipment_by_state: pd.DataFrame) -> pd.DataFrame:
+        """Calculate the total consumption of a equipment group by state.
         
         Parameters
         ----------
