@@ -5,7 +5,7 @@ class HeaderUpdater:
 
     STATE: List[str] = ["ESTADO", "STATE"]
     CENTRAL: List[str] = ["CENTRAL", "NODO", "CENTRALES", "NODOS", "NODE", "NODES", "NAME COID"]
-    ACCOUNT_CODE: List[str] = ["CC", "CODIGO CONTABLE", "ACCOUNT CODE"]
+    ACCOUNT_CODE: List[str] = ["CC", "CODIGO CONTABLE", "CODIGO_CONTABLE", "ACCOUNT CODE", "ACCOUNT_CODE"]
 
     def validate(self, header: list) -> bool:
         """Validate the header of the data.
