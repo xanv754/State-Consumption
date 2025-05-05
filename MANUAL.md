@@ -101,7 +101,7 @@ El archivo debe las siguientes informaciones:
 > *Nota:* No es importante si el nombre de la columna está en mayúsculas o minúsculas o intercalado. Tampoco es importante si el nombre de la columna contiene o no acentos.
 * **Nombre del nodo:** El archivo debe tener una columna donde especifique el nombre de cada registro. La columna puede llamarse: *Central*, *Nodo*, *Centrales*, *Nodos*, *Node*, *Nodes*, *Name Coid*.
 > *Nota:* No es importante si el nombre de la columna está en mayúsculas o minúsculas o intercalado. Tampoco es importante si el nombre de la columna contiene o no acentos.
-* **Código contable del nodo:** El archivo debe tener una columna donde especifique el código contable de cada registro. La columna puede llamarse: *CC*, *Codigo Contable*, *Account Code*.
+* **Código contable del nodo:** El archivo debe tener una columna donde especifique el código contable de cada registro. La columna puede llamarse: *CC*, *Codigo Contable*, *Codigo_Contable*, *Account Code*, *Account_Code*.
 > *Nota:* No es importante si el nombre de la columna está en mayúsculas o minúsculas o intercalado. Tampoco es importante si el nombre de la columna contiene o no acentos.
 
 **IMPORTANTE:** **Es necesario que las columnas previamente especificadas sean únicas, ya que el sistema tomará la primera que encuentre para procesar.**
