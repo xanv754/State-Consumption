@@ -15,6 +15,12 @@ class BossReader(Reader):
         super().__init__(filename)
 
 
+    def __format_column_bras(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Format the column of the Bras."""
+        df = df.copy()
+        df = FixFormat.column_word(df, NameColumns.BRAS)
+        return df
+
     def __check_format_data(self, df: pd.DataFrame) -> None:
         """Check if the data has been correctly to process."""
         for column in df.columns.to_list():
@@ -96,6 +102,7 @@ class BossReader(Reader):
                 terminal.spinner(stop=True)
                 self.__export_missing_nodes(df)
                 raise ValueError(f"Some nodes are missing the state. See the file in {PathStderr.MISSING_NODES_BOSS}")
+            df = self.__format_column_bras(df)
             terminal.spinner(stop=True)
         except Exception as error:
             terminal.print(f"[red3]Error in: {__file__}\n {error}")

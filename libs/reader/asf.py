@@ -3,6 +3,7 @@ from constants.columns import NameColumns
 from constants.path import PathStderr
 from libs.reader.constants.columns import asf_all_columns, AsfNameColumns
 from libs.reader.reader import Reader
+from utils.format import FixFormat
 from utils.console import terminal
 
 
@@ -12,6 +13,12 @@ class AsfReader(Reader):
     def __init__(self, filename: str):
         super().__init__(filename)
 
+
+    def __format_column_bras(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Format the column of the Bras."""
+        df = df.copy()
+        df = FixFormat.column_word(df, NameColumns.BRAS)
+        return df
         
     def __check_data_state(self, df: pd.DataFrame) -> bool:
         """Check if all rows have a state."""
@@ -51,6 +58,7 @@ class AsfReader(Reader):
                 terminal.spinner(stop=True)
                 self.__export_missing_nodes(df)
                 raise ValueError(f"Some nodes are missing the state. See the file in {PathStderr.MISSING_NODES_BOSS}")
+            df = self.__format_column_bras(df)
             df = df.drop_duplicates(subset=[AsfNameColumns.DNI])
             df = df.reset_index(drop=True)
             terminal.spinner(stop=True)

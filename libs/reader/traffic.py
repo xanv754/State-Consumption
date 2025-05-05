@@ -1,6 +1,7 @@
 import pandas as pd
 from constants.columns import NameColumns
 from libs.reader.reader import Reader
+from utils.format import FixFormat
 from utils.console import terminal
 
 
@@ -13,6 +14,11 @@ class ConsumptionTrafficReader(Reader):
         self.__process = process
         super().__init__(path)
 
+    def __format_column_bras(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Format the column of the Bras."""
+        df = df.copy()
+        df = FixFormat.column_word(df, NameColumns.BRAS)
+        return df
 
     def __rename_columns(self, df: pd.DataFrame) -> pd.DataFrame:
         """Rename the columns of the data."""
@@ -50,6 +56,7 @@ class ConsumptionTrafficReader(Reader):
             if self.__process: 
                 df = self.__transform_data(df)
                 df = self.__totalize_consumption(df)
+            df = self.__format_column_bras(df)
             terminal.spinner(stop=True)
         except Exception as error:
             terminal.print(f"[red3]Error in: {__file__}\n {error}")

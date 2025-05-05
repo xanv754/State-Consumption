@@ -16,7 +16,6 @@ class DataHandler:
     def __merge_consumption_by_all_states(self, df_clients: pd.DataFrame, df_consumption: pd.DataFrame) -> pd.DataFrame:
         """Merge the data comsuption and clients (without percentage) by all states."""
         try:
-            df_clients.drop(columns=[NameColumns.BRAS], inplace=True)
             df_merge = pd.merge(df_clients, df_consumption, on=NameColumns.STATE, how='inner')
             df_merge = df_merge.reset_index(drop=True)
             df_all_states = pd.DataFrame({NameColumns.STATE: all_states})
@@ -47,13 +46,14 @@ class DataHandler:
     def clients_consumption_adsl_by_state(self) -> pd.DataFrame:
         """Get the clients and consumption ADSL by state."""
         try:
-            df_total_clients = self.data.total_clients_adsl()
+            df_total_clients = self.data.total_clients_adsl_by_state()
             df_total_consumption = self.data.total_consumption_adsl_by_state()
             df = self.__merge_consumption_by_all_states(df_total_clients, df_total_consumption)
             df.rename(columns={
                 NameColumns.TOTAL_CLIENTS: ConsumptionStateColumns.TOTAL_CLIENTS_ADSL,
                 NameColumns.CONSUMPTION: ConsumptionStateColumns.CONSUMPTION_ADSL
             }, inplace=True)
+            self.data.export_missing_bras()
         except Exception as error:
             print(error, __file__)
             exit(1)
@@ -63,13 +63,14 @@ class DataHandler:
     def clients_consumption_mdu_by_state(self) -> pd.DataFrame:
         """Get the clients and consumption MDU by state."""
         try:
-            df_total_clients = self.data.total_clients_mdu()
+            df_total_clients = self.data.total_clients_mdu_by_state()
             df_total_consumption = self.data.total_consumption_mdu_by_state()
             df = self.__merge_consumption_by_all_states(df_total_clients, df_total_consumption)
             df.rename(columns={
                 NameColumns.TOTAL_CLIENTS: ConsumptionStateColumns.TOTAL_CLIENTS_MDU,
                 NameColumns.CONSUMPTION: ConsumptionStateColumns.CONSUMPTION_MDU
             }, inplace=True)
+            self.data.export_missing_bras()
         except Exception as error:
             print(error, __file__)
             exit(1)
@@ -79,13 +80,14 @@ class DataHandler:
     def clients_consumption_olt_by_state(self) -> pd.DataFrame:
         """Get the clients and consumption OLT by state."""
         try:
-            df_total_clients = self.data.total_clients_olt()
+            df_total_clients = self.data.total_clients_olt_by_state()
             df_total_consumption = self.data.total_consumption_olt_by_state()
             df = self.__merge_consumption_by_all_states(df_total_clients, df_total_consumption)
             df.rename(columns={
                 NameColumns.TOTAL_CLIENTS: ConsumptionStateColumns.TOTAL_CLIENTS_OLT,
                 NameColumns.CONSUMPTION: ConsumptionStateColumns.CONSUMPTION_OLT
             }, inplace=True)
+            self.data.export_missing_bras()
         except Exception as error:
             print(error, __file__)
             exit(1)

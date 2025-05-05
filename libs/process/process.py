@@ -11,6 +11,7 @@ from libs.process.calculations import Calculate
 class ProcessHandler:
     """Class to process and get information from the data."""
 
+    __calculate: Calculate = Calculate()
     data_adsl: pd.DataFrame
     data_mdu: pd.DataFrame
     data_olt: pd.DataFrame
@@ -43,6 +44,10 @@ class ProcessHandler:
         df = df.reset_index(drop=True)
         return df
     
+    def export_missing_bras(self) -> None:
+        """Export the missing bras to a .xlsx file."""
+        self.__calculate.export_missing_bras()
+    
     def get_data_adsl(self) -> pd.DataFrame:
         """Get the data of ADSL."""
         return self.data_adsl
@@ -72,117 +77,135 @@ class ProcessHandler:
     
     def total_clients_adsl(self) -> pd.DataFrame:
         """Totalize clients ADSL."""
-        return Calculate.total_clients_adsl_mdu(self.data_adsl)
+        return self.__calculate.total_clients_adsl_mdu(self.data_adsl)
     
     def total_clients_mdu(self) -> pd.DataFrame:
         """Totalize clients MDU."""
-        return Calculate.total_clients_adsl_mdu(self.data_mdu)
+        return self.__calculate.total_clients_adsl_mdu(self.data_mdu)
     
     def total_clients_olt(self) -> pd.DataFrame:
         """Totalize clients OLT."""
-        return Calculate.total_clients_olt(self.data_olt)
+        return self.__calculate.total_clients_olt(self.data_olt)
+    
+    def total_clients_adsl_by_state(self) -> pd.DataFrame:
+        """Totalize clients ADSL by state."""
+        # TODO: Unit test
+        df_total_clients = self.total_clients_adsl()
+        return self.__calculate.total_clients_by_state(df_total_clients)
     
     def total_clients_adsl_by_bras(self) -> pd.DataFrame:
         """Totalize clients ADSL by bras."""
         df_total_clients = self.total_clients_adsl()
-        return Calculate.total_clients_by_bras(df_total_clients)
+        return self.__calculate.total_clients_by_bras(df_total_clients)
     
     def total_clients_mdu_by_bras(self) -> pd.DataFrame:
         """Totalize clients MDU by bras."""
         df_total_clients = self.total_clients_mdu()
-        return Calculate.total_clients_by_bras(df_total_clients)
+        return self.__calculate.total_clients_by_bras(df_total_clients)
+    
+    def total_clients_mdu_by_state(self) -> pd.DataFrame:
+        """Totalize clients MDU by state."""
+        # TODO: Unit test
+        df_total_clients = self.total_clients_mdu()
+        return self.__calculate.total_clients_by_state(df_total_clients)
 
     def total_clients_olt_by_bras(self) -> pd.DataFrame:
         """Totalize clients OLT by bras."""
         df_total_clients = self.total_clients_olt()
-        return Calculate.total_clients_by_bras(df_total_clients)
+        return self.__calculate.total_clients_by_bras(df_total_clients)
+    
+    def total_clients_olt_by_state(self) -> pd.DataFrame:
+        """Totalize clients OLT by state."""
+        # TODO: Unit test
+        df_total_clients = self.total_clients_olt()
+        return self.__calculate.total_clients_by_state(df_total_clients)
     
     def total_consumption_adsl_by_bras(self) -> pd.DataFrame: #
         """Totalize the consumption by bras only ADSL."""
         df_total_clients_adsl_by_bras = self.total_clients_adsl_by_bras()
         df_total_clients_by_bras = self.total_clients_by_bras()
         brasnames = self.data_adsl[NameColumns.BRAS].unique()
-        return Calculate.total_consumption_equipment_by_bras(df_total_clients_adsl_by_bras, df_total_clients_by_bras, self.data_consumption, brasnames)
+        return self.__calculate.total_consumption_equipment_by_bras(df_total_clients_adsl_by_bras, df_total_clients_by_bras, self.data_consumption, brasnames)
     
     def total_consumption_mdu_by_bras(self) -> pd.DataFrame:
         """Totalize the consumption by bras only MDU."""
         df_total_clients_mdu_by_bras = self.total_clients_mdu_by_bras()
         df_total_clients = self.total_clients_by_bras()
         brasnames = self.data_mdu[NameColumns.BRAS].unique()
-        return Calculate.total_consumption_equipment_by_bras(df_total_clients_mdu_by_bras, df_total_clients, self.data_consumption, brasnames)
+        return self.__calculate.total_consumption_equipment_by_bras(df_total_clients_mdu_by_bras, df_total_clients, self.data_consumption, brasnames)
 
     def total_consumption_olt_by_bras(self) -> pd.DataFrame:
         """Totalize the consumption by bras only OLT."""
         df_total_clients_olt_by_bras = self.total_clients_olt_by_bras()
         df_total_clients = self.total_clients_by_bras()
         brasnames = self.data_olt[NameColumns.BRAS].unique()
-        return Calculate.total_consumption_equipment_by_bras(df_total_clients_olt_by_bras, df_total_clients, self.data_consumption, brasnames)
+        return self.__calculate.total_consumption_equipment_by_bras(df_total_clients_olt_by_bras, df_total_clients, self.data_consumption, brasnames)
     
     def total_consumption_state_adsl_by_bras(self) -> pd.DataFrame:
         """Totalize the consumption of each state only ADSL and group by bras."""
         df_consumption_adsl_by_bras = self.total_consumption_adsl_by_bras()
         df_clients_adsl_by_state = self.total_clients_adsl()
         df_clients_adsl_by_bras = self.total_clients_adsl_by_bras()
-        return Calculate.total_consumption_state_equipment_by_bras(df_consumption_adsl_by_bras, df_clients_adsl_by_state, df_clients_adsl_by_bras)
+        return self.__calculate.total_consumption_state_equipment_by_bras(df_consumption_adsl_by_bras, df_clients_adsl_by_state, df_clients_adsl_by_bras)
     
     def total_consumption_state_mdu_by_bras(self) -> pd.DataFrame:
         """Totalize the consumption of each state only MDU and group by bras."""
         df_consumption_mdu_by_bras = self.total_consumption_mdu_by_bras()
         df_clients_mdu_by_state = self.total_clients_mdu()
         df_clients_mdu_by_bras = self.total_clients_mdu_by_bras()
-        return Calculate.total_consumption_state_equipment_by_bras(df_consumption_mdu_by_bras, df_clients_mdu_by_state, df_clients_mdu_by_bras)
+        return self.__calculate.total_consumption_state_equipment_by_bras(df_consumption_mdu_by_bras, df_clients_mdu_by_state, df_clients_mdu_by_bras)
 
     def total_consumption_state_olt_by_bras(self) -> pd.DataFrame:
         """Totalize the consumption of each state only OLT and group by bras."""
         df_consumption_olt_by_bras = self.total_consumption_olt_by_bras()
         df_clients_olt_by_state = self.total_clients_olt()
         df_clients_olt_by_bras = self.total_clients_olt_by_bras()
-        return Calculate.total_consumption_state_equipment_by_bras(df_consumption_olt_by_bras, df_clients_olt_by_state, df_clients_olt_by_bras)
+        return self.__calculate.total_consumption_state_equipment_by_bras(df_consumption_olt_by_bras, df_clients_olt_by_state, df_clients_olt_by_bras)
     
     def percentage_consumption_state_adsl_by_bras(self) -> pd.DataFrame:
         """Totalize the percentage consumption of each state only ADSL and group by bras."""
         df_consumption_state_adsl_by_bras = self.total_consumption_state_adsl_by_bras()
         df_consumption_adsl_by_bras = self.total_consumption_adsl_by_bras()
-        return Calculate.percentage_consumption_state_equipment_by_bras(df_consumption_state_adsl_by_bras, df_consumption_adsl_by_bras)
+        return self.__calculate.percentage_consumption_state_equipment_by_bras(df_consumption_state_adsl_by_bras, df_consumption_adsl_by_bras)
     
     def percentage_consumption_state_mdu_by_bras(self) -> pd.DataFrame:
         """Totalize the percentage consumption of each state only MDU and group by bras."""
         df_consumption_state_mdu_by_bras = self.total_consumption_state_mdu_by_bras()
         df_consumption_mdu_by_bras = self.total_consumption_mdu_by_bras()
-        return Calculate.percentage_consumption_state_equipment_by_bras(df_consumption_state_mdu_by_bras, df_consumption_mdu_by_bras)
+        return self.__calculate.percentage_consumption_state_equipment_by_bras(df_consumption_state_mdu_by_bras, df_consumption_mdu_by_bras)
 
     def percentage_consumption_state_olt_by_bras(self) -> pd.DataFrame:
         """Totalize the percentage consumption of each state only OLT and group by bras."""
         df_consumption_state_olt_by_bras = self.total_consumption_state_olt_by_bras()
         df_consumption_olt_by_bras = self.total_consumption_olt_by_bras()
-        return Calculate.percentage_consumption_state_equipment_by_bras(df_consumption_state_olt_by_bras, df_consumption_olt_by_bras)
+        return self.__calculate.percentage_consumption_state_equipment_by_bras(df_consumption_state_olt_by_bras, df_consumption_olt_by_bras)
     
     def total_consumption_adsl_by_state(self) -> pd.DataFrame:
         """Totalize the consumption group by state only ADSL."""
         df_consumption_state_adsl_by_bras = self.total_consumption_state_adsl_by_bras()
-        return Calculate.total_consumption_equipment_by_state(df_consumption_state_adsl_by_bras)
+        return self.__calculate.total_consumption_equipment_by_state(df_consumption_state_adsl_by_bras)
     
     def total_consumption_mdu_by_state(self) -> pd.DataFrame:
         """Totalize the consumption group by state only MDU."""
         df_consumption_state_mdu_by_bras = self.total_consumption_state_mdu_by_bras()
-        return Calculate.total_consumption_equipment_by_state(df_consumption_state_mdu_by_bras)
+        return self.__calculate.total_consumption_equipment_by_state(df_consumption_state_mdu_by_bras)
 
     def total_consumption_olt_by_state(self) -> pd.DataFrame:
         """Totalize the consumption group by state only OLT."""
         df_consumption_state_olt_by_bras = self.total_consumption_state_olt_by_bras()
-        return Calculate.total_consumption_equipment_by_state(df_consumption_state_olt_by_bras)
+        return self.__calculate.total_consumption_equipment_by_state(df_consumption_state_olt_by_bras)
     
     def percentage_consumption_adsl_by_state(self) -> pd.DataFrame:
         """Totalize the percentage consumption group by state only ADSL."""
         df_percentage_consumption_state_adsl_by_bras = self.percentage_consumption_state_adsl_by_bras()
-        return Calculate.percentage_consumption_equipment_by_state(df_percentage_consumption_state_adsl_by_bras)
+        return self.__calculate.percentage_consumption_equipment_by_state(df_percentage_consumption_state_adsl_by_bras)
     
     def percentage_consumption_mdu_by_state(self) -> pd.DataFrame:
         """Totalize the percentage consumption group by state only MDU."""
         df_percentage_consumption_state_mdu_by_bras = self.percentage_consumption_state_mdu_by_bras()
-        return Calculate.percentage_consumption_equipment_by_state(df_percentage_consumption_state_mdu_by_bras)
+        return self.__calculate.percentage_consumption_equipment_by_state(df_percentage_consumption_state_mdu_by_bras)
 
     def percentage_consumption_olt_by_state(self) -> pd.DataFrame:
         """Totalize the percentage consumption group by state only OLT."""
         df_percentage_consumption_state_olt_by_bras = self.percentage_consumption_state_olt_by_bras()
-        return Calculate.percentage_consumption_equipment_by_state(df_percentage_consumption_state_olt_by_bras)
+        return self.__calculate.percentage_consumption_equipment_by_state(df_percentage_consumption_state_olt_by_bras)
