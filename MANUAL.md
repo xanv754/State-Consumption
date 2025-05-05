@@ -107,7 +107,7 @@ El archivo debe las siguientes informaciones:
 **IMPORTANTE:** **Es necesario que las columnas previamente especificadas sean únicas, ya que el sistema tomará la primera que encuentre para procesar.**
 
 Opcionalmente, el sistema almacena la IP y la región de cada nodo. Si es posible proporcionar dicha información, los nombres de las columnas obligatoriamente deben ser: *IP*, *Region*.
-> *Nota:* No es importante si el nombre de la columna está en mayúsculas o minúsculas o intercalado. Pero sí es importante si el nombre de la columna contiene o no acentos. Obligatorio es que no contenga acentos.
+> *Nota:* No es importante si el nombre de la columna está en mayúsculas o minúsculas o intercalado. Tampoco es importante si el nombre de la columna contiene o no acentos.
 
 ```bash 
 python main.py update --filepath <ruta del archivo>
