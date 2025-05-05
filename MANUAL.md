@@ -119,6 +119,8 @@ python main.py vpti --boss <ruta del archivo BOSS> --asf <ruta del archivo ASF> 
 
 **Nota:** Por defecto, los archivos procesados se exportarán en el directorio *Descargas* (O *Downloads*) con un nombre por defecto. Si se desea cambiar el nombre del archivo, se debe especificar toda la ruta del archivo en la opción `--filepath`.
 
+**Nota:** Si se desea obtener los porcentajes de consumo, se debe especificar la opción `--percentage`.
+
 *Ejemplo:*
 ```bash 
 python main.py vpti --boss <ruta del archivo BOSS> --asf <ruta del archivo ASF> --bras <ruta del archivo de consumo por bras> --filepath <ruta del archivo>
