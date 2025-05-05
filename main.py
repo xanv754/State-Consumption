@@ -48,16 +48,25 @@ def update(filepath: str):
 @click.option("--asf", help="Path of the ASF file.", type=click.Path(exists=True), required=True)
 @click.option("--bras", help="Path of the bras consumption file.", type=click.Path(exists=True), required=True)
 @click.option("--process", help="Process the data.", is_flag=True)
+@click.option("--percentage", help="Process the data with percentage of consumption.", is_flag=True)
 @click.option("--filepath", help="Path of save the data.", type=click.Path())
-def vpti(boss: str, asf:str, bras: str, process: bool, filepath: str | None):
+def vpti(boss: str, asf:str, bras: str, process: bool, percentage: bool, filepath: str | None):
     rich.print("[orange3]Starting process...")
     processHandler = ExportCLIHandler(boss_path=boss, asf_path=asf, bras_path=bras, process_consumption=process)
-    if filepath:
-        savedIn = processHandler.clients_consumption_by_state(filepath=filepath)
+    if percentage:
+        if filepath:
+            savedIn = processHandler.clients_consumption_by_state_with_percentage(filepath=filepath)
+        else:
+            savedIn = processHandler.clients_consumption_by_state_with_percentage()
+        if savedIn: rich.print("[green3]Process completed successfully. File saved in", savedIn)
+        else: rich.print("[red3]Process failed")
     else:
-        savedIn = processHandler.clients_consumption_by_state()
-    if savedIn: rich.print("[green3]Process completed successfully. File saved in", savedIn)
-    else: rich.print("[red3]Process failed")
+        if filepath:
+            savedIn = processHandler.clients_consumption_by_state(filepath=filepath)
+        else:
+            savedIn = processHandler.clients_consumption_by_state()
+        if savedIn: rich.print("[green3]Process completed successfully. File saved in", savedIn)
+        else: rich.print("[red3]Process failed")
 
 
 @cli.command(help="Process the data only ADSL.")
@@ -65,51 +74,75 @@ def vpti(boss: str, asf:str, bras: str, process: bool, filepath: str | None):
 @click.option("--asf", help="Path of the ASF file.", type=click.Path(exists=True), required=True)
 @click.option("--bras", help="Path of the bras consumption file.", type=click.Path(exists=True), required=True)
 @click.option("--process", help="Process the data.", is_flag=True)
+@click.option("--percentage", help="Process the data with percentage of consumption.", is_flag=True)
 @click.option("--filepath", help="Path of save the data.", type=click.Path())
-def adsl(boss: str, asf:str, bras: str, process: bool, filepath: str | None):
+def adsl(boss: str, asf:str, bras: str, process: bool, percentage: bool, filepath: str | None):
     rich.print("[orange3]Starting process...")
     processHandler = ExportCLIHandler(boss_path=boss, asf_path=asf, bras_path=bras, process_consumption=process)
-    if filepath:
-        savedIn = processHandler.clients_consumption_adsl_by_state(filepath=filepath)
+    if percentage:
+        if filepath:
+            savedIn = processHandler.clients_consumption_adsl_by_state_with_percentage(filepath=filepath)
+        else:
+            savedIn = processHandler.clients_consumption_adsl_by_state_with_percentage()
+        if savedIn: rich.print("[green3]Process completed successfully. File saved in", savedIn)
+        else: rich.print("[red3]Process failed")
     else:
-        savedIn = processHandler.clients_consumption_adsl_by_state()
-    if savedIn: rich.print("[green3]Process completed successfully. File saved in", savedIn)
-    else: rich.print("[red3]Process failed")
-
+        if filepath:
+            savedIn = processHandler.clients_consumption_adsl_by_state(filepath=filepath)
+        else:
+            savedIn = processHandler.clients_consumption_adsl_by_state()
+        if savedIn: rich.print("[green3]Process completed successfully. File saved in", savedIn)
+        else: rich.print("[red3]Process failed")
 
 @cli.command(help="Process the data only MDU.")
 @click.option("--boss", help="Path of the BOSS file.", type=click.Path(exists=True), required=True)
 @click.option("--asf", help="Path of the ASF file.", type=click.Path(exists=True), required=True)
 @click.option("--bras", help="Path of the bras consumption file.", type=click.Path(exists=True), required=True)
 @click.option("--process", help="Process the data.", is_flag=True)
+@click.option("--percentage", help="Process the data with percentage of consumption.", is_flag=True)
 @click.option("--filepath", help="Path of save the data.", type=click.Path())
-def mdu(boss: str, asf:str, bras: str, process: bool, filepath: str | None):
+def mdu(boss: str, asf:str, bras: str, process: bool, percentage: bool, filepath: str | None):
     rich.print("[orange3]Starting process...")
     processHandler = ExportCLIHandler(boss_path=boss, asf_path=asf, bras_path=bras, process_consumption=process)
-    if filepath:
-        savedIn = processHandler.clients_consumption_mdu_by_state(filepath=filepath)
+    if percentage:
+        if filepath:
+            savedIn = processHandler.clients_consumption_mdu_by_state_with_percentage(filepath=filepath)
+        else:
+            savedIn = processHandler.clients_consumption_mdu_by_state_with_percentage()
+        if savedIn: rich.print("[green3]Process completed successfully. File saved in", savedIn)
+        else: rich.print("[red3]Process failed")
     else:
-        savedIn = processHandler.clients_consumption_mdu_by_state()
-    if savedIn: rich.print("[green3]Process completed successfully. File saved in", savedIn)
-    else: rich.print("[red3]Process failed")
-
+        if filepath:
+            savedIn = processHandler.clients_consumption_mdu_by_state(filepath=filepath)
+        else:
+            savedIn = processHandler.clients_consumption_mdu_by_state()
+        if savedIn: rich.print("[green3]Process completed successfully. File saved in", savedIn)
+        else: rich.print("[red3]Process failed")
 
 @cli.command(help="Process the data only OLT.")
 @click.option("--boss", help="Path of the BOSS file.", type=click.Path(exists=True), required=True)
 @click.option("--asf", help="Path of the ASF file.", type=click.Path(exists=True), required=True)
 @click.option("--bras", help="Path of the bras consumption file.", type=click.Path(exists=True), required=True)
 @click.option("--process", help="Process the data.", is_flag=True)
+@click.option("--percentage", help="Process the data with percentage of consumption.", is_flag=True)
 @click.option("--filepath", help="Path of save the data.", type=click.Path())
-def olt(boss: str, asf:str, bras: str, process: bool, filepath: str | None):
+def olt(boss: str, asf:str, bras: str, process: bool, percentage: bool, filepath: str | None):
     rich.print("[orange3]Starting process...")
     processHandler = ExportCLIHandler(boss_path=boss, asf_path=asf, bras_path=bras, process_consumption=process)
-    if filepath:
-        savedIn = processHandler.clients_consumption_olt_by_state(filepath=filepath)
+    if percentage:
+        if filepath:
+            savedIn = processHandler.clients_consumption_olt_by_state_with_percentage(filepath=filepath)
+        else:
+            savedIn = processHandler.clients_consumption_olt_by_state_with_percentage()
+        if savedIn: rich.print("[green3]Process completed successfully. File saved in", savedIn)
+        else: rich.print("[red3]Process failed")
     else:
-        savedIn = processHandler.clients_consumption_olt_by_state()
-    if savedIn: rich.print("[green3]Process completed successfully. File saved in", savedIn)
-    else: rich.print("[red3]Process failed")
-
+        if filepath:
+            savedIn = processHandler.clients_consumption_olt_by_state(filepath=filepath)
+        else:
+            savedIn = processHandler.clients_consumption_olt_by_state()
+        if savedIn: rich.print("[green3]Process completed successfully. File saved in", savedIn)
+        else: rich.print("[red3]Process failed")
 
 @cli.command(help="Totalize the bras consumption.")
 @click.option("--filepath", help="Path of the bras consumption file.", type=click.Path(exists=True), required=True)
