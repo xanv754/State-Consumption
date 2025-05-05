@@ -116,23 +116,33 @@ python main.py update --filepath <ruta del archivo>
 > *Nota:* Si el archivo para actualizar la base de datos es un archivo CSV, se debe especificar el parámetro `--delimiter` con el delimitador del archivo. Por defecto, el delimitador es `;`.
 
 # Procesamiento
-**IMPORTANTE:** Si el archivo de consumo por bras no está totalizado globalmente por agregador, se debe ejecutar el comando con el parámetro `--process`. Si no se realiza esta operación, es posible que ocurra un error o no se obtenga correctamente la información.
+
+### Opciones
+#### `--process`
+Si el archivo de consumo por bras no está totalizado globalmente por agregador, se debe ejecutar el comando con el parámetro `--process`. Si no se realiza esta operación, es posible que ocurra un error o no se obtenga correctamente la información.
 
 *Ejemplo:*
 ```bash 
 python main.py vpti --boss <ruta del archivo BOSS> --asf <ruta del archivo ASF> --bras <ruta del archivo de consumo por bras> --process
 ```
 
-**Nota:** Por defecto, los archivos procesados se exportarán en el directorio *Descargas* (O *Downloads*) con un nombre por defecto. Si se desea cambiar el nombre del archivo, se debe especificar toda la ruta del archivo en la opción `--filepath`.
-
-**Nota:** Si se desea obtener los porcentajes de consumo, se debe especificar la opción `--percentage`.
+#### `--filepath`
+Por defecto, los archivos procesados se exportarán en el directorio *Descargas* (O *Downloads*) con un nombre por defecto. Si se desea cambiar el nombre del archivo, se debe especificar toda la ruta del archivo en la opción `--filepath`.
 
 *Ejemplo:*
 ```bash 
 python main.py vpti --boss <ruta del archivo BOSS> --asf <ruta del archivo ASF> --bras <ruta del archivo de consumo por bras> --filepath <ruta del archivo>
 ```
 
-Todas estas consideraciones se aplican a los comandos de procesamiento de los datos.
+#### `--percentage`
+Si se desea obtener los porcentajes de consumo, se debe especificar la opción `--percentage`.
+
+*Ejemplo:*
+```bash 
+python main.py vpti --boss <ruta del archivo BOSS> --asf <ruta del archivo ASF> --bras <ruta del archivo de consumo por bras> --percentage
+```
+
+> *Nota:* Todas estas opciones se aplican a los comandos de procesamiento de los datos.
 
 ## Consumo por Estado General
 Para ejecutar el procesamiento y obtención de consumo por estado de ADSL, MDU y OLT, se debe ejecutar el comando:
