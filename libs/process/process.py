@@ -99,24 +99,24 @@ class ProcessHandler:
     
     def total_consumption_adsl_by_bras(self) -> pd.DataFrame: #
         """Totalize the consumption by bras only ADSL."""
-        df_total_clients_adsl = self.total_clients_adsl_by_bras()
-        df_total_clients = self.total_clients_by_bras()
+        df_total_clients_adsl_by_bras = self.total_clients_adsl_by_bras()
+        df_total_clients_by_bras = self.total_clients_by_bras()
         brasnames = self.data_adsl[NameColumns.BRAS].unique()
-        return Calculate.total_consumption_equipment_by_bras(df_total_clients_adsl, df_total_clients, self.data_consumption, brasnames)
+        return Calculate.total_consumption_equipment_by_bras(df_total_clients_adsl_by_bras, df_total_clients_by_bras, self.data_consumption, brasnames)
     
     def total_consumption_mdu_by_bras(self) -> pd.DataFrame:
         """Totalize the consumption by bras only MDU."""
-        df_total_clients_mdu = self.total_clients_mdu_by_bras()
+        df_total_clients_mdu_by_bras = self.total_clients_mdu_by_bras()
         df_total_clients = self.total_clients_by_bras()
         brasnames = self.data_mdu[NameColumns.BRAS].unique()
-        return Calculate.total_consumption_equipment_by_bras(df_total_clients_mdu, df_total_clients, self.data_consumption, brasnames)
+        return Calculate.total_consumption_equipment_by_bras(df_total_clients_mdu_by_bras, df_total_clients, self.data_consumption, brasnames)
 
     def total_consumption_olt_by_bras(self) -> pd.DataFrame:
         """Totalize the consumption by bras only OLT."""
-        df_total_clients_olt = self.total_clients_olt_by_bras()
+        df_total_clients_olt_by_bras = self.total_clients_olt_by_bras()
         df_total_clients = self.total_clients_by_bras()
         brasnames = self.data_olt[NameColumns.BRAS].unique()
-        return Calculate.total_consumption_equipment_by_bras(df_total_clients_olt, df_total_clients, self.data_consumption, brasnames)
+        return Calculate.total_consumption_equipment_by_bras(df_total_clients_olt_by_bras, df_total_clients, self.data_consumption, brasnames)
     
     def total_consumption_state_adsl_by_bras(self) -> pd.DataFrame:
         """Totalize the consumption of each state only ADSL and group by bras."""

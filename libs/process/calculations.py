@@ -34,15 +34,15 @@ class Calculate:
         return df
     
     @staticmethod
-    def total_clients_by_bras(data: pd.DataFrame) -> pd.DataFrame:
+    def total_clients_by_bras(df_total_clients: pd.DataFrame) -> pd.DataFrame:
         """Calculate the total of clients group by bras.
 
         Parameters
         ----------
-        data : pd.DataFrame
+        df_total_clients : pd.DataFrame
             Dataframe with the data to calcute. This data must have the following columns: Bras, State and Total Clients.
         """
-        df = data.copy()
+        df = df_total_clients.copy()
         df.drop(columns=[NameColumns.STATE], inplace=True)
         df = df.groupby(NameColumns.BRAS).sum()
         df[NameColumns.TOTAL_CLIENTS] = df[NameColumns.TOTAL_CLIENTS].round(2)
