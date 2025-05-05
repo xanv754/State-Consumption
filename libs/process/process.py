@@ -139,6 +139,24 @@ class ProcessHandler:
         df_clients_olt_by_bras = self.total_clients_olt_by_bras()
         return Calculate.total_consumption_state_equipment_by_bras(df_consumption_olt_by_bras, df_clients_olt_by_state, df_clients_olt_by_bras)
     
+    def percentage_consumption_state_adsl_by_bras(self) -> pd.DataFrame:
+        """Totalize the percentage consumption of each state only ADSL and group by bras."""
+        df_consumption_state_adsl_by_bras = self.total_consumption_state_adsl_by_bras()
+        df_consumption_adsl_by_bras = self.total_consumption_adsl_by_bras()
+        return Calculate.percentage_consumption_state_equipment_by_bras(df_consumption_state_adsl_by_bras, df_consumption_adsl_by_bras)
+    
+    def percentage_consumption_state_mdu_by_bras(self) -> pd.DataFrame:
+        """Totalize the percentage consumption of each state only MDU and group by bras."""
+        df_consumption_state_mdu_by_bras = self.total_consumption_state_mdu_by_bras()
+        df_consumption_mdu_by_bras = self.total_consumption_mdu_by_bras()
+        return Calculate.percentage_consumption_state_equipment_by_bras(df_consumption_state_mdu_by_bras, df_consumption_mdu_by_bras)
+
+    def percentage_consumption_state_olt_by_bras(self) -> pd.DataFrame:
+        """Totalize the percentage consumption of each state only OLT and group by bras."""
+        df_consumption_state_olt_by_bras = self.total_consumption_state_olt_by_bras()
+        df_consumption_olt_by_bras = self.total_consumption_olt_by_bras()
+        return Calculate.percentage_consumption_state_equipment_by_bras(df_consumption_state_olt_by_bras, df_consumption_olt_by_bras)
+    
     def total_consumption_adsl_by_state(self) -> pd.DataFrame:
         """Totalize the consumption group by state only ADSL."""
         df_consumption_state_adsl_by_bras = self.total_consumption_state_adsl_by_bras()
@@ -153,3 +171,18 @@ class ProcessHandler:
         """Totalize the consumption group by state only OLT."""
         df_consumption_state_olt_by_bras = self.total_consumption_state_olt_by_bras()
         return Calculate.total_consumption_equipment_by_state(df_consumption_state_olt_by_bras)
+    
+    def percentage_consumption_adsl_by_state(self) -> pd.DataFrame:
+        """Totalize the percentage consumption group by state only ADSL."""
+        df_percentage_consumption_state_adsl_by_bras = self.percentage_consumption_state_adsl_by_bras()
+        return Calculate.percentage_consumption_equipment_by_state(df_percentage_consumption_state_adsl_by_bras)
+    
+    def percentage_consumption_mdu_by_state(self) -> pd.DataFrame:
+        """Totalize the percentage consumption group by state only MDU."""
+        df_percentage_consumption_state_mdu_by_bras = self.percentage_consumption_state_mdu_by_bras()
+        return Calculate.percentage_consumption_equipment_by_state(df_percentage_consumption_state_mdu_by_bras)
+
+    def percentage_consumption_olt_by_state(self) -> pd.DataFrame:
+        """Totalize the percentage consumption group by state only OLT."""
+        df_percentage_consumption_state_olt_by_bras = self.percentage_consumption_state_olt_by_bras()
+        return Calculate.percentage_consumption_equipment_by_state(df_percentage_consumption_state_olt_by_bras)

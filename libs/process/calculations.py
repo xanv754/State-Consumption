@@ -7,7 +7,7 @@ class Calculate:
 
     @staticmethod
     def total_clients_adsl_mdu(data: pd.DataFrame) -> pd.DataFrame:
-        """Calculate the total of clients by state and their bras in ADSL or MDU.
+        """Calculate the total of clients group by state and their bras in ADSL or MDU.
         
         Parameters
         ----------
@@ -22,7 +22,7 @@ class Calculate:
     
     @staticmethod
     def total_clients_olt(data: pd.DataFrame) -> pd.DataFrame:
-        """Calculate the total of clients by state and their bras in OLT.
+        """Calculate the total of clients group by state and their bras in OLT.
         
         Parameters
         ----------
@@ -82,7 +82,7 @@ class Calculate:
         
     @staticmethod
     def total_consumption_state_equipment_by_bras(df_consumption_equipment: pd.DataFrame, df_total_clients_equipment_by_state: pd.DataFrame, df_total_clients_equipment_by_bras: pd.DataFrame) -> pd.DataFrame:
-        """Calculate the total consumption of a equipment in a state group by bras.
+        """Calculate the total consumption of a equipment of each state group by bras.
         
         Parameters
         ----------
@@ -128,5 +128,45 @@ class Calculate:
         return df
     
     @staticmethod
-    def percentage_consumption_state_equipment_by_bras(df_consumption_equipment_by_state: pd.DataFrame):
-        pass
+    def percentage_consumption_state_equipment_by_bras(df_consumption_state_equipment_by_bras: pd.DataFrame, df_consumption_equipment_by_bras: pd.DataFrame) -> pd.DataFrame:
+        """Calculate the percentage consumption of a equipment of each state group by bras.
+        
+        Parameters
+        ----------
+        df_consumption_state_equipment_by_bras : pd.DataFrame
+            A DataFrame with the total consumption of a equipment (ADSL, MDU or OLT) group by bras and state.
+        df_consumption_equipment_by_bras : pd.DataFrame
+            A DataFrame with the total consumption of a equipment (ADSL, MDU or OLT) Bras only.
+        """
+        try:
+            new_data = { NameColumns.BRAS: [], NameColumns.STATE: [], NameColumns.PERCENTAGE_CONSUMPTION: [] }
+            for _index, row in df_consumption_state_equipment_by_bras.iterrows():
+                bras = row[NameColumns.BRAS]
+                state = row[NameColumns.STATE]
+                total_consumption = row[NameColumns.CONSUMPTION]
+                total_consumption_bras = df_consumption_equipment_by_bras[df_consumption_equipment_by_bras[NameColumns.BRAS] == bras][NameColumns.CONSUMPTION].iloc[0]
+                total_percentage_bras_by_state = round((total_consumption * 100) / total_consumption_bras)
+                new_data[NameColumns.BRAS].append(bras)
+                new_data[NameColumns.STATE].append(state)
+                new_data[NameColumns.PERCENTAGE_CONSUMPTION].append(total_percentage_bras_by_state)
+            df = pd.DataFrame(new_data)
+        except Exception as error:
+            print(error, __file__)
+            exit(1)
+        else:
+            return df
+        
+    @staticmethod
+    def percentage_consumption_equipment_by_state(df_percentage_consumption_state_equipment_by_bras: pd.DataFrame) -> pd.DataFrame:
+        """Calculate the percentage consumption of a equipment group by state.
+        
+        Parameters
+        ----------
+        df_percentage_consumption_state_equipment_by_bras : pd.DataFrame
+            A DataFrame with the percentage consumption of a equipment (ADSL, MDU or OLT) group by bras and state.
+        """
+        df = df_percentage_consumption_state_equipment_by_bras.copy()
+        df = df.drop(columns=[NameColumns.BRAS])
+        df = df.groupby(NameColumns.STATE)[NameColumns.PERCENTAGE_CONSUMPTION].sum()
+        df = df.reset_index()
+        return df

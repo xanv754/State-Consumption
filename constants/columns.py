@@ -5,6 +5,7 @@ class NameColumns:
     STATE: str = "Estado"
     TOTAL_CLIENTS: str = "Total Clientes"
     CONSUMPTION: str = "Consumo (GB)"
+    PERCENTAGE_CONSUMPTION: str = "Porcentaje Consumo (%)"
 
 
 class ConsumptionStateColumns:
@@ -16,3 +17,6 @@ class ConsumptionStateColumns:
     CONSUMPTION_ADSL: str = "Consumo ADSL (GB)"
     CONSUMPTION_MDU: str = "Consumo MDU (GB)"
     CONSUMPTION_OLT: str = "Consumo OLT (GB)"
+    PERCENTAGE_CONSUMPTION_ADSL: str = "Porcentaje Consumo ADSL (%)"
+    PERCENTAGE_CONSUMPTION_MDU: str = "Porcentaje Consumo MDU (%)"
+    PERCENTAGE_CONSUMPTION_OLT: str = "Porcentaje Consumo OLT (%)"
