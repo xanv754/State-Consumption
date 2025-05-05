@@ -35,10 +35,11 @@ def database(migration: bool, rollback: bool, add: bool):
 
 @cli.command(help="Update the database.")
 @click.option("--filepath", help="Path of the file to extract the data.", type=click.Path(exists=True), required=True)
-def update(filepath: str):
+@click.option("--delimiter", help="Delimiter of the file.", type=click.Choice([";", ","]), default=";")
+def update(filepath: str, delimiter: str):
     rich.print("[orange3]Starting update database...")
     databaseHandler = DatabaseCLIHandler()
-    status = databaseHandler.update_database(filepath)
+    status = databaseHandler.update_database(filepath, delimiter=delimiter)
     if status: rich.print("[green3]Database updated successfully")
     else: rich.print("[red3]Database not updated")
 

@@ -74,7 +74,7 @@ class DatabaseCLIHandler:
 
         return NodesQueryMongo.insert_one(node=new_node)
     
-    def update_database(self, filepath: str) -> bool:
+    def update_database(self, filepath: str, delimiter: str) -> bool:
         """Update the database extracted the data from the CSV or XLSX file.
         
         Parameters
@@ -82,7 +82,7 @@ class DatabaseCLIHandler:
         filepath : str
             The path of the file to update the database.
         """
-        updaterHandler = UpdaterDatabase(filepath)
+        updaterHandler = UpdaterDatabase(filepath, delimiter=delimiter)
         status = updaterHandler.update()
         return status
     
