@@ -1,5 +1,6 @@
 import os
 from dotenv import dotenv_values
+from utils.console import terminal
 
 
 class SettingHandler:
@@ -36,7 +37,5 @@ class SettingHandler:
             else:
                 raise FileNotFoundError("No file with environment variables found")
         except Exception as error:
-            print(error, __file__)
-
-    def write_default(self):
-        pass
+            terminal.print(f"[red3]Error in: {__file__}\n {error}")
+            exit(1)

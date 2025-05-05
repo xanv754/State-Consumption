@@ -1,4 +1,6 @@
 from typing import List
+from utils.console import terminal
+
 
 class HeaderUpdater:
     """Columns of the header required to update the database."""
@@ -37,7 +39,7 @@ class HeaderUpdater:
                 if column in self.STATE: return column
             raise ValueError("State column not found")
         except Exception as error:
-            print(f"Error in: {__file__}\n {error}")
+            terminal.print(f"[red3]Error in: {__file__}\n {error}")
             exit(1)
     
     def get_central_column(self, header: list) -> str:
@@ -53,7 +55,7 @@ class HeaderUpdater:
                 if column in self.CENTRAL: return column
             raise ValueError("Central column not found")
         except Exception as error:
-            print(f"Error in: {__file__}\n {error}")
+            terminal.print(f"[red3]Error in: {__file__}\n {error}")
             exit(1)
     
     def get_account_code_column(self, header: list) -> str:
@@ -69,5 +71,5 @@ class HeaderUpdater:
                 if column in self.ACCOUNT_CODE: return column
             raise ValueError("Account code column not found")
         except Exception as error:
-            print(f"Error in: {__file__}\n {error}")
+            terminal.print(f"[red3]Error in: {__file__}\n {error}")
             exit(1)

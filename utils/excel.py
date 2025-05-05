@@ -4,6 +4,8 @@ from openpyxl.styles.colors import Color
 from openpyxl.styles import Font, PatternFill, Border, Side
 from constants.cells import cells
 from constants.columns import ConsumptionStateColumns, NameColumns
+from utils.console import terminal
+
 
 class Excel:
     """Class to export the data to excel."""
@@ -40,7 +42,7 @@ class Excel:
 
             workbook.save(self.filepath)
         except Exception as error:
-            print(error, __file__)
+            terminal.print(f"[red3]Error in: {__file__}\n {error}")
             return False
         else:
             return True
@@ -104,7 +106,7 @@ class Excel:
 
             workbook.save(self.filepath)
         except Exception as error:
-            print(error, __file__)
+            terminal.print(f"[red3]Error in: {__file__}\n {error}")
             return False
         else:
             return True
@@ -127,7 +129,7 @@ class Excel:
             self.__add_styles(sheet_name)
             self.__add_total(sheet_name, data)
         except Exception as error:
-            print(error, __file__)
+            terminal.print(f"[red3]Error in: {__file__}\n {error}")
             return False
         else:
             return True
@@ -153,7 +155,7 @@ class Excel:
             self.__add_styles(sheet_name)
             self.__add_total(sheet_name, new_data)
         except Exception as error:
-            print(error, __file__)
+            terminal.print(f"[red3]Error in: {__file__}\n {error}")
             return False
         else:
             return True

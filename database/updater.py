@@ -6,6 +6,7 @@ from database.model.node import NodeModel
 from database.querys.nodes import NodesQueryMongo
 from database.utils.header import HeaderUpdater
 from utils.format import FixFormat
+from utils.console import terminal
 
 
 class UpdaterDatabase:
@@ -24,7 +25,7 @@ class UpdaterDatabase:
             else:
                 raise ValueError("The data header does not contain all the columns required to update the database. Please refer to the documentation for details of the required columns")
         except Exception as error:
-            print(f"Error in: {__file__}\n {error}")
+            terminal.print(f"[red3]Error in: {__file__}\n {error}")
             exit(1)
 
     def __data_with_account_code(self) -> None:
@@ -109,6 +110,7 @@ class UpdaterDatabase:
     
     def update(self) -> bool:
         """Update the database."""
+        terminal.spinner(text="Reading data...")
         self.__data_with_account_code()
         self.__data_with_state()
         self.__data_with_central()
@@ -116,4 +118,7 @@ class UpdaterDatabase:
         self.__fix_columns()
         self.__rename_columns()
         nodes = self.__convert_node_model()
-        return NodesQueryMongo.insert_many(nodes)
+        terminal.spinner(stop=True)
+        status = NodesQueryMongo.insert_many(nodes)
+        terminal.print(f"Operation completed.")
+        return status

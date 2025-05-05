@@ -1,6 +1,7 @@
 import pandas as pd
 from constants.columns import NameColumns
 from libs.reader.reader import Reader
+from utils.console import terminal
 
 
 class ConsumptionTrafficReader(Reader):
@@ -42,14 +43,16 @@ class ConsumptionTrafficReader(Reader):
 
     def get_data(self) -> pd.DataFrame:
         try:
+            terminal.spinner(text="Reading data consumption...")
             filename = self.get_filename()
             df = pd.read_excel(filename)
             df = self.__rename_columns(df)
             if self.__process: 
                 df = self.__transform_data(df)
                 df = self.__totalize_consumption(df)
+            terminal.spinner(stop=True)
         except Exception as error:
-            print(error, __file__)
+            terminal.print(f"[red3]Error in: {__file__}\n {error}")
             exit(1)
         else:
             return df

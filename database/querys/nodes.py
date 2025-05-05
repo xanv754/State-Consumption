@@ -5,6 +5,7 @@ from database.constants.fields import NodesFieldCollection
 from database.libs.mongo import MongoDatabase
 from database.model.node import NodeModel
 from database.utils.adapter import AdapterMongo
+from utils.console import terminal
 
 
 class NodesQueryMongo:
@@ -37,7 +38,7 @@ class NodesQueryMongo:
             else:
                 return True
         except Exception as error:
-            print(error, __file__)
+            terminal.print(f"[red3]Error in: {__file__}\n {error}")
             return False
 
     @staticmethod
@@ -55,9 +56,11 @@ class NodesQueryMongo:
         """
         try:
             data: List[dict] = []
+            terminal.spinner(text="Finding existing nodes...")
             for node in nodes:
                 if not NodesQueryMongo.find_one(node.state, node.central, node.account_code):
                     data.append(node.model_dump(exclude={NodesFieldCollection.ID}))
+            terminal.spinner(stop=True)
             database = MongoDatabase()
             if database.connected:
                 query = database.get_collection(name=NameCollection.NODES)
@@ -66,7 +69,7 @@ class NodesQueryMongo:
                 return response.acknowledged
             return False
         except Exception as error:
-            print(error, __file__)
+            terminal.print(f"[red3]Error in: {__file__}\n {error}")
             return False
 
     @staticmethod
@@ -97,7 +100,7 @@ class NodesQueryMongo:
                     if data: return data[0]
             return None
         except Exception as error:
-            print(error, __file__)
+            terminal.print(f"[red3]Error in: {__file__}\n {error}")
             return None
 
     @staticmethod
@@ -122,7 +125,7 @@ class NodesQueryMongo:
                     if data: return data
             return []
         except Exception as error:
-            print(error, __file__)
+            terminal.print(f"[red3]Error in: {__file__}\n {error}")
             return []
 
     @staticmethod
@@ -156,5 +159,5 @@ class NodesQueryMongo:
                 return response.acknowledged
             return False
         except Exception as error:
-            print(error, __file__)
+            terminal.print(f"[red3]Error in: {__file__}\n {error}")
             return False

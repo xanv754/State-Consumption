@@ -5,7 +5,7 @@ from database.querys.nodes import NodesQueryMongo
 from libs.reader.constants.columns import boss_all_columns, BossNewNameColumns, BossNameColumns
 from libs.reader.reader import Reader
 from utils.format import FixFormat
-
+from utils.console import terminal
 
 
 class BossReader(Reader):
@@ -72,15 +72,17 @@ class BossReader(Reader):
     def __export_missing_nodes(self, df: pd.DataFrame) -> None:
         """Export the missing nodes to a .xlsx file."""
         try:
+            terminal.print(f"Some nodes are missing the state. Saving nodes missing information...")
             df = df[df[NameColumns.STATE].isnull()]
             df = df[df.nunique(axis=1) > 1]
-            if not df.empty:
-                df.to_excel(PathStderr.MISSING_NODES_BOSS, index=False)
+            df.to_excel(PathStderr.MISSING_NODES_BOSS, index=False)
+            terminal.print(f"Nodes missing saved in {PathStderr.MISSING_NODES_BOSS}!")
         except Exception as error:
-            raise error
+            exit(1)
 
     def get_data(self) -> pd.DataFrame:
         try:
+            terminal.spinner(text="Reading data BOSS...")
             filename = self.get_filename()
             all_df = pd.read_excel(filename)
             self.__check_format_data(all_df)
@@ -91,10 +93,12 @@ class BossReader(Reader):
             if not self.__check_column_state(df): 
                 df = self.__add_state(df)
             if self.__check_data_state(df):
+                terminal.spinner(stop=True)
                 self.__export_missing_nodes(df)
                 raise ValueError(f"Some nodes are missing the state. See the file in {PathStderr.MISSING_NODES_BOSS}")
+            terminal.spinner(stop=True)
         except Exception as error:
-            print(error, __file__)
+            terminal.print(f"[red3]Error in: {__file__}\n {error}")
             exit(1)
         else:
             return df

@@ -4,6 +4,7 @@ from pymongo.collection import Collection
 from database.constants.collection import NameCollection
 from database.schemas.nodes import NODES_SCHEMA
 from utils.settings import SettingHandler
+from utils.console import terminal
 
 
 class MongoDatabase:
@@ -27,7 +28,7 @@ class MongoDatabase:
             name_db = uri.split("/")[-1]
             database = client[name_db]
         except Exception as error:
-            print(error, __file__)
+            terminal.print(f"[red3]Error in: {__file__}\n {error}")
             exit(1)
         else:
             self.__name_db = name_db
@@ -68,7 +69,7 @@ class MongoDatabase:
                     validator=NODES_SCHEMA,
                 )
         except Exception as error:
-            print(error, __file__)
+            terminal.print(f"[red3]Error in: {__file__}\n {error}")
             return False
         else:
             return True
@@ -82,7 +83,7 @@ class MongoDatabase:
                 self.__database.drop_collection(NameCollection.NODES)
                 self.__connnection.drop_database(self.__name_db)
         except Exception as error:
-            print(error, __file__)
+            terminal.print(f"[red3]Error in: {__file__}\n {error}")
             return False
         else:
             return True
