@@ -1,2 +1,2 @@
 class NameCollection:
-    NODES: str = "nodes"
+    NODES: str = "NODES"
