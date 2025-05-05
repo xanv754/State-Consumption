@@ -108,6 +108,32 @@ class TestAdsl(unittest.TestCase):
         self.assertTrue(data_adsl[NameColumns.CONSUMPTION][0] == 1.60)
         self.assertTrue(data_adsl[NameColumns.CONSUMPTION][1] == 2.23)
 
+    def test_percentage_consumption_by_bras(self):
+        """Test the percentage consumption of ADSL by state."""
+        asf_path = self.create_asf()
+        boss_path = self.create_boss()
+        consumption_path = self.create_consumption()
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        data_adsl = dataHandler.percentage_consumption_state_adsl_by_bras()
+        self.delete_files()
+
+        self.assertFalse(data_adsl.empty)
+        self.assertTrue(data_adsl[NameColumns.PERCENTAGE_CONSUMPTION][0] == 42)
+        self.assertTrue(data_adsl[NameColumns.PERCENTAGE_CONSUMPTION][1] == 58)
+
+    def test_percentage_consumption_by_state(self):
+        """Test the percentage consumption of ADSL by state."""
+        asf_path = self.create_asf()
+        boss_path = self.create_boss()
+        consumption_path = self.create_consumption()
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        data_adsl = dataHandler.percentage_consumption_adsl_by_state()
+        self.delete_files()
+
+        self.assertFalse(data_adsl.empty)
+        self.assertTrue(data_adsl[NameColumns.PERCENTAGE_CONSUMPTION][0] == 42)
+        self.assertTrue(data_adsl[NameColumns.PERCENTAGE_CONSUMPTION][1] == 58)
+
 
 class TestMdu(unittest.TestCase):
     """Test class to test the process."""
@@ -213,6 +239,32 @@ class TestMdu(unittest.TestCase):
         self.assertTrue(data_mdu[NameColumns.CONSUMPTION][0] == 3.19)
         self.assertTrue(data_mdu[NameColumns.CONSUMPTION][1] == 3.19)
 
+    def test_percentage_consumption_by_bras(self):
+        """Test the percentage consumption of MDU by state."""
+        asf_path = self.create_asf()
+        boss_path = self.create_boss()
+        consumption_path = self.create_consumption()
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        data_mdu = dataHandler.percentage_consumption_state_mdu_by_bras()
+        self.delete_files()
+
+        self.assertFalse(data_mdu.empty)
+        self.assertTrue(data_mdu[NameColumns.PERCENTAGE_CONSUMPTION][0] == 50)
+        self.assertTrue(data_mdu[NameColumns.PERCENTAGE_CONSUMPTION][1] == 50)
+
+    def test_percentage_consumption_by_state(self):
+        """Test the percentage consumption of MDU by state."""
+        asf_path = self.create_asf()
+        boss_path = self.create_boss()
+        consumption_path = self.create_consumption()
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        data_mdu = dataHandler.percentage_consumption_mdu_by_state()
+        self.delete_files()
+
+        self.assertFalse(data_mdu.empty)
+        self.assertTrue(data_mdu[NameColumns.PERCENTAGE_CONSUMPTION][0] == 50)
+        self.assertTrue(data_mdu[NameColumns.PERCENTAGE_CONSUMPTION][1] == 50)
+
 
 class TestOlt(unittest.TestCase):
     """Test class to test the process."""
@@ -250,10 +302,10 @@ class TestOlt(unittest.TestCase):
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
         dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
-        data_asf = dataHandler.get_data_asf()
+        data_olt = dataHandler.get_data_asf()
         self.delete_files()
 
-        self.assertTrue(len(data_asf) == 2)
+        self.assertTrue(len(data_olt) == 2)
 
     def test_total_clients_by_state(self):
         """Test the total clients by state of ASF."""
@@ -261,12 +313,12 @@ class TestOlt(unittest.TestCase):
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
         dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
-        data_asf = dataHandler.total_clients_olt()
+        data_olt = dataHandler.total_clients_olt()
         self.delete_files()
 
-        self.assertFalse(data_asf.empty)
-        self.assertTrue(NameColumns.TOTAL_CLIENTS in data_asf.columns)
-        self.assertTrue(data_asf[NameColumns.TOTAL_CLIENTS][0] == 2)
+        self.assertFalse(data_olt.empty)
+        self.assertTrue(NameColumns.TOTAL_CLIENTS in data_olt.columns)
+        self.assertTrue(data_olt[NameColumns.TOTAL_CLIENTS][0] == 2)
 
     def test_total_clients_by_bras(self):
         """Test the total clients by bras of MDU."""
@@ -274,11 +326,11 @@ class TestOlt(unittest.TestCase):
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
         dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
-        data_asf = dataHandler.total_clients_olt_by_bras()
+        data_olt = dataHandler.total_clients_olt_by_bras()
         self.delete_files()
 
-        self.assertFalse(data_asf.empty)
-        self.assertTrue(data_asf[NameColumns.TOTAL_CLIENTS][0] == 2)
+        self.assertFalse(data_olt.empty)
+        self.assertTrue(data_olt[NameColumns.TOTAL_CLIENTS][0] == 2)
 
     def test_total_consumption_by_bras(self):
         """Test the total consumption by bras of MDU."""
@@ -286,11 +338,11 @@ class TestOlt(unittest.TestCase):
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
         dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
-        data_asf = dataHandler.total_consumption_olt_by_bras()
+        data_olt = dataHandler.total_consumption_olt_by_bras()
         self.delete_files()
 
-        self.assertFalse(data_asf.empty)
-        self.assertTrue(data_asf[NameColumns.CONSUMPTION][0] == 0.64)
+        self.assertFalse(data_olt.empty)
+        self.assertTrue(data_olt[NameColumns.CONSUMPTION][0] == 0.64)
 
     def test_total_consumption_bras_by_state(self):
         """Test the total consumption of each bras by state of ASF."""
@@ -298,11 +350,11 @@ class TestOlt(unittest.TestCase):
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
         dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
-        data_asf = dataHandler.total_consumption_state_olt_by_bras()
+        data_olt = dataHandler.total_consumption_state_olt_by_bras()
         self.delete_files()
 
-        self.assertFalse(data_asf.empty)
-        self.assertTrue(data_asf[NameColumns.CONSUMPTION][0] == 0.64)
+        self.assertFalse(data_olt.empty)
+        self.assertTrue(data_olt[NameColumns.CONSUMPTION][0] == 0.64)
 
     def test_total_consumption_by_state(self):
         """Test the total consumption of MDU by state."""
@@ -310,11 +362,35 @@ class TestOlt(unittest.TestCase):
         boss_path = self.create_boss()
         consumption_path = self.create_consumption()
         dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
-        data_asf = dataHandler.total_consumption_olt_by_state()
+        data_olt = dataHandler.total_consumption_olt_by_state()
         self.delete_files()
 
-        self.assertFalse(data_asf.empty)
-        self.assertTrue(data_asf[NameColumns.CONSUMPTION][0] == 0.64)
+        self.assertFalse(data_olt.empty)
+        self.assertTrue(data_olt[NameColumns.CONSUMPTION][0] == 0.64)
+
+    def test_percentage_consumption_by_bras(self):
+        """Test the percentage consumption of OLT by state."""
+        asf_path = self.create_asf()
+        boss_path = self.create_boss()
+        consumption_path = self.create_consumption()
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        data_olt = dataHandler.percentage_consumption_state_olt_by_bras()
+        self.delete_files()
+
+        self.assertFalse(data_olt.empty)
+        self.assertTrue(data_olt[NameColumns.PERCENTAGE_CONSUMPTION][0] == 100)
+
+    def test_percentage_consumption_by_state(self):
+        """Test the percentage consumption of OLT by state."""
+        asf_path = self.create_asf()
+        boss_path = self.create_boss()
+        consumption_path = self.create_consumption()
+        dataHandler = ProcessHandler(boss_path, consumption_path, asf_path, process_consumption=True)
+        data_olt = dataHandler.percentage_consumption_olt_by_state()
+        self.delete_files()
+
+        self.assertFalse(data_olt.empty)
+        self.assertTrue(data_olt[NameColumns.PERCENTAGE_CONSUMPTION][0] == 100)
 
 
 class TestData(unittest.TestCase):
