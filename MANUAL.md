@@ -113,6 +113,8 @@ Opcionalmente, el sistema almacena la IP y la región de cada nodo. Si es posibl
 python main.py update --filepath <ruta del archivo>
 ```
 
+> *Nota:* Si el archivo para actualizar la base de datos es un archivo CSV, se debe especificar el parámetro `--delimiter` con el delimitador del archivo. Por defecto, el delimitador es `;`.
+
 # Procesamiento
 **IMPORTANTE:** Si el archivo de consumo por bras no está totalizado globalmente por agregador, se debe ejecutar el comando con el parámetro `--process`. Si no se realiza esta operación, es posible que ocurra un error o no se obtenga correctamente la información.
 
