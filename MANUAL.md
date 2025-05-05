@@ -11,6 +11,7 @@
     - [Agregar nuevo nodo](#agregar-nuevo-nodo)
     - [Agregar/Actualizar varios nodos](#agregaractualizar-varios-nodos)
 - [Procesamiento](#procesamiento)
+    - [Opciones](#opciones)
     - [Consumo por Estado General](#consumo-por-estado-general)
     - [Consumo por Estado de ADSL](#consumo-por-estado-de-adsl)
     - [Consumo por Estado de MDU](#consumo-por-estado-de-mdu)
