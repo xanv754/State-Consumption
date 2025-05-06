@@ -24,8 +24,10 @@ class Excel:
             max_row = sheet.max_row
 
             # Set the width of the columns
-            for column in range(1, max_column + 1):
-                sheet.column_dimensions[cells[column]].width = 30
+            sheet.column_dimensions[cells[1]].width = 35
+            for column in range(2, max_column + 1):
+                max_length = len(str(sheet.cell(row=1, column=column).value))
+                sheet.column_dimensions[cells[column]].width = max_length + 2
 
             # Set header styles 
             font = Font(bold=True, color=Color(rgb="FFFFFF"))
@@ -67,42 +69,92 @@ class Excel:
             sheet = workbook[sheet_name]
             max_row = sheet.max_row + 1
             border = Border(left=Side(style="thin", color=Color(rgb="000000")), right=Side(style="thin", color=Color(rgb="000000")), top=Side(style="thin", color=Color(rgb="000000")), bottom=Side(style="thin", color=Color(rgb="000000")))
+            total_clients = 0
+            total_consumption = 0
+            total_percentage_consumption = 0
 
             if ConsumptionStateColumns.TOTAL_CLIENTS_ADSL in data.columns.to_list():
                 total_clients_adsl = data[ConsumptionStateColumns.TOTAL_CLIENTS_ADSL].sum()
+                total_clients += total_clients_adsl
                 column = data.columns.get_loc(ConsumptionStateColumns.TOTAL_CLIENTS_ADSL)
                 sheet.cell(row=max_row, column=column + 1).value = total_clients_adsl
                 sheet.cell(row=max_row, column=column + 1).border = border
             if ConsumptionStateColumns.CONSUMPTION_ADSL in data.columns.to_list():
                 total_consumption_adsl = data[ConsumptionStateColumns.CONSUMPTION_ADSL].sum()
+                total_consumption += total_consumption_adsl
                 column = data.columns.get_loc(ConsumptionStateColumns.CONSUMPTION_ADSL)
                 sheet.cell(row=max_row, column=column + 1).value = total_consumption_adsl
                 sheet.cell(row=max_row, column=column + 1).border = border
+            if ConsumptionStateColumns.PERCENTAGE_CONSUMPTION_ADSL in data.columns.to_list():
+                total_percentage_consumption_adsl = data[ConsumptionStateColumns.PERCENTAGE_CONSUMPTION_ADSL].sum()
+                total_percentage_consumption += total_percentage_consumption_adsl
+                column = data.columns.get_loc(ConsumptionStateColumns.PERCENTAGE_CONSUMPTION_ADSL)
+                sheet.cell(row=max_row, column=column + 1).value = total_percentage_consumption_adsl
+                sheet.cell(row=max_row, column=column + 1).border = border
             if ConsumptionStateColumns.TOTAL_CLIENTS_MDU in data.columns.to_list():
                 total_clients_mdu = data[ConsumptionStateColumns.TOTAL_CLIENTS_MDU].sum()
+                total_clients += total_clients_mdu
                 column = data.columns.get_loc(ConsumptionStateColumns.TOTAL_CLIENTS_MDU)
                 sheet.cell(row=max_row, column=column + 1).value = total_clients_mdu
                 sheet.cell(row=max_row, column=column + 1).border = border
             if ConsumptionStateColumns.CONSUMPTION_MDU in data.columns.to_list():
                 total_consumption_mdu = data[ConsumptionStateColumns.CONSUMPTION_MDU].sum()
+                total_consumption += total_consumption_mdu
                 column = data.columns.get_loc(ConsumptionStateColumns.CONSUMPTION_MDU)
                 sheet.cell(row=max_row, column=column + 1).value = total_consumption_mdu
                 sheet.cell(row=max_row, column=column + 1).border = border
+            if ConsumptionStateColumns.PERCENTAGE_CONSUMPTION_MDU in data.columns.to_list():
+                total_percentage_consumption_mdu = data[ConsumptionStateColumns.PERCENTAGE_CONSUMPTION_MDU].sum()
+                total_percentage_consumption += total_percentage_consumption_mdu
+                column = data.columns.get_loc(ConsumptionStateColumns.PERCENTAGE_CONSUMPTION_MDU)
+                sheet.cell(row=max_row, column=column + 1).value = total_percentage_consumption_mdu
+                sheet.cell(row=max_row, column=column + 1).border = border
             if ConsumptionStateColumns.TOTAL_CLIENTS_OLT in data.columns.to_list():
                 total_clients_olt = data[ConsumptionStateColumns.TOTAL_CLIENTS_OLT].sum()
+                total_clients += total_clients_olt
                 column = data.columns.get_loc(ConsumptionStateColumns.TOTAL_CLIENTS_OLT)
                 sheet.cell(row=max_row, column=column + 1).value = total_clients_olt
                 sheet.cell(row=max_row, column=column + 1).border = border
             if ConsumptionStateColumns.CONSUMPTION_OLT in data.columns.to_list():
                 total_consumption_olt = data[ConsumptionStateColumns.CONSUMPTION_OLT].sum()
+                total_consumption += total_consumption_olt
                 column = data.columns.get_loc(ConsumptionStateColumns.CONSUMPTION_OLT)
                 sheet.cell(row=max_row, column=column + 1).value = total_consumption_olt
                 sheet.cell(row=max_row, column=column + 1).border = border
-            if NameColumns.CONSUMPTION in data.columns.to_list():
-                total_consumption = data[NameColumns.CONSUMPTION].sum()
-                column = data.columns.get_loc(NameColumns.CONSUMPTION)
-                sheet.cell(row=max_row, column=column + 1).value = total_consumption
+            if ConsumptionStateColumns.PERCENTAGE_CONSUMPTION_OLT in data.columns.to_list():
+                total_percentage_consumption_olt = data[ConsumptionStateColumns.PERCENTAGE_CONSUMPTION_OLT].sum()
+                total_percentage_consumption += total_percentage_consumption_olt
+                column = data.columns.get_loc(ConsumptionStateColumns.PERCENTAGE_CONSUMPTION_OLT)
+                sheet.cell(row=max_row, column=column + 1).value = total_percentage_consumption_olt
                 sheet.cell(row=max_row, column=column + 1).border = border
+            if NameColumns.CONSUMPTION in data.columns.to_list():
+                total_consumption_data = data[NameColumns.CONSUMPTION].sum()
+                column = data.columns.get_loc(NameColumns.CONSUMPTION)
+                sheet.cell(row=max_row, column=column + 1).value = total_consumption_data
+                sheet.cell(row=max_row, column=column + 1).border = border
+            if NameColumns.PERCENTAGE_CONSUMPTION in data.columns.to_list():
+                total_percentage_consumption_data = data[NameColumns.PERCENTAGE_CONSUMPTION].sum()
+                column = data.columns.get_loc(NameColumns.PERCENTAGE_CONSUMPTION)
+                sheet.cell(row=max_row, column=column + 1).value = total_percentage_consumption_data
+                sheet.cell(row=max_row, column=column + 1).border = border
+
+            if total_clients != 0:
+                sheet.cell(row=max_row + 4, column=1).value = "Total de Clientes"
+                sheet.cell(row=max_row + 4, column=1).border = border
+                sheet.cell(row=max_row + 4, column=2).value = total_clients
+                sheet.cell(row=max_row + 4, column=2).border = border
+            
+            if total_consumption != 0:
+                sheet.cell(row=max_row + 5, column=1).value = "Total de Consumo Procesado"
+                sheet.cell(row=max_row + 5, column=1).border = border
+                sheet.cell(row=max_row + 5, column=2).value = total_consumption
+                sheet.cell(row=max_row + 5, column=2).border = border
+
+            if total_percentage_consumption != 0:
+                sheet.cell(row=max_row + 6, column=1).value = "Porcentage de Consumo Procesado"
+                sheet.cell(row=max_row + 6, column=1).border = border
+                sheet.cell(row=max_row + 6, column=2).value = total_percentage_consumption
+                sheet.cell(row=max_row + 6, column=2).border = border
 
             workbook.save(self.filepath)
         except Exception as error:

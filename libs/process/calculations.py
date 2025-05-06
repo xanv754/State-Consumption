@@ -194,61 +194,23 @@ class Calculate:
         except Exception as error:
             terminal.print(f"[red3]Error in: {__file__}, Method: total_consumption_equipment_by_state\n {error}")
             exit(1)
-    
-    
-    def percentage_consumption_state_equipment_by_bras(self, df_consumption_state_equipment_by_bras: pd.DataFrame, df_consumption_equipment_by_bras: pd.DataFrame) -> pd.DataFrame:
-        """Calculate the percentage consumption of a equipment of each state group by bras.
+
+    def percentage_consumption_by_state(self, df_consumption_by_state: pd.DataFrame, total_consumption: float) -> pd.DataFrame:
+        """Calculate the percentage consumption of each state.
         
         Parameters
         ----------
-        df_consumption_state_equipment_by_bras : pd.DataFrame
-            A DataFrame with the total consumption of a equipment (ADSL, MDU or OLT) group by bras and state.
-        df_consumption_equipment_by_bras : pd.DataFrame
-            A DataFrame with the total consumption of a equipment (ADSL, MDU or OLT) Bras only.
+        df_consumption_by_state : pd.DataFrame
+            A DataFrame with the consumption by state Bras only.
+        total_consumption : float
+            Total consumption of the equipment.
         """
         try:
-            new_data = { NameColumns.BRAS: [], NameColumns.STATE: [], NameColumns.PERCENTAGE_CONSUMPTION: [] }
-            bras_consumption_not_found = []
-            for _index, row in df_consumption_state_equipment_by_bras.iterrows():
-                bras = row[NameColumns.BRAS]
-                state = row[NameColumns.STATE]
-                total_consumption = row[NameColumns.CONSUMPTION]
-                if bras in df_consumption_equipment_by_bras[NameColumns.BRAS].unique():
-                    total_consumption_bras = df_consumption_equipment_by_bras[df_consumption_equipment_by_bras[NameColumns.BRAS] == bras][NameColumns.CONSUMPTION].iloc[0]
-                    if total_consumption_bras != 0:
-                        total_percentage_bras_by_state = round((total_consumption * 100) / total_consumption_bras)
-                    else:
-                        total_percentage_bras_by_state = 0
-                    new_data[NameColumns.BRAS].append(bras)
-                    new_data[NameColumns.STATE].append(state)
-                    new_data[NameColumns.PERCENTAGE_CONSUMPTION].append(total_percentage_bras_by_state)
-                else:
-                    bras_consumption_not_found.append(bras)
-            df = pd.DataFrame(new_data)
-            if bras_consumption_not_found:
-                df_missing = pd.DataFrame(bras_consumption_not_found, columns=[NameColumns.BRAS])
-                self.__add_missing_bras(df_missing)
-        except Exception as error:
-            terminal.print(f"[red3]Error in: {__file__}, Method: percentage_consumption_state_equipment_by_bras\n {error}")
-            exit(1)
-        else:
-            return df
-        
-    
-    def percentage_consumption_equipment_by_state(self, df_percentage_consumption_state_equipment_by_bras: pd.DataFrame) -> pd.DataFrame:
-        """Calculate the percentage consumption of a equipment group by state.
-        
-        Parameters
-        ----------
-        df_percentage_consumption_state_equipment_by_bras : pd.DataFrame
-            A DataFrame with the percentage consumption of a equipment (ADSL, MDU or OLT) group by bras and state.
-        """
-        try:
-            df = df_percentage_consumption_state_equipment_by_bras.copy()
-            df = df.drop(columns=[NameColumns.BRAS])
-            df = df.groupby(NameColumns.STATE)[NameColumns.PERCENTAGE_CONSUMPTION].sum()
-            df = df.reset_index()
+            df = df_consumption_by_state.copy()
+            df[NameColumns.PERCENTAGE_CONSUMPTION] = ((df[NameColumns.CONSUMPTION] * 100) / total_consumption).round(2)
+            df = df.drop(columns=[NameColumns.CONSUMPTION])
+            df = df.reset_index(drop=True)
             return df
         except Exception as error:
-            terminal.print(f"[red3]Error in: {__file__}, Method: percentage_consumption_equipment_by_state\n {error}")
+            terminal.print(f"[red3]Error in: {__file__}, Method: percentage_consumption_by_state\n {error}")
             exit(1)
