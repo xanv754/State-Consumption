@@ -215,7 +215,10 @@ class Calculate:
                 total_consumption = row[NameColumns.CONSUMPTION]
                 if bras in df_consumption_equipment_by_bras[NameColumns.BRAS].unique():
                     total_consumption_bras = df_consumption_equipment_by_bras[df_consumption_equipment_by_bras[NameColumns.BRAS] == bras][NameColumns.CONSUMPTION].iloc[0]
-                    total_percentage_bras_by_state = round((total_consumption * 100) / total_consumption_bras)
+                    if total_consumption_bras != 0:
+                        total_percentage_bras_by_state = round((total_consumption * 100) / total_consumption_bras)
+                    else:
+                        total_percentage_bras_by_state = 0
                     new_data[NameColumns.BRAS].append(bras)
                     new_data[NameColumns.STATE].append(state)
                     new_data[NameColumns.PERCENTAGE_CONSUMPTION].append(total_percentage_bras_by_state)
