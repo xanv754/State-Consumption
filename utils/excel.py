@@ -25,7 +25,7 @@ class Excel:
 
             # Set the width of the columns
             for column in range(1, max_column + 1):
-                sheet.column_dimensions[cells[column]].width = 25
+                sheet.column_dimensions[cells[column]].width = 30
 
             # Set header styles 
             font = Font(bold=True, color=Color(rgb="FFFFFF"))
