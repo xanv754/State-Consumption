@@ -14,6 +14,11 @@ class Reader(ABC):
         return self.__filename
 
     @abstractmethod
-    def get_data(self, filename: str) -> pd.DataFrame:
+    def get_data(self) -> pd.DataFrame:
         """Read the data from the file."""
+        pass
+
+    @abstractmethod
+    def check_reader(self) -> bool:
+        """Check if the proccess to reader the data will be successful."""
         pass

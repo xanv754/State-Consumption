@@ -63,3 +63,13 @@ class ConsumptionTrafficReader(Reader):
             exit(1)
         else:
             return df
+        
+    def check_reader(self) -> bool:
+        try:
+            self.get_data()
+        except Exception as error:
+            terminal.print(f"[red3]Error in: {__file__}\n {error}")
+            return False
+        else:
+            return True
+        

@@ -12,8 +12,40 @@ from database.updater import UpdaterDatabase
 from libs.process.data import DataHandler
 from libs.process.process import ProcessHandler
 from libs.reader.traffic import ConsumptionTrafficReader
+from libs.reader.boss import BossReader
+from libs.reader.asf import AsfReader
 from utils.excel import Excel
 from utils.format import FixFormat
+
+
+class ReaderCLIHandler:
+
+    @staticmethod
+    def inspect_boss(filepath: str) -> None:
+        """Inspect the BOSS file."""
+        boss = BossReader(filepath)
+        if boss.check_reader():
+            rich.print("[green3]BOSS data is valid to process")
+        else:
+            rich.print("[red3]BOSS file is not valid to process")
+
+    @staticmethod
+    def inspect_asf(filepath: str) -> None:
+        """Inspect the ASF file."""
+        asf = AsfReader(filepath)
+        if asf.check_reader():
+            rich.print("[green3]ASF file is valid to process")
+        else:
+            rich.print("[red3]ASF file is not valid to process")
+
+    @staticmethod
+    def inspect_consumption(filepath: str, process: bool) -> None:
+        """Inspect the consumption file."""
+        consumption = ConsumptionTrafficReader(filepath, process=process)
+        if consumption.check_reader():
+            rich.print("[green3]Consumption file is valid to process")
+        else:
+            rich.print("[red3]Consumption file is not valid to process")
 
 class DatabaseCLIHandler:
     """Handler to operate with the database to CLI."""

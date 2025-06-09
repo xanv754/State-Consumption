@@ -19,6 +19,7 @@ class AsfNameColumns:
     DNI: str = "DOCUMENTO"
     BRAS: str = "HOSTNAME"
     STATE: str = "ESTADO"
+    STATUS: str = "STATUS"
 
 
 boss_all_columns = [
@@ -33,6 +34,7 @@ boss_all_columns = [
 asf_all_columns = [
     AsfNameColumns.DNI,
     AsfNameColumns.BRAS,
-    AsfNameColumns.STATE
+    AsfNameColumns.STATE,
+    AsfNameColumns.STATUS,
 ]
 

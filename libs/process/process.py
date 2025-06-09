@@ -1,7 +1,7 @@
 import pandas as pd
 from constants.columns import NameColumns
 from libs.reader.constants.columns import BossNewNameColumns
-from libs.reader.constants.equipment import EquipmentModelConstant
+from libs.reader.constants.equipment import EquipmentModel
 from libs.reader.boss import BossReader
 from libs.reader.asf import AsfReader
 from libs.reader.traffic import ConsumptionTrafficReader
@@ -30,7 +30,7 @@ class ProcessHandler:
 
     def __adsl_filter(self, df: pd.DataFrame) -> None:
         """Get the ADSL from the dataframe."""
-        df = df[df[BossNewNameColumns.EQUIPMENT] != EquipmentModelConstant.MDU]
+        df = df[df[BossNewNameColumns.EQUIPMENT] != EquipmentModel.MDU]
         columns_required = [NameColumns.BRAS, NameColumns.STATE, NameColumns.TOTAL_CLIENTS]
         df = df[columns_required]
         df = df.reset_index(drop=True)
@@ -38,7 +38,7 @@ class ProcessHandler:
     
     def __mdu_filter(self, df: pd.DataFrame) -> None:
         """Get the MDU from the dataframe."""
-        df = df[df[BossNewNameColumns.EQUIPMENT] == EquipmentModelConstant.MDU]
+        df = df[df[BossNewNameColumns.EQUIPMENT] == EquipmentModel.MDU]
         columns_required = [NameColumns.BRAS, NameColumns.STATE, NameColumns.TOTAL_CLIENTS]
         df = df[columns_required]
         df = df.reset_index(drop=True)

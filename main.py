@@ -1,6 +1,6 @@
 import click
 import rich
-from libs.cli import DatabaseCLIHandler, ExportCLIHandler
+from libs.cli import DatabaseCLIHandler, ExportCLIHandler, ReaderCLIHandler
 
 
 @click.group()
@@ -31,6 +31,22 @@ def database(migration: bool, rollback: bool, add: bool):
         status = databaseHandler.add_new_node()
         if status: rich.print("[green3]New node added successfully")
         else: rich.print("[red3]New node not added")
+
+
+@cli.command(help="Inspect the data.")
+@click.option("--boss", help="Path of the BOSS file.", type=click.Path(exists=True), required=False)
+@click.option("--asf", help="Path of the ASF file.", type=click.Path(exists=True), required=False)
+@click.option("--bras", help="Path of the consumption file.", type=click.Path(exists=True), required=False)
+@click.option("--process", help="Process the consumption data.", is_flag=True)
+def inspect(boss: str, asf: str, bras: str, process: bool):
+    rich.print("[orange3]Starting inspect...")
+    if boss:
+        ReaderCLIHandler.inspect_boss(boss)
+    if asf:
+        ReaderCLIHandler.inspect_asf(asf)
+    if bras:
+        if process: ReaderCLIHandler.inspect_consumption(bras, process=True)
+        else: ReaderCLIHandler.inspect_consumption(bras, process=False)
 
 
 @cli.command(help="Update the database.")

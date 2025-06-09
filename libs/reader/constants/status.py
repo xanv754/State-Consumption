@@ -1,0 +1,7 @@
+class StatusClients:
+    ASF_ACTIVE: str = "ACTIVO"
+    ASF_INACTIVE: str = "CORTADO"
+    ASF_PROVISIONED: str = "APROVISIONADO OFFLINE"
+    BOSS_ACTIVE: str = "ACTIVO"
+    BOSS_INACTIVE: str = "CORTADO"
+    BOSS_SUSPENDED: str = "SUSPENDIDO"

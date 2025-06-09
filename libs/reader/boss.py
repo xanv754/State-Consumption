@@ -3,6 +3,7 @@ from constants.columns import NameColumns
 from constants.path import PathStderr
 from database.querys.nodes import NodesQueryMongo
 from libs.reader.constants.columns import boss_all_columns, BossNewNameColumns, BossNameColumns
+from libs.reader.constants.status import StatusClients
 from libs.reader.reader import Reader
 from utils.format import FixFormat
 from utils.console import terminal
@@ -19,6 +20,12 @@ class BossReader(Reader):
         """Format the column of the Bras."""
         df = df.copy()
         df = FixFormat.column_word(df, NameColumns.BRAS)
+        return df
+    
+    def __get_clients_active(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Get the clients active."""
+        df = df.copy()
+        df = df[df[NameColumns.STATE] == StatusClients.BOSS_ACTIVE]
         return df
 
     def __check_format_data(self, df: pd.DataFrame) -> None:
@@ -103,9 +110,21 @@ class BossReader(Reader):
                 self.__export_missing_nodes(df)
                 raise ValueError(f"Some nodes are missing the state. See the file in {PathStderr.MISSING_NODES_BOSS}")
             df = self.__format_column_bras(df)
+            df = self.__get_clients_active(df)
+            df = df.reset_index(drop=True)
             terminal.spinner(stop=True)
         except Exception as error:
             terminal.print(f"[red3]Error in: {__file__}\n {error}")
             exit(1)
         else:
             return df
+        
+    def check_reader(self) -> bool:
+        """Check if the data is valid."""
+        try:
+            self.get_data()
+        except Exception as error:
+            terminal.print(f"[red3]Error in: {__file__}\n {error}")
+            return False
+        else:
+            return True

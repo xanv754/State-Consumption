@@ -2,6 +2,7 @@ import pandas as pd
 from constants.columns import NameColumns
 from constants.path import PathStderr
 from libs.reader.constants.columns import asf_all_columns, AsfNameColumns
+from libs.reader.constants.status import StatusClients
 from libs.reader.reader import Reader
 from utils.format import FixFormat
 from utils.console import terminal
@@ -19,9 +20,21 @@ class AsfReader(Reader):
         df = df.copy()
         df = FixFormat.column_word(df, NameColumns.BRAS)
         return df
+    
+    def __get_clients_active(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Get the clients active."""
+        df = df.copy()
+        df = df[df[NameColumns.STATE] == StatusClients.ASF_ACTIVE]
+        return df
         
     def __check_data_state(self, df: pd.DataFrame) -> bool:
-        """Check if all rows have a state."""
+        """Check if all rows have a state.
+        
+        Returns
+        -------
+        bool
+            True if exists rows without state, False otherwise.
+        """
         return df[NameColumns.STATE].isnull().any()
         
     def __rename_columns(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -60,6 +73,7 @@ class AsfReader(Reader):
                 raise ValueError(f"Some nodes are missing the state. See the file in {PathStderr.MISSING_NODES_BOSS}")
             df = self.__format_column_bras(df)
             df = df.drop_duplicates(subset=[AsfNameColumns.DNI])
+            df = self.__get_clients_active(df)
             df = df.reset_index(drop=True)
             terminal.spinner(stop=True)
         except Exception as error:
@@ -67,3 +81,13 @@ class AsfReader(Reader):
             exit(1)
         else:
             return df
+        
+    def check_reader(self) -> bool:
+        """Check if the data is valid."""
+        try:
+            self.get_data()
+        except Exception as error:
+            terminal.print(f"[red3]Error in: {__file__}\n {error}")
+            return False
+        else:
+            return True
