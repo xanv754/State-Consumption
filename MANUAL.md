@@ -10,6 +10,10 @@
     - [Rollback](#rollback)
     - [Agregar nuevo nodo](#agregar-nuevo-nodo)
     - [Agregar/Actualizar varios nodos](#agregaractualizar-varios-nodos)
+- [Inspección de Archivos](#inspección-de-archivos)
+    - [Verificación de BOSS](#verificación-de-boss)
+    - [Verificación de ASF](#verificación-de-asf)
+    - [Verificación de BRAS](#verificación-de-bras)
 - [Procesamiento](#procesamiento)
     - [Opciones](#opciones)
     - [Consumo por Estado General](#consumo-por-estado-general)
@@ -115,6 +119,28 @@ python main.py update --filepath <ruta del archivo>
 ```
 
 > *Nota:* Si el archivo para actualizar la base de datos es un archivo CSV, se debe especificar el parámetro `--delimiter` con el delimitador del archivo. Por defecto, el delimitador es `;`.
+
+# Inspección de Archivos
+Existe un comando para inspeccionar los archivos BOSS, ASF y BRAS. Esto con el fin de verificar que los archivos están correctamente formateados antes de realizar el verdadero procesamiento. Este comando solo verifica que los datos estén en el formato correcto y no realiza ningún procesamiento. Para ejecutar el comando, se debe ejecutar el siguiente comando:
+
+## Verificación de BOSS
+```bash 
+python main.py inspect --boss <ruta del archivo BOSS>
+```
+
+## Verificación de ASF
+```bash 
+python main.py inspect --asf <ruta del archivo ASF>
+```
+
+## Verificación de BRAS
+```bash 
+python main.py inspect --bras <ruta del archivo BRAS>
+```
+> *Nota:* Si el archivo de consumo por bras no está totalizado globalmente por agregador, se debe ejecutar el comando con el parámetro `--process`. Si no se realiza esta operación, es posible que ocurra un error o no se obtenga correctamente la información.
+```bash 
+python main.py inspect --bras <ruta del archivo BRAS> --process
+```
 
 # Procesamiento
 
