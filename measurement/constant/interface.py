@@ -1,5 +1,0 @@
-NAME: str = "interface"
-TIMES: str = "times"
-IN: str = "in"
-OUT: str = "out"
-BANDWIDTH: str = "bandwidth"

@@ -1,16 +1,30 @@
-# CLIENTS CONSUMPTION BY STATE
-This mini-project has been created to automate the calculations to get tables with percentages of consumption by state.
+# Consumo por Estado - State Consumption
+Automatización en Python para procesar los datos de clientes y consumo de la red para obtener totales por estado.
 
-## CLI
-This project has its own CLI command, which can be executed from the command line:
+Para más información sobre los archivos necesarios para el procesamiento, actualización de la base de datos, etc... Puedes consultar el [Manual](./MANUAL.md).
+
+----------------------
+
+# Requerimientos
+## Librerías
+Este proyecto contiene un archivo `requirements.txt` con las librerías necesarias para el funcionamiento del proyecto.
+
+## Variables de Entorno
+Para poder ejecutar operaciones con la base de datos, es necesario definir la variable de entorno `URI` con la URI de la base de datos en cualquier archivo de configuración.
+- Para entorno de desarrollo: `.env.development`
+- Para entorno de producción: `.env.production`
+- Para entorno general: `.env`
+
+> *Nota:* Las variables de entorno de desarrollo tiene prioridad sobre las de producción y general. Es recomendable solo definir un archivo de configuración.
+
+## Exportación en el PYTHONPATH
+Es recomendable exportar el PYTHONPATH para corregir los errores de importación.
 ```bash
-python main.py
-```
+export PYTHONPATH=$(pwd)
+``` 
 
-### Generate consumption by state
-```bash
-python main.py consumption -fr <boss_report> -fo <olt_file> -fc <consumption_file> -fc <consumption_file>
+# Interfaz de Línea de Comandos
+Este módulo tiene una interfaz de línea de comandos (CLI) para poder ejecutar las operaciones.
+```bash 
+python main.py --help
 ```
-This command creates the `CONSUMPTION_BY_STATE_VPTI_VPTI.xlsx` file containing the consumption data by state. It requires the BOSS report, the consumption file by OLT and the consumption file by BRAS (aggregator).
-
-For more information, refer to the CLI of the module or the documentation of each module.
