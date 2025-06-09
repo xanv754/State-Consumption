@@ -18,7 +18,7 @@ Para poder ejecutar operaciones con la base de datos, es necesario definir la va
 > *Nota:* Las variables de entorno de desarrollo tiene prioridad sobre las de producción y general. Es recomendable solo definir un archivo de configuración.
 
 ## Exportación en el PYTHONPATH
-Es recomendable exportar el PYTHONPATH para corregir los errores de importación.
+Si se presenta errores de módulos, puedes exportar el PYTHONPATH para corregir los errores de importación.
 ```bash
 export PYTHONPATH=$(pwd)
 ``` 
@@ -28,3 +28,5 @@ Este módulo tiene una interfaz de línea de comandos (CLI) para poder ejecutar 
 ```bash 
 python main.py --help
 ```
+
+Para más información sobre las operaciones disponibles, puedes consultar el [Manual](./src/state_consumption/MANUAL.md).
