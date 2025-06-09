@@ -2,6 +2,7 @@ import os
 import pandas as pd
 from abc import ABC, abstractmethod
 from constants.columns import NameColumns
+from libs.reader.constants.status import StatusClients
 from libs.reader.constants.columns import BossNameColumns, AsfNameColumns
 
 
@@ -36,6 +37,7 @@ class BossFileTest(FileTest):
             BossNameColumns.EQUIPMENT: ["JUNIPER", "JUNIPER", "JUNIPER", "JUNIPER", "MDU_HW", "JUNIPER", "JUNIPER", "MDU_HW", "JUNIPER", "JUNIPER"],
             BossNameColumns.CENTRAL: ["nodo 1", "nodo 2", "nodo 3", "nodo 4", "nodo 5", "nodo 6", "nodo 7", "nodo 8", "nodo 9", "nodo 10"],
             BossNameColumns.ACCOUNT_CODE: [2316, 2316, 2229, 2229, 2229, 2229, 2229, 3307, 3608, 3608],
+            BossNameColumns.STATUS: [StatusClients.BOSS_ACTIVE, StatusClients.BOSS_ACTIVE, StatusClients.BOSS_ACTIVE, StatusClients.BOSS_ACTIVE, StatusClients.BOSS_ACTIVE, StatusClients.BOSS_ACTIVE, StatusClients.BOSS_ACTIVE, StatusClients.BOSS_ACTIVE, StatusClients.BOSS_ACTIVE, StatusClients.BOSS_ACTIVE],
             BossNameColumns.TOTAL_CLIENTS: [1, 1, 2, 1, 10, 1, 1, 10, 1, 4]
         }
         df = pd.DataFrame(data)
@@ -71,7 +73,8 @@ class AsfFileTest(FileTest):
         data = {
             AsfNameColumns.DNI: ["1111111111", "2222222222"],
             AsfNameColumns.BRAS: ["CNT-BRAS-00", "CNT-BRAS-00"],
-            AsfNameColumns.STATE: ["AMAZONAS", "AMAZONAS"]
+            AsfNameColumns.STATE: ["AMAZONAS", "AMAZONAS"],
+            AsfNameColumns.STATUS: [StatusClients.ASF_ACTIVE, StatusClients.ASF_ACTIVE]
         }
         df = pd.DataFrame(data)
         df.to_excel(self.filepath, index=False)

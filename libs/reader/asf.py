@@ -24,7 +24,7 @@ class AsfReader(Reader):
     def __get_clients_active(self, df: pd.DataFrame) -> pd.DataFrame:
         """Get the clients active."""
         df = df.copy()
-        df = df[df[NameColumns.STATE] == StatusClients.ASF_ACTIVE]
+        df = df[df[AsfNameColumns.STATUS] == StatusClients.ASF_ACTIVE]
         return df
         
     def __check_data_state(self, df: pd.DataFrame) -> bool:

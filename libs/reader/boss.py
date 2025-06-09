@@ -25,7 +25,7 @@ class BossReader(Reader):
     def __get_clients_active(self, df: pd.DataFrame) -> pd.DataFrame:
         """Get the clients active."""
         df = df.copy()
-        df = df[df[NameColumns.STATE] == StatusClients.BOSS_ACTIVE]
+        df = df[df[BossNameColumns.STATUS] == StatusClients.BOSS_ACTIVE]
         return df
 
     def __check_format_data(self, df: pd.DataFrame) -> None:

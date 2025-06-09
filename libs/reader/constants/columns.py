@@ -6,6 +6,7 @@ class BossNameColumns:
     EQUIPMENT: str = "Provider.1"
     CENTRAL: str = "Name Coid"
     ACCOUNT_CODE: str = "Coid"
+    STATUS: str = "Status"
     TOTAL_CLIENTS: str = "Cantidad"
 
 
@@ -28,13 +29,14 @@ boss_all_columns = [
     BossNameColumns.EQUIPMENT,
     BossNameColumns.CENTRAL,
     BossNameColumns.ACCOUNT_CODE,
-    BossNameColumns.TOTAL_CLIENTS,
+    BossNameColumns.STATUS,
+    BossNameColumns.TOTAL_CLIENTS
 ]
 
 asf_all_columns = [
     AsfNameColumns.DNI,
     AsfNameColumns.BRAS,
     AsfNameColumns.STATE,
-    AsfNameColumns.STATUS,
+    AsfNameColumns.STATUS
 ]
 
