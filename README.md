@@ -1,6 +1,8 @@
 # Consumo por Estado - State Consumption
 Automatización en Python para procesar los datos de clientes y consumo de la red para obtener totales por estado.
 
+![](./docs/image.png)
+
 Para más información sobre los archivos necesarios para el procesamiento, actualización de la base de datos, etc... Puedes consultar el [Manual](./MANUAL.md).
 
 ----------------------
