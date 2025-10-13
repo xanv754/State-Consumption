@@ -4,7 +4,6 @@
 *.xlsx
 *.xlsx#
 *.xls
-data/
 files/
 tmp/*
 
