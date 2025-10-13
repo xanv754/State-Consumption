@@ -1,19 +1,16 @@
 import pandas as pd
-from constants.columns import NameColumns, ConsumptionStateColumns
-from constants.states import all_states
-from libs.process.process import ProcessHandler
+from state_consumption.constants import NameColumns, ConsumptionStateColumns, all_states
+from state_consumption.libs.process.process import ProcessData
 
 
-class DataHandler:
-    """Class to get the data."""
+class ReportHandler:
+    """Class to get report of the data."""
+    data: ProcessData
 
-    data: ProcessHandler
-
-    def __init__(self, data: ProcessHandler) -> None:
+    def __init__(self, data: ProcessData) -> None:
         self.data = data
 
-
-    def __merge_consumption_by_all_states(self, df_clients: pd.DataFrame, df_consumption: pd.DataFrame) -> pd.DataFrame:
+    def _merge_consumption_by_all_states(self, df_clients: pd.DataFrame, df_consumption: pd.DataFrame) -> pd.DataFrame:
         """Merge the data comsuption and clients (without percentage) by all states."""
         try:
             df_merge = pd.merge(df_clients, df_consumption, on=NameColumns.STATE, how='inner')
@@ -29,7 +26,7 @@ class DataHandler:
         else:
             return df
         
-    def __merge_percentage_by_all_states(self, df_data: pd.DataFrame, df_percentage: pd.DataFrame) -> pd.DataFrame:
+    def _merge_percentage_by_all_states(self, df_data: pd.DataFrame, df_percentage: pd.DataFrame) -> pd.DataFrame:
         """Merge the data percentage and data (without percentage) by all states."""
         try:
             df_merge = pd.merge(df_data, df_percentage, on=NameColumns.STATE, how='left')
@@ -48,7 +45,7 @@ class DataHandler:
         try:
             df_total_clients = self.data.total_clients_adsl_by_state()
             df_total_consumption = self.data.total_consumption_adsl_by_state()
-            df = self.__merge_consumption_by_all_states(df_total_clients, df_total_consumption)
+            df = self._merge_consumption_by_all_states(df_total_clients, df_total_consumption)
             df.rename(columns={
                 NameColumns.TOTAL_CLIENTS: ConsumptionStateColumns.TOTAL_CLIENTS_ADSL,
                 NameColumns.CONSUMPTION: ConsumptionStateColumns.CONSUMPTION_ADSL
@@ -65,7 +62,7 @@ class DataHandler:
         try:
             df_total_clients = self.data.total_clients_mdu_by_state()
             df_total_consumption = self.data.total_consumption_mdu_by_state()
-            df = self.__merge_consumption_by_all_states(df_total_clients, df_total_consumption)
+            df = self._merge_consumption_by_all_states(df_total_clients, df_total_consumption)
             df.rename(columns={
                 NameColumns.TOTAL_CLIENTS: ConsumptionStateColumns.TOTAL_CLIENTS_MDU,
                 NameColumns.CONSUMPTION: ConsumptionStateColumns.CONSUMPTION_MDU
@@ -82,7 +79,7 @@ class DataHandler:
         try:
             df_total_clients = self.data.total_clients_olt_by_state()
             df_total_consumption = self.data.total_consumption_olt_by_state()
-            df = self.__merge_consumption_by_all_states(df_total_clients, df_total_consumption)
+            df = self._merge_consumption_by_all_states(df_total_clients, df_total_consumption)
             df.rename(columns={
                 NameColumns.TOTAL_CLIENTS: ConsumptionStateColumns.TOTAL_CLIENTS_OLT,
                 NameColumns.CONSUMPTION: ConsumptionStateColumns.CONSUMPTION_OLT
@@ -115,7 +112,7 @@ class DataHandler:
         try:
             df_adsl = self.clients_consumption_adsl_by_state()
             df_percentage = self.data.percentage_consumption_adsl_by_state()
-            df_merge = self.__merge_percentage_by_all_states(df_adsl, df_percentage)
+            df_merge = self._merge_percentage_by_all_states(df_adsl, df_percentage)
             df_merge.rename(columns={
                 NameColumns.PERCENTAGE_CONSUMPTION: ConsumptionStateColumns.PERCENTAGE_CONSUMPTION_ADSL
             }, inplace=True)
@@ -130,7 +127,7 @@ class DataHandler:
         try:
             df_mdu = self.clients_consumption_mdu_by_state()
             df_percentage = self.data.percentage_consumption_mdu_by_state()
-            df_merge = self.__merge_percentage_by_all_states(df_mdu, df_percentage)
+            df_merge = self._merge_percentage_by_all_states(df_mdu, df_percentage)
             df_merge.rename(columns={
                 NameColumns.PERCENTAGE_CONSUMPTION: ConsumptionStateColumns.PERCENTAGE_CONSUMPTION_MDU
             }, inplace=True)
@@ -145,7 +142,7 @@ class DataHandler:
         try:
             df_olt = self.clients_consumption_olt_by_state()
             df_percentage = self.data.percentage_consumption_olt_by_state()
-            df_merge = self.__merge_percentage_by_all_states(df_olt, df_percentage)
+            df_merge = self._merge_percentage_by_all_states(df_olt, df_percentage)
             df_merge.rename(columns={
                 NameColumns.PERCENTAGE_CONSUMPTION: ConsumptionStateColumns.PERCENTAGE_CONSUMPTION_OLT
             }, inplace=True)

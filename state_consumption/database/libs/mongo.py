@@ -20,7 +20,6 @@ class MongoDatabase:
         else: env = URIEnvironment(prod=True)
         self._uri = env.get_uri_db()
         self._name_db = self._uri.split("/")[-1]
-        self.open_connection()
 
     def _check_collection(self, name: str) -> bool:
         """Check if the collection exists.
@@ -45,7 +44,7 @@ class MongoDatabase:
                 self._client = MongoClient(self._uri)
         except Exception as error:
             logger.error(f"No se ha podido establecer conexión la base de datos - {error}")
-            terminal.print(f"[red3]ERROR: [default]No se ha podido establecer conexión la base de datos - {error}")
+            terminal.print_spinner(f"[red3]ERROR: [default]No se ha podido establecer conexión la base de datos - {error}")
             self.connected = False
             return False
         else:
@@ -76,7 +75,10 @@ class MongoDatabase:
                 self.close_connection()
         except Exception as error:
             logger.error(f"No se ha podido crear correctamente los esquemas de las colecciones - {error}")
-            terminal.print(f"[red3]ERROR: [default]No se ha podido crear correctamente los esquemas de las colecciones - {error}")
+            terminal.print_spinner(f"[red3]ERROR: [default]No se ha podido crear correctamente los esquemas de las colecciones - {error}")
+        else:
+            logger.info("Base de datos creada correctamente.")
+            terminal.print_spinner("[green3]Base de datos creada correctamente.")
             
     def drop_collection(self) -> None:
         try:
@@ -88,4 +90,7 @@ class MongoDatabase:
                 self.close_connection()
         except Exception as error:
             logger.error(f"No se ha podido eliminar correctamente las colecciones - {error}")
-            terminal.print(f"[red3]ERROR: [default]No se ha podido eliminar correctamente las colecciones - {error}")
+            terminal.print_spinner(f"[red3]ERROR: [default]No se ha podido eliminar correctamente las colecciones - {error}")
+        else:
+            logger.info("Base de datos destruida correctamente.")
+            terminal.print_spinner("[green3]Base de datos destruida correctamente.")

@@ -59,7 +59,7 @@ class ConsumptionTrafficReader(Reader):
             terminal.spinner(stop=True)
         except Exception as error:
             logger.error(f"No se ha podido obtener la data de consumo del archivos de BRAS - {error}")
-            terminal.print(f"[red3]ERROR: [default]No se ha podido obtener la data de consumo del archivo de BRAS - {error}")
+            terminal.print_spinner(f"[red3]ERROR: [default]No se ha podido obtener la data de consumo del archivo de BRAS - {error}")
             exit(1)
         else:
             return df
@@ -69,7 +69,7 @@ class ConsumptionTrafficReader(Reader):
             self.get_data()
         except Exception as error:
             logger.error(f"Problemas en la comprobación de la data de consumo del archivo de BRAS - {error}")
-            terminal.print(f"[red3]ERROR: [default]Problemas en la comprobación de la data de consumo del archivo de BRAS - {error}")
+            terminal.print_spinner(f"[red3]ERROR: [default]Problemas en la comprobación de la data de consumo del archivo de BRAS - {error}")
             return False
         else:
             return True

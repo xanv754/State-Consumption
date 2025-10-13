@@ -6,10 +6,8 @@
     - [ASF](#asf)
     - [BRAS](#bras)
 - [Base de Datos](#base-de-datos)
-    - [Migraciones](#migraciones)
-    - [Rollback](#rollback)
-    - [Agregar nuevo nodo](#agregar-nuevo-nodo)
-    - [Agregar/Actualizar varios nodos](#agregaractualizar-varios-nodos)
+    - [Inicialización](#inicialización)
+    - [Destrucción](#destrucción)
 - [Inspección de Archivos](#inspección-de-archivos)
     - [Verificación de BOSS](#verificación-de-boss)
     - [Verificación de ASF](#verificación-de-asf)
@@ -17,9 +15,6 @@
 - [Procesamiento](#procesamiento)
     - [Opciones](#opciones)
     - [Consumo por Estado General](#consumo-por-estado-general)
-    - [Consumo por Estado de ADSL](#consumo-por-estado-de-adsl)
-    - [Consumo por Estado de MDU](#consumo-por-estado-de-mdu)
-    - [Consumo por Estado de OLT](#consumo-por-estado-de-olt)
 
 ----------------------
 
@@ -44,7 +39,7 @@ export PYTHONPATH=$(pwd)
 # Interfaz de Línea de Comandos
 Este módulo tiene una interfaz de línea de comandos (CLI) para poder ejecutar las operaciones.
 ```bash 
-python main.py --help
+python -m state_consumption --help
 ```
 
 # Archivos Para Procesar
@@ -65,7 +60,6 @@ A este archivo se le agregará la columna "Estado" que se utilizará para el pro
 El archivo ASF es un archivo en excel que contiene la información de los nodos de la red.
 
 Es necesario que este archivo contenga las siguiente columnas:
-- DNI: Documento nacional de identidad.
 - HOSTNAME: Nombre del nodo.
 - ESTADO: Estado del nodo.
 
@@ -79,67 +73,38 @@ El archivo puede estar totalizado globalmente por agregador o tener el consumo a
 # Base de Datos
 Este proyecto trabaja con una base de datos para el almacenamiento de la información de los nodos de la red, esto con el fin de poder tener un registro de los nodos con sus estados y otros datos necesarios para el procesamiento.
 
-## Migraciones
-Para realizar las migraciones de la base de datos, se debe ejecutar el comando:
+## Inicialización
+Para realizar el inicio correcto de la base de datos, se debe ejecutar el comando:
 ```bash 
-python main.py database --migration
+python -m state_consumption.database --start
 ```
 
-## Rollback
-Para realizar el rollback de las migraciones de la base de datos, se debe ejecutar el comando:
+## Destrucción
+Para realizar la destrucción de la base de datos, se debe ejecutar el comando:
 ```bash 
-python main.py database --rollback
+python -m state_consumption.database --destroy
 ```
-
-## Agregar nuevo nodo
-Para agregar un nuevo nodo a la base de datos, se debe ejecutar el comando:
-```bash 
-python main.py database --add
-```
-Esto solicitará al usuario que ingrese los datos del nodo que se desea agregar.
-
-## Agregar/Actualizar varios nodos
-Para agregar nodos en masa es necesario tener un archivo (CSV o XLSX) con los datos de los nodos. 
-
-El archivo debe las siguientes informaciones:
-- **Estado del nodo:** El archivo debe tener una columna donde especifique el estado de cada registro. La columna puede llamarse: *Estado*, *State*. 
-> *Nota:* No es importante si el nombre de la columna está en mayúsculas o minúsculas o intercalado. Tampoco es importante si el nombre de la columna contiene o no acentos.
-* **Nombre del nodo:** El archivo debe tener una columna donde especifique el nombre de cada registro. La columna puede llamarse: *Central*, *Nodo*, *Centrales*, *Nodos*, *Node*, *Nodes*, *Name Coid*.
-> *Nota:* No es importante si el nombre de la columna está en mayúsculas o minúsculas o intercalado. Tampoco es importante si el nombre de la columna contiene o no acentos.
-* **Código contable del nodo:** El archivo debe tener una columna donde especifique el código contable de cada registro. La columna puede llamarse: *CC*, *Codigo Contable*, *Codigo_Contable*, *Account Code*, *Account_Code*.
-> *Nota:* No es importante si el nombre de la columna está en mayúsculas o minúsculas o intercalado. Tampoco es importante si el nombre de la columna contiene o no acentos.
-
-**IMPORTANTE:** **Es necesario que las columnas previamente especificadas sean únicas, ya que el sistema tomará la primera que encuentre para procesar.**
-
-Opcionalmente, el sistema almacena la IP y la región de cada nodo. Si es posible proporcionar dicha información, los nombres de las columnas obligatoriamente deben ser: *IP*, *Region*.
-> *Nota:* No es importante si el nombre de la columna está en mayúsculas o minúsculas o intercalado. Tampoco es importante si el nombre de la columna contiene o no acentos.
-
-```bash 
-python main.py update --filepath <ruta del archivo>
-```
-
-> *Nota:* Si el archivo para actualizar la base de datos es un archivo CSV, se debe especificar el parámetro `--delimiter` con el delimitador del archivo. Por defecto, el delimitador es `;`.
 
 # Inspección de Archivos
 Existe un comando para inspeccionar los archivos BOSS, ASF y BRAS. Esto con el fin de verificar que los archivos están correctamente formateados antes de realizar el verdadero procesamiento. Este comando solo verifica que los datos estén en el formato correcto y no realiza ningún procesamiento. Para ejecutar el comando, se debe ejecutar el siguiente comando:
 
 ## Verificación de BOSS
 ```bash 
-python main.py inspect --boss <ruta del archivo BOSS>
+python -m state_consumption inspect --boss <ruta del archivo BOSS>
 ```
 
 ## Verificación de ASF
 ```bash 
-python main.py inspect --asf <ruta del archivo ASF>
+python -m state_consumption inspect --asf <ruta del archivo ASF>
 ```
 
 ## Verificación de BRAS
 ```bash 
-python main.py inspect --bras <ruta del archivo BRAS>
+python -m state_consumption inspect --bras <ruta del archivo BRAS>
 ```
 > *Nota:* Si el archivo de consumo por bras no está totalizado globalmente por agregador, se debe ejecutar el comando con el parámetro `--process`. Si no se realiza esta operación, es posible que ocurra un error o no se obtenga correctamente la información.
 ```bash 
-python main.py inspect --bras <ruta del archivo BRAS> --process
+python -m state_consumption inspect --bras <ruta del archivo BRAS> --process
 ```
 
 # Procesamiento
@@ -150,7 +115,7 @@ Si el archivo de consumo por bras no está totalizado globalmente por agregador,
 
 *Ejemplo:*
 ```bash 
-python main.py vpti --boss <ruta del archivo BOSS> --asf <ruta del archivo ASF> --bras <ruta del archivo de consumo por bras> --process
+python -m state_consumption vpti --boss <ruta del archivo BOSS> --asf <ruta del archivo ASF> --bras <ruta del archivo de consumo por bras> --process
 ```
 
 #### `--filepath`
@@ -158,7 +123,7 @@ Por defecto, los archivos procesados se exportarán en el directorio *Descargas*
 
 *Ejemplo:*
 ```bash 
-python main.py vpti --boss <ruta del archivo BOSS> --asf <ruta del archivo ASF> --bras <ruta del archivo de consumo por bras> --filepath <ruta del archivo>
+python -m state_consumption vpti --boss <ruta del archivo BOSS> --asf <ruta del archivo ASF> --bras <ruta del archivo de consumo por bras> --filepath <ruta del archivo>
 ```
 
 #### `--percentage`
@@ -166,7 +131,7 @@ Si se desea obtener los porcentajes de consumo, se debe especificar la opción `
 
 *Ejemplo:*
 ```bash 
-python main.py vpti --boss <ruta del archivo BOSS> --asf <ruta del archivo ASF> --bras <ruta del archivo de consumo por bras> --percentage
+python -m state_consumption vpti --boss <ruta del archivo BOSS> --asf <ruta del archivo ASF> --bras <ruta del archivo de consumo por bras> --percentage
 ```
 
 > *Nota:* Todas estas opciones se aplican a los comandos de procesamiento de los datos.
@@ -174,29 +139,11 @@ python main.py vpti --boss <ruta del archivo BOSS> --asf <ruta del archivo ASF> 
 ## Consumo por Estado General
 Para ejecutar el procesamiento y obtención de consumo por estado de ADSL, MDU y OLT, se debe ejecutar el comando:
 ```bash 
-python main.py vpti --boss <ruta del archivo BOSS> --asf <ruta del archivo ASF> --bras <ruta del archivo de consumo por bras>
-```
-
-## Consumo por Estado de ADSL
-Para ejecutar el procesamiento y obtención de consumo por estado únicamente de ADSL, se debe ejecutar el comando:
-```bash 
-python main.py adsl --boss <ruta del archivo BOSS> --asf <ruta del archivo ASF> --bras <ruta del archivo de consumo por bras>
-```
-
-## Consumo por Estado de MDU
-Para ejecutar el procesamiento y obtención de consumo por estado únicamente de MDU, se debe ejecutar el comando:
-```bash 
-python main.py mdu --boss <ruta del archivo BOSS> --asf <ruta del archivo ASF> --bras <ruta del archivo de consumo por bras>
-```
-
-## Consumo por Estado de OLT
-Para ejecutar el procesamiento y obtención de consumo por estado únicamente de OLT, se debe ejecutar el comando:
-```bash 
-python main.py olt --boss <ruta del archivo BOSS> --asf <ruta del archivo ASF> --bras <ruta del archivo de consumo por bras>
+python -m state_consumption vpti --boss <ruta del archivo BOSS> --asf <ruta del archivo ASF> --bras <ruta del archivo de consumo por bras>
 ```
 
 ## Consumo Totalizado por Bras
 Para ejecutar el procesamiento y obtención de consumo totalizado por bras, se debe ejecutar el comando:
 ```bash 
-python main.py bras --filepath <ruta del archivo de consumo por bras>
+python -m state_consumption bras --filepath <ruta del archivo de consumo por bras>
 ```

@@ -10,7 +10,7 @@ class EquipmentModel:
     MDU: str = "MDU_HW"
 
 
-class ProcessHandler:
+class ProcessData:
     """Class to process and get information from the data."""
 
     _calculate: Calculate = Calculate()
@@ -19,8 +19,8 @@ class ProcessHandler:
     data_olt: pd.DataFrame
     data_consumption: pd.DataFrame
 
-    def __init__(self, boss_path: str, consumption_path: str, asf_path: str, process_consumption: bool) -> None:
-        boss = BossReader(boss_path)
+    def __init__(self, boss_path: str, consumption_path: str, asf_path: str, process_consumption: bool, dev: bool = False, testing: bool = False) -> None:
+        boss = BossReader(boss_path, dev=dev, testing=testing)
         data = boss.get_data()
         self.data_adsl = self._adsl_filter(data)
         self.data_mdu = self._mdu_filter(data)
@@ -63,11 +63,11 @@ class ProcessHandler:
         return self.data_olt
     
     def get_data_consumption(self) -> pd.DataFrame:
-        """Get the data of consumption."""
+        """Get the data of consumption of BRAS."""
         return self.data_consumption
     
     def total_clients_by_bras(self) -> pd.DataFrame:
-        """Total of all clients (ADSL, MDU and OLT) by bras."""
+        """Get total of all clients (ADSL, MDU and OLT) by bras."""
         df_total_adsl = self.total_clients_adsl()
         df_total_mdu = self.total_clients_mdu()
         df_total_olt = self.total_clients_olt()
@@ -95,6 +95,18 @@ class ProcessHandler:
         df_total_clients = self.total_clients_adsl()
         return self._calculate.total_clients_by_state(df_total_clients)
     
+    def total_clients_mdu_by_state(self) -> pd.DataFrame:
+        """Totalize clients MDU by state."""
+        # TODO: Unit test
+        df_total_clients = self.total_clients_mdu()
+        return self._calculate.total_clients_by_state(df_total_clients)
+    
+    def total_clients_olt_by_state(self) -> pd.DataFrame:
+        """Totalize clients OLT by state."""
+        # TODO: Unit test
+        df_total_clients = self.total_clients_olt()
+        return self._calculate.total_clients_by_state(df_total_clients)
+    
     def total_clients_adsl_by_bras(self) -> pd.DataFrame:
         """Totalize clients ADSL by bras."""
         df_total_clients = self.total_clients_adsl()
@@ -105,22 +117,10 @@ class ProcessHandler:
         df_total_clients = self.total_clients_mdu()
         return self._calculate.total_clients_by_bras(df_total_clients)
     
-    def total_clients_mdu_by_state(self) -> pd.DataFrame:
-        """Totalize clients MDU by state."""
-        # TODO: Unit test
-        df_total_clients = self.total_clients_mdu()
-        return self._calculate.total_clients_by_state(df_total_clients)
-
     def total_clients_olt_by_bras(self) -> pd.DataFrame:
         """Totalize clients OLT by bras."""
         df_total_clients = self.total_clients_olt()
         return self._calculate.total_clients_by_bras(df_total_clients)
-    
-    def total_clients_olt_by_state(self) -> pd.DataFrame:
-        """Totalize clients OLT by state."""
-        # TODO: Unit test
-        df_total_clients = self.total_clients_olt()
-        return self._calculate.total_clients_by_state(df_total_clients)
     
     def total_consumption_adsl_by_bras(self) -> pd.DataFrame: #
         """Totalize the consumption by bras only ADSL."""

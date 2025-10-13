@@ -3,7 +3,7 @@ from pathlib import Path
 from datetime import datetime
 
 
-ROOT_PATH = path.abspath(path.join(path.dirname(__file__), "..", "..", ".."))
+ROOT_PATH = path.abspath(path.join(path.dirname(__file__), "..", ".."))
 TMP_PATH = path.join(ROOT_PATH, "tmp")
 
 class PathStderr:

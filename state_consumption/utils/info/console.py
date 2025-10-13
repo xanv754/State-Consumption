@@ -32,11 +32,14 @@ class Terminal:
                 while self._spinner_running:
                     time.sleep(0.1)
 
-    def print(self, text: str) -> None:
+    def print_spinner(self, text: str) -> None:
         """Print the text in the terminal."""
         if self._spinner_running: 
             self.spinner(stop=True)
         self._console.print(text)
+        
+    def print(self, text: str) -> None:
+        rich.print(text)
 
     def spinner(self, text: str = "Loading...", stop: bool = False) -> None:
         """Start or stop a spinner in the terminal."""

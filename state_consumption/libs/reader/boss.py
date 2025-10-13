@@ -86,15 +86,15 @@ class BossReader(Reader):
         """Export the missing nodes to a .xlsx file."""
         try:
             logger.warning("Algunos nodos no se han podido ubicar su estado. Guardando los nodos perdidos...")
-            terminal.print(f"[orange3]WARNING: Algunos nodos no se han podido ubicar su estado. Guardando los nodos perdidos...")
+            terminal.print_spinner(f"[orange3]WARNING: Algunos nodos no se han podido ubicar su estado. Guardando los nodos perdidos...")
             df = df[df[NameColumns.STATE].isnull()]
             df = df[df.nunique(axis=1) > 1]
-            df.to_excel(PathStderr.MISSING_NODES_BOSS, index=False)
-            logger.warning(f"Nodos sin estados guardados en {PathStderr.MISSING_NODES_BOSS}")
-            terminal.print(f"[orange3]WARNING: Nodos sin estados guardados en {PathStderr.MISSING_NODES_BOSS}")
+            df.to_excel(PathStderr().MISSING_NODES_BOSS, index=False)
+            logger.warning(f"Nodos sin estados guardados en {PathStderr().MISSING_NODES_BOSS}")
+            terminal.print_spinner(f"[orange3]WARNING: Nodos sin estados guardados en {PathStderr().MISSING_NODES_BOSS}")
         except Exception as error:
             logger.error(f"No se ha podido exportar los nodos sin estados de BOSS - {error}")
-            terminal.print(f"[red3]ERROR: [default]No se ha podido exportar los nodos sin estados de BOSS - {error}")
+            terminal.print_spinner(f"[red3]ERROR: [default]No se ha podido exportar los nodos sin estados de BOSS - {error}")
             exit(1)
 
     def get_data(self) -> pd.DataFrame:
@@ -103,23 +103,27 @@ class BossReader(Reader):
             filename = self.get_filename()
             all_df = pd.read_excel(filename)
             self._check_format_data(all_df)
-            df = all_df[boss_all_columns]
+            if not self._check_column_state(all_df):
+                df = all_df[boss_all_columns]
+            else:
+                columns = boss_all_columns + [NameColumns.STATE]
+                df = all_df[columns]
             df = self._unite_columns(df)
             df = self._rename_columns(df)
             df = self._fix_name_central(df)
-            if not self._check_column_state(df): 
+            if not self._check_column_state(df):
                 df = self._add_state(df)
             if self._check_data_state(df):
                 terminal.spinner(stop=True)
                 self._export_missing_nodes(df)
-                raise ValueError(f"Nodos sin estados. Revise el archivo {PathStderr.MISSING_NODES_BOSS} para más información")
+                raise ValueError(f"Nodos sin estados. Revise el archivo {PathStderr().MISSING_NODES_BOSS} para más información")
             df = self._format_column_bras(df)
             df = self._get_clients_active(df)
             df = df.reset_index(drop=True)
             terminal.spinner(stop=True)
         except Exception as error:
             logger.error(f"No se ha podido obtener la data del archivos de BOSS - {error}")
-            terminal.print(f"[red3]ERROR: [default]No se ha podido obtener la data del archivos de BOSS - {error}")
+            terminal.print_spinner(f"[red3]ERROR: [default]No se ha podido obtener la data del archivos de BOSS - {error}")
             exit(1)
         else:
             return df
@@ -130,7 +134,7 @@ class BossReader(Reader):
             self.get_data()
         except Exception as error:
             logger.error(f"Problemas en la comprobación de la data de BOSS - {error}")
-            terminal.print(f"[red3]ERROR: [default]Problemas en la comprobación de la data de BOSS - {error}")
+            terminal.print_spinner(f"[red3]ERROR: [default]Problemas en la comprobación de la data de BOSS - {error}")
             return False
         else:
             return True

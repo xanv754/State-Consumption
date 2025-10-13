@@ -10,6 +10,7 @@ class InsertQuery:
     
     def __init__(self, db: MongoDatabase):
         self._database = db
+        self._database.open_connection()
         client = self._database.get_client()
         self._collection = client[NODES_COLLECTION]
                 

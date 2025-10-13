@@ -49,9 +49,9 @@ class Environment:
                 raise Exception("No se ha encontrado ningún archivo")
         except FileNotFoundError as error:
             logger.error(f"Archivo con variables de entorno no encontrado en {self._base_path} - {error}")
-            terminal.print(f"[red3]ERROR: [default]Archivo con variables de entorno no encontrado en {self._base_path} - {error}")
+            terminal.print_spinner(f"[red3]ERROR: [default]Archivo con variables de entorno no encontrado en {self._base_path} - {error}")
             exit(1)
         except Exception as error:
             logger.error(f"Error en las variables de entorno del sistema - {error}")
-            terminal.print(f"[red3]ERROR: [default]Problemas con las variables de entorno del sistema - {error}")
+            terminal.print_spinner(f"[red3]ERROR: [default]Problemas con las variables de entorno del sistema - {error}")
             exit(1)

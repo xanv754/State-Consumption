@@ -17,12 +17,12 @@ class Calculate:
         """Export the missing bras to a .xlsx file."""
         if not self.missing_bras.empty:
             df = self.missing_bras.drop_duplicates()
-            excel = ExcelExport(PathStderr.MISSING_CONSUMPTION)
+            excel = ExcelExport(PathStderr().MISSING_CONSUMPTION)
             excel.export(data=df, sheet_name=NameColumns.BRAS)
             if self._exported: return
             self._exported = True
-            logger.warning(f"Algunos consumos del agregador no se han encontrado. Información guardada en {PathStderr.MISSING_CONSUMPTION}")
-            terminal.print(f"[orange3]WARNING: Algunos consumos del agregador no se han encontrado. Información guardada en {PathStderr.MISSING_CONSUMPTION}")
+            logger.warning(f"Algunos consumos del agregador no se han encontrado. Información guardada en {PathStderr().MISSING_CONSUMPTION}")
+            terminal.print_spinner(f"[orange3]WARNING: Algunos consumos del agregador no se han encontrado. Información guardada en {PathStderr().MISSING_CONSUMPTION}")
     
     def total_clients_adsl_mdu(self, data: pd.DataFrame) -> pd.DataFrame:
         """Calculate the total of clients group by state and their bras in ADSL or MDU.
@@ -39,9 +39,8 @@ class Calculate:
             return df
         except Exception as error:
             logger.error(f"Problemas al calcular el total de clientes ADSL y MDU - {error}")
-            terminal.print(f"[red3]ERROR: [default]Problemas al calcular el total de clientes ADSL y MDU - {error}")
+            terminal.print_spinner(f"[red3]ERROR: [default]Problemas al calcular el total de clientes ADSL y MDU - {error}")
             exit(1)
-    
     
     def total_clients_olt(self, data: pd.DataFrame) -> pd.DataFrame:
         """Calculate the total of clients group by state and their bras in OLT.
@@ -56,9 +55,8 @@ class Calculate:
             return df
         except Exception as error:
             logger.error(f"Problemas al calcular el total de clientes OLT - {error}")
-            terminal.print(f"[red3]ERROR: [default]Problemas al calcular el total de clientes OLT - {error}")
+            terminal.print_spinner(f"[red3]ERROR: [default]Problemas al calcular el total de clientes OLT - {error}")
             exit(1)
-    
     
     def total_clients_by_bras(self, df_total_clients: pd.DataFrame) -> pd.DataFrame:
         """Calculate the total of clients group by bras.
@@ -76,7 +74,7 @@ class Calculate:
             return df
         except Exception as error:
             logger.error(f"Problemas al calcular el total de clientes agrupados por agregador - {error}")
-            terminal.print(f"[red3]ERROR: [default]Problemas al calcular el total de clientes agrupados por agregador - {error}")
+            terminal.print_spinner(f"[red3]ERROR: [default]Problemas al calcular el total de clientes agrupados por agregador - {error}")
             exit(1)
 
     def total_clients_by_state(self, df_total_clients: pd.DataFrame) -> pd.DataFrame:
@@ -95,9 +93,8 @@ class Calculate:
             return df
         except Exception as error:
             logger.error(f"Problemas al calcular el total de clientes agrupados por estado - {error}")
-            terminal.print(f"[red3]ERROR: [default]Problemas al calcular el total de clientes agrupados por estado - {error}")
+            terminal.print_spinner(f"[red3]ERROR: [default]Problemas al calcular el total de clientes agrupados por estado - {error}")
             exit(1)
-    
     
     def total_consumption_equipment_by_bras(self, df_total_clients_equipment_by_bras: pd.DataFrame, df_total_clients_by_bras: pd.DataFrame, df_consumption: pd.DataFrame, brasnames: list) -> pd.DataFrame:
         """Calculate the total consumption of a equipment group by bras.
@@ -110,6 +107,7 @@ class Calculate:
         :type df_consumption: DataFrame
         :params brasnames: A list with the bras names.
         :type brasnames: list
+        :returns DataFrame: Proccesed data.
         """
         try:
             new_data = { NameColumns.BRAS: [], NameColumns.CONSUMPTION: [] }
@@ -130,23 +128,21 @@ class Calculate:
                 self._add_missing_bras(df_missing)
         except Exception as error:
             logger.error(f"Problemas al calcular el total de consumo de equipos por agregador - {error}")
-            terminal.print(f"[red3]ERROR: [default]Problemas al calcular el total de consumo de equipos por agregador - {error}")
+            terminal.print_spinner(f"[red3]ERROR: [default]Problemas al calcular el total de consumo de equipos por agregador - {error}")
             exit(1)
         else:
             return df
         
-    
     def total_consumption_state_equipment_by_bras(self, df_consumption_equipment: pd.DataFrame, df_total_clients_equipment_by_state: pd.DataFrame, df_total_clients_equipment_by_bras: pd.DataFrame) -> pd.DataFrame:
         """Calculate the total consumption of a equipment of each state group by bras.
         
-        Parameters
-        ----------
-        df_consumption_equipment : pd.DataFrame
-            A DataFrame with the consumption by equipment (ADSL, MDU or OLT) Bras only.
-        df_total_clients_equipment_by_state : pd.DataFrame
-            A DataFrame with the total clients by state and equipment (ADSL, MDU or OLT) Bras only.
-        df_total_clients_equipment_by_bras : pd.DataFrame
-            A DataFrame with the total clients by bras.
+        :params df_consumption_equipment: A DataFrame with the consumption by equipment (ADSL, MDU or OLT) Bras only.
+        :type df_consumption_equipment: pd.DataFrame
+        :params df_total_clients_equipment_by_state: A DataFrame with the total clients by state and equipment (ADSL, MDU or OLT) Bras only.
+        :type df_total_clients_equipment_by_state: pd.DataFrame
+        :params df_total_clients_equipment_by_bras: A DataFrame with the total clients by bras.
+        :type df_total_clients_equipment_by_bras: pd.DataFrame
+        :returns DataFrame: Proccesed data.
         """
         try:
             new_data = { NameColumns.BRAS: [], NameColumns.STATE: [], NameColumns.CONSUMPTION: [] }
@@ -169,21 +165,18 @@ class Calculate:
                 df_missing = pd.DataFrame(bras_consumption_not_found, columns=[NameColumns.BRAS])
                 self._add_missing_bras(df_missing)
         except Exception as error:
-            logger.error(f"Problemas al calcular el total de clientes ADSL y MDU - {error}")
-            terminal.print(f"[red3]ERROR: [default]Problemas al calcular el total de clientes ADSL y MDU - {error}")
-            terminal.print(f"[red3]Error in: {__file__}, Method: total_consumption_state_equipment_by_bras\n {error}")
+            logger.error(f"Problemas al calcular el total de consumo por estado agrupados por agregador - {error}")
+            terminal.print_spinner(f"[red3]ERROR: [default]Problemas al calcular el total de consumo por estado agrupados por agregador - {error}")
             exit(1)
         else:
             return df
         
-    
     def total_consumption_equipment_by_state(self, df_total_consumption_equipment_by_state: pd.DataFrame) -> pd.DataFrame:
         """Calculate the total consumption of a equipment group by state.
         
-        Parameters
-        ----------
-        df_total_consumption_equipment_by_state : pd.DataFrame
-            A DataFrame with the total consumption by equipment (ADSL, MDU or OLT) Bras only.
+        :params df_total_consumption_equipment_by_state: A DataFrame with the total consumption by equipment (ADSL, MDU or OLT) Bras only.
+        :type df_total_consumption_equipment_by_state: pd.DataFrame
+        :returns DataFrame: Proccesed data.
         """
         try:
             df = df_total_consumption_equipment_by_state.copy()
@@ -192,20 +185,18 @@ class Calculate:
             df = df.reset_index()
             return df
         except Exception as error:
-            logger.error(f"Problemas al calcular el total de clientes ADSL y MDU - {error}")
-            terminal.print(f"[red3]ERROR: [default]Problemas al calcular el total de clientes ADSL y MDU - {error}")
-            terminal.print(f"[red3]Error in: {__file__}, Method: total_consumption_equipment_by_state\n {error}")
+            logger.error(f"Problemas al calcular el total de consumo por estado - {error}")
+            terminal.print_spinner(f"[red3]ERROR: [default]Problemas al calcular el total de consumo por estado - {error}")
             exit(1)
 
     def percentage_consumption_by_state(self, df_consumption_by_state: pd.DataFrame, total_consumption: float) -> pd.DataFrame:
         """Calculate the percentage consumption of each state.
         
-        Parameters
-        ----------
-        df_consumption_by_state : pd.DataFrame
-            A DataFrame with the consumption by state Bras only.
-        total_consumption : float
-            Total consumption of the equipment.
+        :params df_consumption_by_state: A DataFrame with the consumption by state Bras only.
+        :type df_consumption_by_state: pd.DataFrame
+        :params total_consumption: Total consumption of the equipment.
+        type total_consumption: float
+        :returns DataFrame: Proccesed data.
         """
         try:
             df = df_consumption_by_state.copy()
@@ -214,7 +205,6 @@ class Calculate:
             df = df.reset_index(drop=True)
             return df
         except Exception as error:
-            logger.error(f"Problemas al calcular el total de clientes ADSL y MDU - {error}")
-            terminal.print(f"[red3]ERROR: [default]Problemas al calcular el total de clientes ADSL y MDU - {error}")
-            terminal.print(f"[red3]Error in: {__file__}, Method: percentage_consumption_by_state\n {error}")
+            logger.error(f"Problemas al calcular el porcentaje de consumo por estado - {error}")
+            terminal.print_spinner(f"[red3]ERROR: [default]Problemas al calcular el porcentaje de consumo por estado - {error}")
             exit(1)

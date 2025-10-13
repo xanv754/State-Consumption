@@ -5,6 +5,7 @@ from state_consumption.constants.sheetnames import SheetNames
 from state_consumption.constants.states import States, all_states
 from state_consumption.constants.status import StatusClients
 
+
 __all__ = [
     "cells",
     "NameColumns", 
