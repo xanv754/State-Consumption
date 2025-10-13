@@ -4,6 +4,7 @@ Automatización en Python para procesar los datos de clientes y consumo de la re
 ![](./docs/proceso.png)
 
 Para más información sobre los archivos necesarios para el procesamiento, actualización de la base de datos, etc... Puedes consultar el [Manual](./MANUAL.md).
+
 Para más información sobre los diagramas, puedes consultar el [Diagramas en Lucid Chart](https://lucid.app/lucidchart/717878be-76bf-4440-b35e-9003e418ab95/edit?viewport_loc=103%2C-1337%2C5693%2C2663%2C0_0&invitationId=inv_0ec5eacb-0353-4ca4-a540-9f1f48f5675f).
 
 ----------------------
