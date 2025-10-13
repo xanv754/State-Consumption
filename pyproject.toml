@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "State-Consumption"
+version = "1.0.0"
+description = "Un mini sistema para el procesamiento de data para obtención de estadísticas de consumo por estado."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [
+    { name = "Angyee Marin", email = "angyeemarin.dev@gmail.com" }
+]
+keywords = ["consumption", "statistics"]
+dependencies = [
+    "click>=8.2.1",
+    "openpyxl>=3.1.5",
+    "pandas>=2.3.2",
+    "pydantic>=2.11.7",
+    "pymongo>=4.10.1",
+    "python-dotenv>=1.1.1",
+    "requests>=2.32.3",
+    "rich>=13.9.4",
+    "tqdm>=4.66.5"
+]
+urls = { Homepage = "https://github.com/xanv754/State-Consumption" }
+
+[project.optional-dependencies]
+dev = ["black"]
+
+[tool.setuptools]
+packages = ["state_consumption"]

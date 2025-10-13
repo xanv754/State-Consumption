@@ -4,8 +4,8 @@
 *.xlsx
 *.xlsx#
 *.xls
-data/
 files/
+tmp/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -131,6 +131,7 @@ celerybeat.pid
 
 # Environments
 .env
+.env.testing
 .env.development
 .env.production
 .venv
