@@ -2,7 +2,7 @@ class NodesField:
     ID: str = "id"
     STATE: str = "state"
     CENTRAL: str = "central"
-    ACCOUNT_CODE: str = "cc"
+    ACCOUNT_CODE: str = "account_code"
 
 
 NODES_SCHEMA = {
