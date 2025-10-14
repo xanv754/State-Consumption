@@ -24,6 +24,10 @@ class URIEnvironment(Environment):
                 return env
             return None
         except Exception as error:
-            logger.error(f"No se ha encontrado las variables de entorno requeridas - {error}")
-            terminal.print_spinner(f"[red3]ERROR: [default]No se ha encontrado las variables de entorno requeridas - {error}")
+            logger.error(
+                f"No se ha encontrado las variables de entorno requeridas - {error}"
+            )
+            terminal.print_spinner(
+                f"[red3]ERROR: [default]No se ha encontrado las variables de entorno requeridas - {error}"
+            )
             exit(1)

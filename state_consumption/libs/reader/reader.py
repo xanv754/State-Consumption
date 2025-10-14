@@ -4,8 +4,9 @@ from abc import ABC, abstractmethod
 
 class Reader(ABC):
     """Class to read the data from the file."""
+
     _filename: str
-    
+
     def __init__(self, filename: str):
         self._filename = filename
 

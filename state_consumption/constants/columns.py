@@ -20,7 +20,8 @@ class ConsumptionStateColumns:
     PERCENTAGE_CONSUMPTION_ADSL: str = "Porcentaje Consumo ADSL (%)"
     PERCENTAGE_CONSUMPTION_MDU: str = "Porcentaje Consumo MDU (%)"
     PERCENTAGE_CONSUMPTION_OLT: str = "Porcentaje Consumo OLT (%)"
-    
+
+
 class BossNameColumns:
     """Column names to get the data from the process."""
 
@@ -52,11 +53,7 @@ boss_all_columns = [
     BossNameColumns.CENTRAL,
     BossNameColumns.ACCOUNT_CODE,
     BossNameColumns.STATUS,
-    BossNameColumns.TOTAL_CLIENTS
+    BossNameColumns.TOTAL_CLIENTS,
 ]
 
-asf_all_columns = [
-    AsfNameColumns.BRAS,
-    AsfNameColumns.STATE,
-    AsfNameColumns.STATUS
-]
+asf_all_columns = [AsfNameColumns.BRAS, AsfNameColumns.STATE, AsfNameColumns.STATUS]

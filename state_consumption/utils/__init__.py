@@ -5,10 +5,4 @@ from state_consumption.utils.data.format import FixFormat
 from state_consumption.utils.configuration.uri import URIEnvironment
 
 
-__all__ = [
-    "logger",
-    "terminal",
-    "ExcelExport",
-    "FixFormat",
-    "URIEnvironment"
-]
+__all__ = ["logger", "terminal", "ExcelExport", "FixFormat", "URIEnvironment"]

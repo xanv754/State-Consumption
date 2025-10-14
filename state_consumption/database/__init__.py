@@ -4,9 +4,4 @@ from state_consumption.database.querys.insert import InsertQuery
 from state_consumption.database.querys.update import UpdateQuery
 
 
-__all__ = [
-    "MongoDatabase",
-    "FindQuery",
-    "InsertQuery",
-    "UpdateQuery"
-]
+__all__ = ["MongoDatabase", "FindQuery", "InsertQuery", "UpdateQuery"]

@@ -15,15 +15,18 @@ class MongoDatabase:
     connected: bool = False
 
     def __init__(self, dev: bool = False, testing: bool = False) -> None:
-        if dev: env = URIEnvironment(dev=True)
-        elif testing: env = URIEnvironment(testing=True)
-        else: env = URIEnvironment(prod=True)
+        if dev:
+            env = URIEnvironment(dev=True)
+        elif testing:
+            env = URIEnvironment(testing=True)
+        else:
+            env = URIEnvironment(prod=True)
         self._uri = env.get_uri_db()
         self._name_db = self._uri.split("/")[-1]
 
     def _check_collection(self, name: str) -> bool:
         """Check if the collection exists.
-        
+
         :param name: Collection name
         :type name: str
         :return bool: True if the collection exists, False otherwise.
@@ -31,31 +34,35 @@ class MongoDatabase:
         db = self._client[self._name_db]
         collection_list = db.list_collection_names()
         return name in collection_list
-        
+
     def get_uri(self) -> str:
         return self._uri
-    
+
     def get_client(self) -> MongoClient:
         return self._client[self._name_db]
-        
+
     def open_connection(self) -> bool:
         try:
             if not self.connected:
                 self._client = MongoClient(self._uri)
         except Exception as error:
-            logger.error(f"No se ha podido establecer conexión la base de datos - {error}")
-            terminal.print_spinner(f"[red3]ERROR: [default]No se ha podido establecer conexión la base de datos - {error}")
+            logger.error(
+                f"No se ha podido establecer conexión la base de datos - {error}"
+            )
+            terminal.print_spinner(
+                f"[red3]ERROR: [default]No se ha podido establecer conexión la base de datos - {error}"
+            )
             self.connected = False
             return False
         else:
             self.connected = True
             return True
-        
+
     def close_connection(self) -> None:
         if self.connected:
             self._client.close()
             self.connected = False
-            
+
     def initialize_collection(self) -> None:
         try:
             if self.open_connection():
@@ -67,19 +74,23 @@ class MongoDatabase:
                         [
                             (NodesField.ACCOUNT_CODE, ASCENDING),
                             (NodesField.CENTRAL, ASCENDING),
-                            (NodesField.STATE, ASCENDING)
+                            (NodesField.STATE, ASCENDING),
                         ],
                         unique=True,
-                        name="unique_nodes_index"
+                        name="unique_nodes_index",
                     )
                 self.close_connection()
         except Exception as error:
-            logger.error(f"No se ha podido crear correctamente los esquemas de las colecciones - {error}")
-            terminal.print_spinner(f"[red3]ERROR: [default]No se ha podido crear correctamente los esquemas de las colecciones - {error}")
+            logger.error(
+                f"No se ha podido crear correctamente los esquemas de las colecciones - {error}"
+            )
+            terminal.print_spinner(
+                f"[red3]ERROR: [default]No se ha podido crear correctamente los esquemas de las colecciones - {error}"
+            )
         else:
             logger.info("Base de datos creada correctamente.")
             terminal.print_spinner("[green3]Base de datos creada correctamente.")
-            
+
     def drop_collection(self) -> None:
         try:
             if self.open_connection():
@@ -89,8 +100,12 @@ class MongoDatabase:
                 collection.drop()
                 self.close_connection()
         except Exception as error:
-            logger.error(f"No se ha podido eliminar correctamente las colecciones - {error}")
-            terminal.print_spinner(f"[red3]ERROR: [default]No se ha podido eliminar correctamente las colecciones - {error}")
+            logger.error(
+                f"No se ha podido eliminar correctamente las colecciones - {error}"
+            )
+            terminal.print_spinner(
+                f"[red3]ERROR: [default]No se ha podido eliminar correctamente las colecciones - {error}"
+            )
         else:
             logger.info("Base de datos destruida correctamente.")
             terminal.print_spinner("[green3]Base de datos destruida correctamente.")

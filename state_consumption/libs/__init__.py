@@ -14,5 +14,5 @@ __all__ = [
     "BossReader",
     "ConsumptionTrafficReader",
     "ReaderCLIHandler",
-    "CLIHandler"
+    "CLIHandler",
 ]

@@ -1,4 +1,4 @@
-import unittest 
+import unittest
 from state_consumption.libs import ProcessData
 from state_consumption.constants import NameColumns
 from state_consumption.test import FileToTesting
@@ -6,12 +6,18 @@ from state_consumption.test import FileToTesting
 
 class TestAdsl(unittest.TestCase):
     """Test class to test the process."""
-    
+
     def test_get_data(self):
         """Test the get only data ADSL of BOSS file."""
         file_handler = FileToTesting()
         boss_path, asf_path, consumption_path = file_handler.get_files_path()
-        dataHandler = ProcessData(boss_path, consumption_path, asf_path, process_consumption=True, testing=True)
+        dataHandler = ProcessData(
+            boss_path,
+            consumption_path,
+            asf_path,
+            process_consumption=True,
+            testing=True,
+        )
         data_adsl = dataHandler.get_data_adsl()
         file_handler.delete_files()
         self.assertTrue(len(data_adsl) == 8)
@@ -20,10 +26,16 @@ class TestAdsl(unittest.TestCase):
         """Test the total clients by state of ADSL."""
         file_handler = FileToTesting()
         boss_path, asf_path, consumption_path = file_handler.get_files_path()
-        dataHandler = ProcessData(boss_path, consumption_path, asf_path, process_consumption=True, testing=True)
+        dataHandler = ProcessData(
+            boss_path,
+            consumption_path,
+            asf_path,
+            process_consumption=True,
+            testing=True,
+        )
         data_adsl = dataHandler.total_clients_adsl()
         file_handler.delete_files()
-        
+
         print(data_adsl)
 
         self.assertFalse(data_adsl.empty)
@@ -34,10 +46,16 @@ class TestAdsl(unittest.TestCase):
         """Test the total clients by bras of ADSL."""
         file_handler = FileToTesting()
         boss_path, asf_path, consumption_path = file_handler.get_files_path()
-        dataHandler = ProcessData(boss_path, consumption_path, asf_path, process_consumption=True, testing=True)
+        dataHandler = ProcessData(
+            boss_path,
+            consumption_path,
+            asf_path,
+            process_consumption=True,
+            testing=True,
+        )
         data_adsl = dataHandler.total_clients_adsl_by_bras()
         file_handler.delete_files()
-        
+
         print(data_adsl)
 
         self.assertFalse(data_adsl.empty)
@@ -47,10 +65,16 @@ class TestAdsl(unittest.TestCase):
         """Test the total consumption by bras of ADSL."""
         file_handler = FileToTesting()
         boss_path, asf_path, consumption_path = file_handler.get_files_path()
-        dataHandler = ProcessData(boss_path, consumption_path, asf_path, process_consumption=True, testing=True)
+        dataHandler = ProcessData(
+            boss_path,
+            consumption_path,
+            asf_path,
+            process_consumption=True,
+            testing=True,
+        )
         data_adsl = dataHandler.total_consumption_adsl_by_bras()
         file_handler.delete_files()
-        
+
         print(data_adsl)
 
         self.assertFalse(data_adsl.empty)
@@ -60,10 +84,16 @@ class TestAdsl(unittest.TestCase):
         """Test the total consumption of each bras by state of ADSL."""
         file_handler = FileToTesting()
         boss_path, asf_path, consumption_path = file_handler.get_files_path()
-        dataHandler = ProcessData(boss_path, consumption_path, asf_path, process_consumption=True, testing=True)
+        dataHandler = ProcessData(
+            boss_path,
+            consumption_path,
+            asf_path,
+            process_consumption=True,
+            testing=True,
+        )
         data_adsl = dataHandler.total_consumption_state_adsl_by_bras()
         file_handler.delete_files()
-        
+
         print(data_adsl)
 
         self.assertFalse(data_adsl.empty)
@@ -74,7 +104,13 @@ class TestAdsl(unittest.TestCase):
         """Test the total consumption of ADSL by state."""
         file_handler = FileToTesting()
         boss_path, asf_path, consumption_path = file_handler.get_files_path()
-        dataHandler = ProcessData(boss_path, consumption_path, asf_path, process_consumption=True, testing=True)
+        dataHandler = ProcessData(
+            boss_path,
+            consumption_path,
+            asf_path,
+            process_consumption=True,
+            testing=True,
+        )
         data_adsl = dataHandler.total_consumption_adsl_by_state()
         file_handler.delete_files()
 
@@ -92,10 +128,16 @@ class TestMdu(unittest.TestCase):
         """Test the get only data MDU of BOSS file."""
         file_handler = FileToTesting()
         boss_path, asf_path, consumption_path = file_handler.get_files_path()
-        dataHandler = ProcessData(boss_path, consumption_path, asf_path, process_consumption=True, testing=True)
+        dataHandler = ProcessData(
+            boss_path,
+            consumption_path,
+            asf_path,
+            process_consumption=True,
+            testing=True,
+        )
         data_mdu = dataHandler.get_data_mdu()
         file_handler.delete_files()
-        
+
         print(data_mdu)
 
         self.assertTrue(len(data_mdu) == 2)
@@ -104,10 +146,16 @@ class TestMdu(unittest.TestCase):
         """Test the total clients by state of MDU."""
         file_handler = FileToTesting()
         boss_path, asf_path, consumption_path = file_handler.get_files_path()
-        dataHandler = ProcessData(boss_path, consumption_path, asf_path, process_consumption=True, testing=True)
+        dataHandler = ProcessData(
+            boss_path,
+            consumption_path,
+            asf_path,
+            process_consumption=True,
+            testing=True,
+        )
         data_mdu = dataHandler.total_clients_mdu()
         file_handler.delete_files()
-        
+
         print(data_mdu)
 
         self.assertFalse(data_mdu.empty)
@@ -118,10 +166,16 @@ class TestMdu(unittest.TestCase):
         """Test the total clients by bras of MDU."""
         file_handler = FileToTesting()
         boss_path, asf_path, consumption_path = file_handler.get_files_path()
-        dataHandler = ProcessData(boss_path, consumption_path, asf_path, process_consumption=True, testing=True)
+        dataHandler = ProcessData(
+            boss_path,
+            consumption_path,
+            asf_path,
+            process_consumption=True,
+            testing=True,
+        )
         data_mdu = dataHandler.total_clients_mdu_by_bras()
         file_handler.delete_files()
-        
+
         print(data_mdu)
 
         self.assertFalse(data_mdu.empty)
@@ -131,7 +185,13 @@ class TestMdu(unittest.TestCase):
         """Test the total consumption by bras of MDU."""
         file_handler = FileToTesting()
         boss_path, asf_path, consumption_path = file_handler.get_files_path()
-        dataHandler = ProcessData(boss_path, consumption_path, asf_path, process_consumption=True, testing=True)
+        dataHandler = ProcessData(
+            boss_path,
+            consumption_path,
+            asf_path,
+            process_consumption=True,
+            testing=True,
+        )
         data_mdu = dataHandler.total_consumption_mdu_by_bras()
         file_handler.delete_files()
 
@@ -144,10 +204,16 @@ class TestMdu(unittest.TestCase):
         """Test the total consumption of each bras by state of MDU."""
         file_handler = FileToTesting()
         boss_path, asf_path, consumption_path = file_handler.get_files_path()
-        dataHandler = ProcessData(boss_path, consumption_path, asf_path, process_consumption=True, testing=True)
+        dataHandler = ProcessData(
+            boss_path,
+            consumption_path,
+            asf_path,
+            process_consumption=True,
+            testing=True,
+        )
         data_mdu = dataHandler.total_consumption_state_mdu_by_bras()
         file_handler.delete_files()
-        
+
         print(data_mdu)
 
         self.assertFalse(data_mdu.empty)
@@ -158,10 +224,16 @@ class TestMdu(unittest.TestCase):
         """Test the total consumption of MDU by state."""
         file_handler = FileToTesting()
         boss_path, asf_path, consumption_path = file_handler.get_files_path()
-        dataHandler = ProcessData(boss_path, consumption_path, asf_path, process_consumption=True, testing=True)
+        dataHandler = ProcessData(
+            boss_path,
+            consumption_path,
+            asf_path,
+            process_consumption=True,
+            testing=True,
+        )
         data_mdu = dataHandler.total_consumption_mdu_by_state()
         file_handler.delete_files()
-        
+
         print(data_mdu)
 
         self.assertFalse(data_mdu.empty)
@@ -176,7 +248,13 @@ class TestOlt(unittest.TestCase):
         """Test the get only data ASF of BOSS file."""
         file_handler = FileToTesting()
         boss_path, asf_path, consumption_path = file_handler.get_files_path()
-        dataHandler = ProcessData(boss_path, consumption_path, asf_path, process_consumption=True, testing=True)
+        dataHandler = ProcessData(
+            boss_path,
+            consumption_path,
+            asf_path,
+            process_consumption=True,
+            testing=True,
+        )
         data_olt = dataHandler.get_data_asf()
         file_handler.delete_files()
 
@@ -188,10 +266,16 @@ class TestOlt(unittest.TestCase):
         """Test the total clients by state of ASF."""
         file_handler = FileToTesting()
         boss_path, asf_path, consumption_path = file_handler.get_files_path()
-        dataHandler = ProcessData(boss_path, consumption_path, asf_path, process_consumption=True, testing=True)
+        dataHandler = ProcessData(
+            boss_path,
+            consumption_path,
+            asf_path,
+            process_consumption=True,
+            testing=True,
+        )
         data_olt = dataHandler.total_clients_olt()
         file_handler.delete_files()
-        
+
         print(data_olt)
 
         self.assertFalse(data_olt.empty)
@@ -202,10 +286,16 @@ class TestOlt(unittest.TestCase):
         """Test the total clients by bras of MDU."""
         file_handler = FileToTesting()
         boss_path, asf_path, consumption_path = file_handler.get_files_path()
-        dataHandler = ProcessData(boss_path, consumption_path, asf_path, process_consumption=True, testing=True)
+        dataHandler = ProcessData(
+            boss_path,
+            consumption_path,
+            asf_path,
+            process_consumption=True,
+            testing=True,
+        )
         data_olt = dataHandler.total_clients_olt_by_bras()
         file_handler.delete_files()
-        
+
         print(data_olt)
 
         self.assertFalse(data_olt.empty)
@@ -215,10 +305,16 @@ class TestOlt(unittest.TestCase):
         """Test the total consumption by bras of MDU."""
         file_handler = FileToTesting()
         boss_path, asf_path, consumption_path = file_handler.get_files_path()
-        dataHandler = ProcessData(boss_path, consumption_path, asf_path, process_consumption=True, testing=True)
+        dataHandler = ProcessData(
+            boss_path,
+            consumption_path,
+            asf_path,
+            process_consumption=True,
+            testing=True,
+        )
         data_olt = dataHandler.total_consumption_olt_by_bras()
         file_handler.delete_files()
-        
+
         print(data_olt)
 
         self.assertFalse(data_olt.empty)
@@ -228,10 +324,16 @@ class TestOlt(unittest.TestCase):
         """Test the total consumption of each bras by state of ASF."""
         file_handler = FileToTesting()
         boss_path, asf_path, consumption_path = file_handler.get_files_path()
-        dataHandler = ProcessData(boss_path, consumption_path, asf_path, process_consumption=True, testing=True)
+        dataHandler = ProcessData(
+            boss_path,
+            consumption_path,
+            asf_path,
+            process_consumption=True,
+            testing=True,
+        )
         data_olt = dataHandler.total_consumption_state_olt_by_bras()
         file_handler.delete_files()
-        
+
         print(data_olt)
 
         self.assertFalse(data_olt.empty)
@@ -241,10 +343,16 @@ class TestOlt(unittest.TestCase):
         """Test the total consumption of MDU by state."""
         file_handler = FileToTesting()
         boss_path, asf_path, consumption_path = file_handler.get_files_path()
-        dataHandler = ProcessData(boss_path, consumption_path, asf_path, process_consumption=True, testing=True)
+        dataHandler = ProcessData(
+            boss_path,
+            consumption_path,
+            asf_path,
+            process_consumption=True,
+            testing=True,
+        )
         data_olt = dataHandler.total_consumption_olt_by_state()
         file_handler.delete_files()
-        
+
         print(data_olt)
 
         self.assertFalse(data_olt.empty)
@@ -258,10 +366,16 @@ class TestData(unittest.TestCase):
         """Test the total clients by bras."""
         file_handler = FileToTesting()
         boss_path, asf_path, consumption_path = file_handler.get_files_path()
-        dataHandler = ProcessData(boss_path, consumption_path, asf_path, process_consumption=True, testing=True)
+        dataHandler = ProcessData(
+            boss_path,
+            consumption_path,
+            asf_path,
+            process_consumption=True,
+            testing=True,
+        )
         data = dataHandler.total_clients_by_bras()
         file_handler.delete_files()
-        
+
         print(data)
 
         self.assertFalse(data.empty)

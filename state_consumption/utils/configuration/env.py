@@ -28,7 +28,9 @@ class Environment:
         """
         try:
             if prod:
-                if not path.exists(path.join(self._base_path, ".env.production")) or path.exists(path.join(self._base_path, ".env")):
+                if not path.exists(
+                    path.join(self._base_path, ".env.production")
+                ) or path.exists(path.join(self._base_path, ".env")):
                     raise FileNotFoundError(
                         f"El archivo 'env.production' o '.env' es requerido"
                     )
@@ -41,17 +43,21 @@ class Environment:
                 return dotenv_values(path.join(self._base_path, ".env.development"))
             elif test:
                 if not path.exists(path.join(self._base_path, ".env.testing")):
-                    raise FileNotFoundError(
-                        f"El archivo 'env.testing' es requerido"
-                    )
+                    raise FileNotFoundError(f"El archivo 'env.testing' es requerido")
                 return dotenv_values(path.join(self._base_path, ".env.testing"))
             else:
                 raise Exception("No se ha encontrado ningún archivo")
         except FileNotFoundError as error:
-            logger.error(f"Archivo con variables de entorno no encontrado en {self._base_path} - {error}")
-            terminal.print_spinner(f"[red3]ERROR: [default]Archivo con variables de entorno no encontrado en {self._base_path} - {error}")
+            logger.error(
+                f"Archivo con variables de entorno no encontrado en {self._base_path} - {error}"
+            )
+            terminal.print_spinner(
+                f"[red3]ERROR: [default]Archivo con variables de entorno no encontrado en {self._base_path} - {error}"
+            )
             exit(1)
         except Exception as error:
             logger.error(f"Error en las variables de entorno del sistema - {error}")
-            terminal.print_spinner(f"[red3]ERROR: [default]Problemas con las variables de entorno del sistema - {error}")
+            terminal.print_spinner(
+                f"[red3]ERROR: [default]Problemas con las variables de entorno del sistema - {error}"
+            )
             exit(1)

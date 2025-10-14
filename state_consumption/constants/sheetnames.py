@@ -1,5 +1,6 @@
 class SheetNames:
     """Class to get the name of the sheets."""
+
     ADSL: str = "ADSL"
     MDU: str = "MDU"
     OLT: str = "OLT"

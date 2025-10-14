@@ -1,5 +1,6 @@
 class States:
     """Class to get the name of the states."""
+
     AMAZONAS: str = "AMAZONAS"
     ANZOATEGUI: str = "ANZOATEGUI"
     APURE: str = "APURE"
@@ -52,5 +53,5 @@ all_states = [
     States.YARACUY,
     States.ZULIA,
     States.DISTRITO_CAPITAL,
-    States.DEPENDENCIAS_FEDERALES
+    States.DEPENDENCIAS_FEDERALES,
 ]

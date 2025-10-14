@@ -25,7 +25,7 @@ NODES_SCHEMA = {
             NodesField.ACCOUNT_CODE: {
                 "bsonType": "string",
                 "description": "Account code of the node",
-            }
-        }
+            },
+        },
     }
 }

@@ -8,8 +8,7 @@ class TestDatabase(unittest.TestCase):
     state: str = "ESTADO_PRUEBA"
     cc: str = "CC_PRUEBA"
     central: str = "CENTRAL_PRUEBA"
-    
-    
+
     def test_a_insert(self) -> None:
         """Test to insert a new node."""
         database = self.db_handler.get_database()
@@ -17,8 +16,7 @@ class TestDatabase(unittest.TestCase):
         query = InsertQuery(db=database)
         response = query.insert(state=self.state, central=self.central, cc=self.cc)
         self.assertTrue(response)
-        
-        
+
     def test_b_find(self) -> None:
         """Test to find a node by central name."""
         database = self.db_handler.get_database()
@@ -27,8 +25,7 @@ class TestDatabase(unittest.TestCase):
         response = query.find_state_by_central(central=self.central)
         self.assertTrue(response)
         self.db_handler.clean_database()
-        
-        
+
+
 if __name__ == "__main__":
     unittest.main()
-        

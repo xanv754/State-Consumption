@@ -11,12 +11,18 @@ class TestReport(unittest.TestCase):
         """Test the get clients and consumption by state."""
         file_handler = FileToTesting()
         boss_path, asf_path, consumption_path = file_handler.get_files_path()
-        process = ProcessData(boss_path, consumption_path, asf_path, process_consumption=True, testing=True)
+        process = ProcessData(
+            boss_path,
+            consumption_path,
+            asf_path,
+            process_consumption=True,
+            testing=True,
+        )
         data = ReportHandler(process)
         df = data.clients_consumption_by_state()
         columns = df.columns.to_list()
         file_handler.delete_files()
-        
+
         print(df)
 
         self.assertFalse(df.empty)
@@ -32,12 +38,18 @@ class TestReport(unittest.TestCase):
         """Test the get clients and consumption by state with percentage."""
         file_handler = FileToTesting()
         boss_path, asf_path, consumption_path = file_handler.get_files_path()
-        process = ProcessData(boss_path, consumption_path, asf_path, process_consumption=True, testing=True)
+        process = ProcessData(
+            boss_path,
+            consumption_path,
+            asf_path,
+            process_consumption=True,
+            testing=True,
+        )
         data = ReportHandler(process)
         df = data.clients_consumption_by_state_with_percentage()
         columns = df.columns.to_list()
         file_handler.delete_files()
-        
+
         print(df)
 
         self.assertFalse(df.empty)
