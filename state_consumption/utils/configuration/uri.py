@@ -1,5 +1,5 @@
 from state_consumption.utils.configuration.env import Environment
-from state_consumption.utils.info.log import logger
+from state_consumption.utils.info.logger import logger
 from state_consumption.utils.info.console import terminal
 
 
