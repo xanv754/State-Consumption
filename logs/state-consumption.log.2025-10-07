@@ -1,0 +1,20 @@
+2025-10-13 15:06:06 ERROR No se ha podido establecer conexión la base de datos - The empty string is not valid username
+2025-10-13 15:06:06 INFO Base de datos creada correctamente.
+2025-10-13 15:06:06 ERROR No se ha podido establecer conexión la base de datos - The empty string is not valid username
+2025-10-13 15:06:06 ERROR No se ha podido establecer conexión la base de datos - The empty string is not valid username
+2025-10-13 15:06:06 INFO Base de datos creada correctamente.
+2025-10-13 15:06:06 ERROR No se ha podido establecer conexión la base de datos - The empty string is not valid username
+2025-10-13 15:06:55 ERROR No se ha podido establecer conexión la base de datos - The empty string is not valid username
+2025-10-13 15:06:55 INFO Base de datos creada correctamente.
+2025-10-13 15:06:55 ERROR No se ha podido establecer conexión la base de datos - The empty string is not valid username
+2025-10-13 15:08:07 INFO Base de datos creada correctamente.
+2025-10-13 15:08:13 INFO Base de datos creada correctamente.
+2025-10-13 15:08:13 ERROR Problema al insertar nuevo nodo: CENTRAL_PRUEBA - E11000 duplicate key error collection: unittest_state_consumption.NODES index: unique_nodes_index dup key: { account_code: "CC_PRUEBA", central: "CENTRAL_PRUEBA", state: "ESTADO_PRUEBA" }, full error: {'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: unittest_state_consumption.NODES index: unique_nodes_index dup key: { account_code: "CC_PRUEBA", central: "CENTRAL_PRUEBA", state: "ESTADO_PRUEBA" }', 'keyPattern': {'account_code': 1, 'central': 1, 'state': 1}, 'keyValue': {'account_code': 'CC_PRUEBA', 'central': 'CENTRAL_PRUEBA', 'state': 'ESTADO_PRUEBA'}}
+2025-10-13 15:08:13 INFO Base de datos creada correctamente.
+2025-10-13 15:08:13 INFO Base de datos destruida correctamente.
+2025-10-13 15:08:16 INFO Base de datos creada correctamente.
+2025-10-13 15:08:17 INFO Base de datos creada correctamente.
+2025-10-13 15:08:17 INFO Base de datos destruida correctamente.
+2025-10-13 15:09:02 INFO Base de datos creada correctamente.
+2025-10-13 15:09:02 INFO Base de datos creada correctamente.
+2025-10-13 15:09:02 INFO Base de datos destruida correctamente.
