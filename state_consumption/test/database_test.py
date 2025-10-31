@@ -14,8 +14,9 @@ class TestDatabase(unittest.TestCase):
         """Test to insert a new node."""
         database = self.db_handler.get_database()
         self.assertTrue(database.connected)
-        query = InsertQuery(db=database)
-        response = query.insert(state=self.state, central=self.central, cc=self.cc)
+        query = InsertQuery(testing=True)
+        nodes = [{"Estado": self.state, "Nombre del Nodo": self.central, "CC": self.cc}]
+        response = query.insert_nodes(nodes)
         self.assertTrue(response)
         
         
@@ -25,7 +26,8 @@ class TestDatabase(unittest.TestCase):
         self.assertTrue(database.connected)
         query = FindQuery(db=database)
         response = query.find_state_by_central(central=self.central)
-        self.assertTrue(response)
+        self.assertIsNotNone(response)
+        self.assertEqual(response, self.state)
         self.db_handler.clean_database()
         
         

@@ -4,7 +4,7 @@ from openpyxl.styles import Font, PatternFill, Border, Side
 from openpyxl.styles.colors import Color
 from state_consumption.constants import ConsumptionStateColumns, NameColumns, cells
 from state_consumption.utils.info.console import terminal
-from state_consumption.utils.info.log import logger
+from state_consumption.utils.info.logger import logger
 
 
 class ExcelExport:

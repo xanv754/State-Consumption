@@ -1,7 +1,7 @@
 from os import path
 from typing import Dict
 from dotenv import load_dotenv, dotenv_values
-from state_consumption.utils.info.log import logger
+from state_consumption.utils.info.logger import logger
 from state_consumption.utils.info.console import terminal
 
 
@@ -55,3 +55,19 @@ class Environment:
             logger.error(f"Error en las variables de entorno del sistema - {error}")
             terminal.print_spinner(f"[red3]ERROR: [default]Problemas con las variables de entorno del sistema - {error}")
             exit(1)
+
+    def _get_env_var(self, var_name: str) -> str:
+        """Gets a specific variable from the environment.
+
+        :param var_name: The name of the environment variable.
+        :type var_name: str
+        :raises Exception: If the variable is not declared.
+        :returns str: The value of the environment variable.
+        """
+        if not self._env:
+            raise Exception("El diccionario de entorno no está cargado.")
+            
+        var = self._env.get(var_name)
+        if not var:
+            raise Exception(f"Variable '{var_name}' no declarada en el archivo .env")
+        return var
