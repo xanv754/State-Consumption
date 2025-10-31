@@ -16,7 +16,15 @@ pip install .
 
 # Requerimientos
 ## Variables de Entorno
-Para poder ejecutar operaciones con la base de datos, es necesario definir la variable de entorno `URI` con la URI de la base de datos en cualquier archivo de configuración.
+Para poder ejecutar operaciones con la base de datos, es necesario definir la variables de entorno:
+```bash
+URI=mongodb://localhost:27017/state_consumption
+SSOMP_URL_LOGIN=ssomp
+SSOMP_URL_BASE=ssomp
+SSOMP_USER=user
+SSOMP_PASSWORD=password
+```
+Esto debe estar definido en cualquier archivo de configuración:
 - Para entorno de desarrollo: `.env.development`
 - Para entorno de producción: `.env.production`
 - Para entorno general: `.env`

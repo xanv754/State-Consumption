@@ -1,9 +1,8 @@
-from .ssomp import SSOMPEnvironment, ScrapperEnvironment
-from .env import Environment
-from .uri import URIEnvironment
+from state_consumption.utils.configuration.ssomp import ScrapperEnvironment
+from state_consumption.utils.configuration.env import Environment
+from state_consumption.utils.configuration.uri import URIEnvironment
 
 __all__ = [
-    "SSOMPEnvironment",
     "ScrapperEnvironment",
     "Environment",
     "URIEnvironment",

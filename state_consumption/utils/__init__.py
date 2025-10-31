@@ -8,6 +8,7 @@ from state_consumption.utils.configuration.ssomp import SSOMPEnvironment, Scrapp
 from state_consumption.utils.configuration.uri import URIEnvironment
 
 __all__ = [
+    "Environment",
     "logger",
     "terminal",
     "ExcelExport",

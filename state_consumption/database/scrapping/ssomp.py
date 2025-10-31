@@ -3,9 +3,9 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from tqdm import tqdm
+from state_consumption.constants import SSOMPScrappingColumns
 from state_consumption.database.querys.insert import InsertQuery
-from state_consumption.utils.configuration import ScrapperEnvironment
-from state_consumption.utils.info.logger import logger
+from state_consumption.utils import ScrapperEnvironment, logger
 
 
 class SsompScrapper:
@@ -14,7 +14,10 @@ class SsompScrapper:
     """
 
     def __init__(self, dev: bool = False, testing: bool = False) -> None:
-        self._env = ScrapperEnvironment(dev=dev, testing=testing)
+        if not dev and not testing:
+            self._env = ScrapperEnvironment(prod=True)
+        else:
+            self._env = ScrapperEnvironment(dev=dev, testing=testing)
         self._url_login = self._env.get_url_login()
         self._url_base = self._env.get_url_base()
         self._credentials = self._env.get_credentials()
@@ -64,7 +67,6 @@ class SsompScrapper:
                 logger.info(f"No se encontró tabla de datos en la página {page_number}. Se asume fin de la paginación.")
                 return False
 
-            # Detectar bucle infinito por repetición de la primera fila
             first_row = rows[0] if rows else None
             if first_row:
                 first_cells = first_row.find_all("td")
@@ -121,14 +123,14 @@ class SsompScrapper:
             return None
 
         df = pd.DataFrame(self._data)
-        df['CC'] = pd.to_numeric(df['CC'], errors='coerce')
-        df['CC'] = df['CC'].fillna('')
+        df[SSOMPScrappingColumns.ACCOUNT_CODE] = pd.to_numeric(df[SSOMPScrappingColumns.ACCOUNT_CODE], errors='coerce')
+        df[SSOMPScrappingColumns.ACCOUNT_CODE] = df[SSOMPScrappingColumns.ACCOUNT_CODE].fillna('')
         def format_cc_or_empty(val):
             if isinstance(val, float): 
                 if not pd.isna(val):
                     return str(int(val))
             return str(val)
-        df['CC'] = df['CC'].apply(format_cc_or_empty)
+        df[SSOMPScrappingColumns.ACCOUNT_CODE] = df[SSOMPScrappingColumns.ACCOUNT_CODE].apply(format_cc_or_empty)
         return df
 
     def save_to_database(self, df: pd.DataFrame) -> None:
@@ -140,12 +142,11 @@ class SsompScrapper:
             print("\n⚠️ PROCESO TERMINADO: No se pudo guardar porque no se extrajo ningún dato válido.")
             return
 
-        # Validación adicional: Filtrar filas sin Nombre del Nodo o Estado; permitir CC='--' o vacío
         initial_count = len(df)
-        df = df[df['Nombre del Nodo'].notna() & (df['Nombre del Nodo'] != '') & df['Estado'].notna() & (df['Estado'] != '')]
+        df = df[df[SSOMPScrappingColumns.NAME_NODE].notna() & (df[SSOMPScrappingColumns.NAME_NODE] != '') & df[SSOMPScrappingColumns.STATE].notna() & (df[SSOMPScrappingColumns.STATE] != '')]
         filtered_count = initial_count - len(df)
         if filtered_count > 0:
-            logger.info(f"Se filtraron {filtered_count} registros sin 'Nombre del Nodo' o 'Estado' válido.")
+            logger.info(f"Se filtraron {filtered_count} registros sin 'Nombre del Nodo o 'Estado' válido.")
 
         logger.info("Guardando datos en la base de datos...")
 

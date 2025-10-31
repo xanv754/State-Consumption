@@ -45,6 +45,12 @@ class AsfNameColumns:
     STATUS: str = "STATUS"
 
 
+class SSOMPScrappingColumns:
+    ACCOUNT_CODE: str = "CC"
+    STATE: str = "Estado"
+    NAME_NODE: str = "Nombre del Nodo"
+    
+
 boss_all_columns = [
     BossNameColumns.SUFFIX_BRAS,
     BossNameColumns.PREFIX_BRAS,
