@@ -90,9 +90,9 @@ class SsompScrapper:
 
                     if state and node_name:
                         self._data.append({
-                            "Estado": state,
-                            "CC": cc,
-                            "Nombre del Nodo": node_name
+                            SSOMPScrappingColumns.STATE: state,
+                            SSOMPScrappingColumns.ACCOUNT_CODE: cc,
+                            SSOMPScrappingColumns.NAME_NODE: node_name
                         })
             time.sleep(0.1)
             return True
