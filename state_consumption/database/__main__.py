@@ -1,6 +1,6 @@
 import click
 from state_consumption.database.libs.mongo import MongoDatabase
-
+from state_consumption.database.scrapping.ssomp import SsompScrapper
 
 @click.group()
 def cli():
@@ -30,7 +30,7 @@ def scrape(dev: bool = False, testing: bool = False) -> None:
     """
     Ejecuta el scrapper de SSOMP y guarda los datos en la base de datos.
     """
-    from state_consumption.database.scrapping.ssomp import SsompScrapper
+    
     scrapper = SsompScrapper(dev=dev, testing=testing)
     df = scrapper.run_scrapping()
 

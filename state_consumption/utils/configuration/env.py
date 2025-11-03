@@ -28,11 +28,16 @@ class Environment:
         """
         try:
             if prod:
-                if not path.exists(path.join(self._base_path, ".env.production")) or path.exists(path.join(self._base_path, ".env")):
+                # Requerir que exista al menos uno de .env.production o .env
+                production_env = path.join(self._base_path, ".env.production")
+                default_env = path.join(self._base_path, ".env")
+                if not (path.exists(production_env) or path.exists(default_env)):
                     raise FileNotFoundError(
-                        f"El archivo 'env.production' o '.env' es requerido"
+                        f"El archivo '.env.production' o '.env' es requerido"
                     )
-                return dotenv_values(path.join(self._base_path, ".env.production"))
+                # Prefiera .env.production si está presente; de ​​lo contrario, recurra a .env
+                env_file = production_env if path.exists(production_env) else default_env
+                return dotenv_values(env_file)
             elif dev:
                 if not path.exists(path.join(self._base_path, ".env.development")):
                     raise FileNotFoundError(
