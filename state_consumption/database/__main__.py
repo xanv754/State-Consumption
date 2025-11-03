@@ -30,10 +30,11 @@ def scrape(dev: bool = False, testing: bool = False) -> None:
     """
     Ejecuta el scrapper de SSOMP y guarda los datos en la base de datos.
     """
-    
-    scrapper = SsompScrapper(dev=dev, testing=testing)
+    if not dev and not testing: 
+        scrapper = SsompScrapper(prod=True)
+    else: 
+        scrapper = SsompScrapper(dev=dev, testing=testing)
     df = scrapper.run_scrapping()
-
     if df is not None and not df.empty:
         scrapper.save_to_database(df)
     else:
